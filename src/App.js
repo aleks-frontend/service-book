@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Fragment } from 'react';
 import './App.css';
+import Header from './components/Header';
+import Logo from './components/Logo';
+import Nav from './components/Nav';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Fragment>
+        <div className="side">
+          <Logo />
+          <Nav marginTop={1.5} />
+        </div>
+        <div className="main">
+          <Header />
+          <div className="body">
+
+          </div>
+        </div>
+      </Fragment>
+    );
+  }
 }
 
 export default App;
