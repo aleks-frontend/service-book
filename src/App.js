@@ -1,24 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import './App.css';
-import Header from './components/Header';
-import Logo from './components/Logo';
-import Nav from './components/Nav';
+import Router from './components/Router';
 
 class App extends React.Component {
   render() {
     return (
-      <Fragment>
-        <div className="side">
-          <Logo />
-          <Nav marginTop={1.5} />
-        </div>
-        <div className="main">
-          <Header />
-          <div className="body">
-
-          </div>
-        </div>
-      </Fragment>
+      <Router />
     );
   }
 }
