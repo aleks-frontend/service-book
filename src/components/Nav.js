@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledNav = styled.div`
-    margin: ${props => props.margin};    
+    margin: ${props => props.margin};
 
     .nav__item {        
         display: flex;
@@ -10,6 +10,10 @@ const StyledNav = styled.div`
         padding: 1.5rem 2rem;
         color: #fff;
         text-decoration: none;
+
+        &--active {
+            background: #000;
+        }
     }
 
     .nav__icon {
@@ -25,30 +29,52 @@ class Nav extends React.Component {
             home: {
                 text: "Home",
                 icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-                url: '/'
+                url: '/',
+                active: false
             },
             history: {
                 text: "History",
                 icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-                url: '/history'
+                url: '/history',
+                active: false
             },
             customers: {
                 text: "Customers",
                 icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-                url: '/customers'
+                url: '/customers',
+                active: false
             },
             actions: {
                 text: "Actions",
                 icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-                url: '/actions'
+                url: '/actions',
+                active: false
             }
         }
     }
 
+    componentDidMount() {
+        this.setActive();    
+    }
+
     changeUrl = (key, e) => {
         e.preventDefault();
-        this.props.history.push(this.state.navItems[key].url);
+        this.props.history.push(this.state.navItems[key].url);        
     };
+
+    setActive = () => {
+        const pathname = this.props.history.location.pathname;
+        let activeItem = pathname.split('/')[1];
+        const navItems = {...this.state.navItems};
+
+        // Reseting active property on previous element
+        Object.keys(navItems).map(key => navItems[key].active = false);
+        
+        if ( activeItem === '' ) activeItem = 'home';        
+
+        navItems[activeItem].active = true;
+        this.setState({ navItems });
+    }
     
     render() {
         return (
@@ -56,7 +82,7 @@ class Nav extends React.Component {
                 {Object.keys(this.state.navItems).map((key) => (
                         <a 
                             href="#" 
-                            className="nav__item" 
+                            className={(this.state.navItems[key].active) ? 'nav__item nav__item--active' : 'nav__item'} 
                             key={key}
                             onClick={(e) => this.changeUrl(key, e)}
                         >
