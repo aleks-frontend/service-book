@@ -55,7 +55,7 @@ const CreateEntity = (props) => {
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        props.addEntity(entityState, props.stateName);
+        props.addEntity(entityState, props.stateName, props.isMulti);
     }
     
     return (

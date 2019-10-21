@@ -33,8 +33,12 @@ const StyledForm = styled.form`
 `;
 
 const NewService = (props) => {    
-    const [ showCreateCustomer, updateShowCreateCustomer ] = React.useState(false);
-    const [ selectedCustomer, updateSelectedCustomer ] = React.useState();
+    const [ showCreateCustomer, updateShowCreateCustomer ] = React.useState({show: false});
+    const [ showCreateDevice, updateShowCreateDevice ] = React.useState({show: false});
+    const [ selectedDropdownItems, updateSelectedDropdownItems ] = React.useState({
+        customers: {}, 
+        devices: []
+    });
     const [ inputs, updateInputs ] = React.useState({
         title: "",
         description: "",
@@ -53,7 +57,7 @@ const NewService = (props) => {
         label: props.devices[key].name
     }));    
 
-    const [ selectOptions, updateSelectOptions ] = React.useState({
+    const [ dropdownOptions, updateDropdownOptions ] = React.useState({
         customers: customerOptionsArr,
         devices: deviceOptionsArr,
     });
@@ -63,15 +67,20 @@ const NewService = (props) => {
     }
 
     const handleCreateCustomer = (event) => {
-        updateShowCreateCustomer({show: true, name: event});        
+        updateShowCreateCustomer({show: true, name: event});
     }
 
-    const handleSelectChange =(event, actionMeta) => {
+    const handleCreateDevice = (event) => {
+        updateShowCreateDevice({show: true, name: event});        
+    }
+
+    const handleDropdownChange =(event, actionMeta) => {
         let keysArr = [];
         if ( Array.isArray(event) ) {
             keysArr = event.map(obj => obj.value);
         } else {
             if ( event !== null ) {
+                updateShowCreateCustomer({show: false, name: event});
                 keysArr.push(event.value);
             }
         }
@@ -110,22 +119,74 @@ const NewService = (props) => {
                         addEntity={addEntity}
                         stateName="customers"
                         fields={fields}
+                        isMulti={false}
                     />;
         }
-    }    
+    }   
+    
+    const renderCreateDevice = () => {
+        // manufacturer: "HP",
+        // model: "Home Server",
+        // name: "HP Home Server",
+        // serial: "12345",
+        // title: ""
+        const fields = [
+            {
+                name: 'manufacturer',
+                label: 'Manufacturer',
+                defaultVal: ''
+            },
+            {
+                name: 'model',
+                label: 'Model',
+                defaultVal: 0
+            },
+            {
+                name: 'serial',
+                label: 'Serial',
+                defaultVal: ''
+            },
+            {
+                name: 'title',
+                label: 'Title',
+                defaultVal: ''
+            },
+        ];
 
-    const addEntity = (entity, stateKey) => {        
+        if ( showCreateDevice.show ) {
+            return <CreateEntity 
+                        name={showCreateDevice.name} 
+                        addEntity={addEntity}
+                        stateName="devices"
+                        fields={fields}
+                        isMulti={true}
+                    />;
+        }
+    }        
+
+    const addEntity = (entity, stateKey, isMulti) => {        
         const id = new Date().getTime();
-        const selectState = selectOptions[stateKey];
-        const updatedSelectState = [...selectState, {
+        const activeDropdownState = dropdownOptions[stateKey];
+        const updatedDropdownState = [...activeDropdownState, {
             value: id,
             label: entity.name            
         }];
 
-        updateSelectOptions({...selectOptions, [stateKey]: updatedSelectState});           
+        updateDropdownOptions({...dropdownOptions, [stateKey]: updatedDropdownState});           
 
-        updateSelectedCustomer({value: id, label: entity.name});
-        updateInputs({...inputs, [stateKey]: [id]});
+        if ( !isMulti ) {
+            updateSelectedDropdownItems({...selectedDropdownItems, [stateKey]:{
+                value: id, 
+                label: entity.name
+            }});
+        } else {
+            updateSelectedDropdownItems({...selectedDropdownItems, [stateKey]:[...selectedDropdownItems[stateKey], 
+                { 
+                    value: id, 
+                    label: entity.name
+                }
+            ]});
+        }
         props.addEntity(entity, id, stateKey);
     }
     
@@ -145,25 +206,29 @@ const NewService = (props) => {
                 <div className="group">
                     <label>Customer:</label>                            
                     <CreatableSelect                                
-                        options={selectOptions['customers']} 
+                        options={dropdownOptions['customers']} 
                         className="select" 
                         name="customers"
-                        value={selectedCustomer}
-                        onChange={handleSelectChange}
-                        onCreateOption={handleCreateCustomer}                                
+                        value={selectedDropdownItems['customers']}
+                        onChange={handleDropdownChange}
+                        onCreateOption={handleCreateCustomer}  
+                        isClearable                              
                     />
                 </div>
                 {renderCreateCustomer()}
                 <div className="group">
                     <label>Devices:</label>                            
                     <CreatableSelect 
-                        options={selectOptions['devices']} 
+                        options={dropdownOptions['devices']} 
                         className="select"
+                        value={selectedDropdownItems['devices']}
                         isMulti
                         name="devices"
-                        onChange={handleSelectChange}
+                        onCreateOption={handleCreateDevice}  
+                        onChange={handleDropdownChange}
                     />                            
                 </div>
+                {renderCreateDevice()}
                 <button type="submit">Create</button>
             </StyledForm>
             </div>
