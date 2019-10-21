@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from './Header';
 
 const Dashboard = () => {
   return (
-    <h1>Dashboard</h1>
+    <React.Fragment>
+      <Header title="Dashboard" />
+      <div className="body">
+      </div>
+    </React.Fragment>
   );
 }
 

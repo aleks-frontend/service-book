@@ -4,15 +4,19 @@ import styled from 'styled-components';
 const StyledHeader = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 2rem;
     height: 80px;
     font-size: 2rem;
     background-color: #fff;
 `;
 
-const Header = () => {
+const Header = (props) => {
     return (
-        <StyledHeader>Header</StyledHeader>
+        <StyledHeader>
+            {props.title}
+            {props.children}
+        </StyledHeader>
     );
 }
 

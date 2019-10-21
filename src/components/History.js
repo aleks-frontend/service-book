@@ -1,8 +1,10 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
+import Header from './Header';
 import Devices from './Devices';
+import Controls from './Controls';
 
 const ServicesContainer = styled.div`
   .service {
@@ -65,49 +67,26 @@ const ServicesContainer = styled.div`
   .controls {
     display: flex;
     align-items: center; }
-
-  .sortArrow {
-    margin-right: 1rem;
-    width: 1rem;
-    height: 1rem;
-    border: 1rem solid transparent;
-    border-top-color: black;
-    transform: translateY(25%);
-
-    &:hover { cursor: pointer; }
-    
-    &--desc {
-      border-top-color: transparent;
-      border-bottom-color: black;
-      transform: translateY(-25%); }
-
-  }
 `
 
 const History = (props) => {
   const [ searchText, updateSearchText ] = useState('');
   const [ sortCriteria, updateSortCriteria ] = useState('');
   const [ sortDirectionAsc, updateSortDirectionAsc ] = useState(true);
-  const {services, getCustomerNameById, getDeviceById, extendHistoryItem, filterServices, sortServices} = props;
-  const filterInput = createRef();  
-  const sortInput = createRef();
-  const sortDirectionInput = createRef();
+  const {services, getCustomerNameById, getDeviceById, extendHistoryItem, filterServices, sortServices} = props;  
   let searchTimeout;
-
-  useEffect(() => {
-    updateSortCriteria(sortInput.current.value);
-  });
+  let sortedArr;  
   
-  const handleSearchInputChange = () => {
+  const handleSearchInputChange = (value) => {
     clearTimeout(searchTimeout);
     
     searchTimeout = setTimeout(() => {
-      updateSearchText(filterInput.current.value);      
+      updateSearchText(value);      
     }, 500);    
   }
 
-  const handleSortCriteriaChange = () => {
-    updateSortCriteria(sortInput.current.value);
+  const handleSortCriteriaChange = (value) => {
+    updateSortCriteria(value);
   }
 
   const handleSortDirectionClick = () => {
@@ -118,14 +97,15 @@ const History = (props) => {
     if ( sortCriteria === '' ) return;
     const filteredArr = [];
     
+    // First we filter services and populate filteredArr with keys
     for ( const serviceKey of Object.keys(services) ) {
       if ( filterServices(services[serviceKey], searchText)) {
         filteredArr.push(serviceKey);
       }
     }
 
-    const sortedArr = sortServices(filteredArr, sortCriteria, sortDirectionAsc);
-
+    // After filtering, we are sorting the array
+    sortedArr = sortServices(filteredArr, sortCriteria, sortDirectionAsc);
     return sortedArr.map(key => renderService(services[key], key));
   }
 
@@ -136,14 +116,14 @@ const History = (props) => {
     >
       <div className="service__body">
         <div className="service__section">
-          <div className="service__text">{service.description}</div>
+          <div className="service__text">{service.title}</div>
           <div className="service__text service__text--alt">
             {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
           </div>
         </div>
         <Devices devices={service.devices} getDeviceById={getDeviceById} />
         <div className="service__side">
-          <div className="service__date">{service.date}</div>
+          <div className="service__date">{new Date(service.date).toLocaleDateString()}</div>
           <div className="service__status">{service.status}</div>  
         </div>
         <button 
@@ -168,20 +148,20 @@ const History = (props) => {
 
   return (
     <React.Fragment>
+      <Header title="Services History">
+        <Controls 
+          handleSearchInputChange={handleSearchInputChange} 
+          handleSortCriteriaChange={handleSortCriteriaChange}
+          handleSortDirectionClick={handleSortDirectionClick} 
+          updateSortCriteria={updateSortCriteria}
+          sortDirectionAsc={sortDirectionAsc}
+        />
+      </Header>
+      <div className="body">            
       <ServicesContainer>
-        <div className="service__header">
-          <h1>Services History</h1>
-          <div className="controls">
-            <div className={sortDirectionAsc ? "sortArrow" : "sortArrow sortArrow--desc"} ref={sortDirectionInput} onClick={handleSortDirectionClick}></div>
-            <select ref={sortInput} onChange={handleSortCriteriaChange}>
-              <option value="customers">Customer Name</option>
-              <option value="description">Description</option>
-            </select>
-            <input type="text" placeholder="Filter" ref={filterInput} onChange={handleSearchInputChange} />
-          </div>
-        </div>
         {renderServices()}
       </ServicesContainer>
+      </div>
     </React.Fragment>
   );
 }

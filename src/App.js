@@ -1,16 +1,16 @@
 import React from 'react';
 import './App.css';
-import Header from './components/Header';
 import Logo from './components/Logo';
 import Nav from './components/Nav';
-import Body from './components/Body';
+import Main from './components/Main';
 
 class App extends React.Component {
   state = {
-    activeNavItemKey: "history",
+    activeNavItemKey: "newService",
     services: {
       service1: {
-        description: "Service item 1",
+        title: "Service item 1",
+        description: "some description",
         date: "11/09/19",
         remark: "some remark for service 1",
         status: "completed",
@@ -20,7 +20,8 @@ class App extends React.Component {
         customers: ["customer1"],
       },
       service4: {
-        description: "Service item 2",
+        title: "Service item 2",
+        description: "some description",
         date: "15/09/19",
         remark: "some remark for service 3",
         status: "received",
@@ -30,7 +31,8 @@ class App extends React.Component {
         customers: ["customer3"],
       },
       service2: {
-        description: "Service item 3",
+        title: "Service item 3",
+        description: "some description",
         date: "12/09/19",
         remark: "some remark for service 2",
         status: "received",
@@ -40,7 +42,8 @@ class App extends React.Component {
         customers: ["customer2"],
       },
       service3: {
-        description: "Service item 4",
+        title: "Service item 4",
+        description: "some description",
         date: "13/09/19",
         remark: "some remark for service 3",
         status: "received",
@@ -50,7 +53,8 @@ class App extends React.Component {
         customers: ["customer2"],
       },
       service5: {
-        description: "Service item 5",
+        title: "Service item 5",
+        description: "some description",
         date: "16/09/19",
         remark: "some remark for service 3",
         status: "received",
@@ -74,23 +78,23 @@ class App extends React.Component {
       device1: {
         manufacturer: "HP",
         model: "Home Server",
+        name: "HP Home Server",
         serial: "12345",
-        description: "",
-        services: [],
+        title: ""
       },
       device2: {
         manufacturer: "AMD",
         model: "Radeon 9500",
+        name: "AMD Radeon 9500",
         serial: "123456",
-        description: "",
-        services: []
+        title: ""
       },
       device3: {
         manufacturer: "nVidia",
         model: "GeForce500",
+        name: "nVidia GeForce500",
         serial: "123456",
-        description: "",
-        services: []
+        title: ""
       }
     },
     customers: {
@@ -119,6 +123,21 @@ class App extends React.Component {
         facebook: "/dada",
       }
     }
+  }
+
+  addService = (service) => {
+    const services = {...this.state.services, [new Date().getTime()]: service};
+    this.setState({ services });    
+  }
+
+  addCustomer = (customer, id) => {
+    const customers = {...this.state.customers, [id]: customer};
+    this.setState({ customers });    
+  }
+
+  addEntity = (entity, id, key) => {
+    const entityState = {...this.state[key], [id]: entity};
+    this.setState({ entityState });    
   }
 
   filterServices = (service, searchText) => {
@@ -181,6 +200,7 @@ class App extends React.Component {
   }
 
   getCustomerNameById = id => {
+    console.log(id);
     return this.state.customers[id].name;
   }
 
@@ -206,16 +226,19 @@ class App extends React.Component {
           <Logo />
           <Nav margin="2rem 0 0" activeNavItemKey={this.state.activeNavItemKey} setNavActive={this.setNavActive} />
         </div>
-        <div className="main">
-          <Header />
-          <Body 
+        <div className="main">          
+          <Main
             activeNavItemKey={this.state.activeNavItemKey} 
             services={this.state.services}
+            customers={this.state.customers}
+            devices={this.state.devices}
             getCustomerNameById={this.getCustomerNameById} 
             getDeviceById={this.getDeviceById}     
             extendHistoryItem={this.extendHistoryItem}  
             filterServices={this.filterServices}      
-            sortServices={this.sortServices}      
+            sortServices={this.sortServices}     
+            addService={this.addService} 
+            addEntity={this.addEntity} 
           />
         </div>
       </React.Fragment>

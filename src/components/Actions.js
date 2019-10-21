@@ -1,8 +1,13 @@
 import React from 'react';
+import Header from './Header';
 
 const Actions = () => {
   return (
-    <h1>Actions</h1>
+    <React.Fragment>
+      <Header title="Actions" />
+      <div className="body">
+      </div>
+    </React.Fragment>
   );
 }
 
