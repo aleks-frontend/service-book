@@ -14,7 +14,6 @@ class App extends React.Component {
         date: "11/09/19",
         remark: "some remark for service 1",
         status: "completed",
-        extended: false,
         actions: ["action2"],
         devices: ["device1", "device2", "device3"],
         customers: ["customer1"],
@@ -25,7 +24,6 @@ class App extends React.Component {
         date: "15/09/19",
         remark: "some remark for service 3",
         status: "received",
-        extended: false,
         actions: ["action1"],
         devices: ["device3"],
         customers: ["customer3"],
@@ -36,7 +34,6 @@ class App extends React.Component {
         date: "12/09/19",
         remark: "some remark for service 2",
         status: "received",
-        extended: false,
         actions: ["action1"],
         devices: ["device3"],
         customers: ["customer2"],
@@ -47,7 +44,6 @@ class App extends React.Component {
         date: "13/09/19",
         remark: "some remark for service 3",
         status: "received",
-        extended: false,
         actions: ["action1"],
         devices: ["device3"],
         customers: ["customer2"],
@@ -58,7 +54,6 @@ class App extends React.Component {
         date: "16/09/19",
         remark: "some remark for service 3",
         status: "received",
-        extended: false,
         actions: ["action1"],
         devices: ["device3"],
         customers: ["customer4"],
@@ -137,7 +132,7 @@ class App extends React.Component {
 
   addEntity = (entity, id, key) => {
     const entityState = {...this.state[key], [id]: entity};
-    this.setState({ entityState });    
+    this.setState({ [key]: entityState });    
   }
 
   filterServices = (service, searchText) => {
@@ -200,19 +195,11 @@ class App extends React.Component {
   }
 
   getCustomerNameById = id => {
-    console.log(id);
     return this.state.customers[id].name;
   }
 
   getDeviceById = id => {
     return `${this.state.devices[id].manufacturer} ${this.state.devices[id].model}`;
-  }
-
-  extendHistoryItem = id => {
-    const services = this.state.services;
-    services[id].extended = !services[id].extended;
-
-    this.setState({ services });
   }
 
   setNavActive = key => {    
@@ -234,7 +221,6 @@ class App extends React.Component {
             devices={this.state.devices}
             getCustomerNameById={this.getCustomerNameById} 
             getDeviceById={this.getDeviceById}     
-            extendHistoryItem={this.extendHistoryItem}  
             filterServices={this.filterServices}      
             sortServices={this.sortServices}     
             addService={this.addService} 

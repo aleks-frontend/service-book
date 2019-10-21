@@ -14,7 +14,7 @@ const Customers = (props) => {
           {Object.keys(props.customers).map((key => {
               const customer = props.customers[key];
               return (
-                <StyledCustomer>
+                <StyledCustomer key={key}>
                     <div><strong>Name:</strong> {customer.name}</div>
                     <div><strong>Email:</strong> {customer.email}</div>
                     <div><strong>Phone:</strong> {customer.phone}</div>

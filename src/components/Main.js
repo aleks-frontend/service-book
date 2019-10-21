@@ -15,7 +15,6 @@ const Main = (props) => {
                         services={props.services} 
                         getCustomerNameById={props.getCustomerNameById}
                         getDeviceById={props.getDeviceById} 
-                        extendHistoryItem={props.extendHistoryItem}
                         filterServices={props.filterServices}
                         sortServices={props.sortServices}                        
                         />;
