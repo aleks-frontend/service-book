@@ -1,9 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import History from './History';
 import NewService from './NewService';
 import Customers from './Customers';
 import Actions from './Actions';
+
+const StyledMain = styled.div`
+    { flex: 1; }
+`;
 
 const Main = (props) => {    
     const renderComponent = (props) => {        
@@ -38,9 +43,9 @@ const Main = (props) => {
     }
 
     return (
-        <div className="main">
+        <StyledMain>
             {renderComponent(props)}
-        </div>
+        </StyledMain>
     );
 };
 

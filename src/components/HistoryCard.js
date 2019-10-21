@@ -10,7 +10,7 @@ const StyledHistoryCard = styled.div`
     border: 1px solid #000;
     background: #fff;
 
-    .historyCard__header {
+    .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -21,11 +21,11 @@ const StyledHistoryCard = styled.div`
         border: none; }
     }
 
-    .historyCard__body {
+    .body {
       flex: 1;
       display: flex; }
 
-    .historyCard__text {
+    .text {
       font-size: 1.3rem;
 
       &--alt { 
@@ -33,7 +33,7 @@ const StyledHistoryCard = styled.div`
         font-weight: 700; }
     }
 
-    .historyCard__footer { 
+    .footer { 
       opacity: 0;
       max-height: 0;
       transition: all 500ms;
@@ -69,20 +69,20 @@ const HistoryCard = (props) => {
 
     return (
         <StyledHistoryCard>
-            <div className="historyCard__body">
-            <div className="historyCard__section">
-                <div className="historyCard__text">{service.title}</div>
-                <div className="historyCard__text service__text--alt">
+            <div className="body">
+            <div className="section">
+                <div className="text">{service.title}</div>
+                <div className="text service__text--alt">
                 {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
                 </div>
             </div>
             <Devices devices={service.devices} getDeviceById={getDeviceById} />
-            <div className="historyCard__side">
-                <div className="historyCard__date">{new Date(service.date).toLocaleDateString()}</div>
-                <div className="historyCard__status">{service.status}</div>  
+            <div className="side">
+                <div className="date">{new Date(service.date).toLocaleDateString()}</div>
+                <div className="status">{service.status}</div>  
             </div>
             <button 
-                className="historyCard__btn"
+                className="btn"
                 onClick={() => extendHistoryItem()}
                 >{extended ? 'Show Less' : 'Show more'}</button>
             </div>
@@ -93,9 +93,8 @@ const HistoryCard = (props) => {
                 unmountOnExit
                 appear
             >
-            <div className="historyCard__footer">
-                Nulla consequat massa quis enim. Curabitur nisi. Sed augue ipsum, egestas nec, vestibulum et, malesuada adipiscing, dui. In auctor lobortis lacus. Ut a nisl id ante tempus hendrerit.
-                Suspendisse nisl elit, rhoncus eget, elementum ac, condimentum eget, diam. Nunc egestas, augue at pellentesque laoreet, felis eros vehicula leo, at malesuada velit leo quis pede. Praesent metus tellus, elementum eu, semper a, adipiscing nec, purus. Aenean tellus metus, bibendum sed, posuere ac, mattis non, nunc. Etiam ultricies nisi vel augue.
+            <div className="footer">
+                {service.description}
             </div>
             </CSSTransition>
         </StyledHistoryCard>

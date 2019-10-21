@@ -6,17 +6,6 @@ html {
 
 .container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #E5E5E5;
 }
-
-.side {
-  width: 200px;
-  color: #fff;
-  background: #313442;
-  text-align: center;
-}
-
-.main { flex: 1; }
-
-.body { padding: 2rem; }

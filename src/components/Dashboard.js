@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from './Header';
+import Body from './Body';
 
 const Dashboard = () => {
   return (
     <React.Fragment>
       <Header title="Dashboard" />
-      <div className="body">
-      </div>
+      <Body />
     </React.Fragment>
   );
 }

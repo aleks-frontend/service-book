@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 import Header from './Header';
+import Body from './Body';
 import CreateEntity from './CreateEntity';
 
 const StyledForm = styled.form`
@@ -193,45 +194,45 @@ const NewService = (props) => {
     return (
         <React.Fragment>
             <Header title="New Service" />
-            <div className="body">
-            <StyledForm onSubmit={handleFormSubmit}>
-                <div className="group">
-                    <label>Title:</label>
-                    <input type="text" name="title" value={inputs.title} onChange={handleInputChange} />
-                </div>
-                <div className="group">
-                    <label>Description:</label>                            
-                    <textarea name="description" value={inputs.description} onChange={handleInputChange} />
-                </div>
-                <div className="group">
-                    <label>Customer:</label>                            
-                    <CreatableSelect                                
-                        options={dropdownOptions['customers']} 
-                        className="select" 
-                        name="customers"
-                        value={selectedDropdownItems['customers']}
-                        onChange={handleDropdownChange}
-                        onCreateOption={handleCreateCustomer}  
-                        isClearable                              
-                    />
-                </div>
-                {renderCreateCustomer()}
-                <div className="group">
-                    <label>Devices:</label>                            
-                    <CreatableSelect 
-                        options={dropdownOptions['devices']} 
-                        className="select"
-                        value={selectedDropdownItems['devices']}
-                        isMulti
-                        name="devices"
-                        onCreateOption={handleCreateDevice}  
-                        onChange={handleDropdownChange}
-                    />                            
-                </div>
-                {renderCreateDevice()}
-                <button type="submit">Create</button>
-            </StyledForm>
-            </div>
+            <Body>
+                <StyledForm onSubmit={handleFormSubmit}>
+                    <div className="group">
+                        <label>Title:</label>
+                        <input type="text" name="title" value={inputs.title} onChange={handleInputChange} />
+                    </div>
+                    <div className="group">
+                        <label>Description:</label>                            
+                        <textarea name="description" value={inputs.description} onChange={handleInputChange} />
+                    </div>
+                    <div className="group">
+                        <label>Customer:</label>                            
+                        <CreatableSelect                                
+                            options={dropdownOptions['customers']} 
+                            className="select" 
+                            name="customers"
+                            value={selectedDropdownItems['customers']}
+                            onChange={handleDropdownChange}
+                            onCreateOption={handleCreateCustomer}  
+                            isClearable                              
+                        />
+                    </div>
+                    {renderCreateCustomer()}
+                    <div className="group">
+                        <label>Devices:</label>                            
+                        <CreatableSelect 
+                            options={dropdownOptions['devices']} 
+                            className="select"
+                            value={selectedDropdownItems['devices']}
+                            isMulti
+                            name="devices"
+                            onCreateOption={handleCreateDevice}  
+                            onChange={handleDropdownChange}
+                        />                            
+                    </div>
+                    {renderCreateDevice()}
+                    <button type="submit">Create</button>
+                </StyledForm>
+            </Body>
         </React.Fragment>
     );
 }

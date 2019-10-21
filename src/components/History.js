@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Header from './Header';
+import Body from './Body';
 import HistoryCard from './HistoryCard';
 import Controls from './Controls';
 
@@ -64,11 +65,9 @@ const History = (props) => {
           sortDirectionAsc={sortDirectionAsc}
         />
       </Header>
-      <div className="body">            
-        <div>
-          {renderServices()}
-        </div>
-      </div>
+      <Body>
+        {renderServices()}
+      </Body>
     </React.Fragment>
   );
 }

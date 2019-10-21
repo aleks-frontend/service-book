@@ -3,6 +3,7 @@ import './App.css';
 import Logo from './components/Logo';
 import Nav from './components/Nav';
 import Main from './components/Main';
+import Side from './components/Side';
 
 class App extends React.Component {
   state = {
@@ -209,24 +210,25 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className="side">
+        <Side>
           <Logo />
-          <Nav margin="2rem 0 0" activeNavItemKey={this.state.activeNavItemKey} setNavActive={this.setNavActive} />
-        </div>
-        <div className="main">          
-          <Main
+          <Nav margin="2rem 0 0" 
             activeNavItemKey={this.state.activeNavItemKey} 
-            services={this.state.services}
-            customers={this.state.customers}
-            devices={this.state.devices}
-            getCustomerNameById={this.getCustomerNameById} 
-            getDeviceById={this.getDeviceById}     
-            filterServices={this.filterServices}      
-            sortServices={this.sortServices}     
-            addService={this.addService} 
-            addEntity={this.addEntity} 
+            setNavActive={this.setNavActive} 
           />
-        </div>
+        </Side>       
+        <Main
+          activeNavItemKey={this.state.activeNavItemKey} 
+          services={this.state.services}
+          customers={this.state.customers}
+          devices={this.state.devices}
+          getCustomerNameById={this.getCustomerNameById} 
+          getDeviceById={this.getDeviceById}     
+          filterServices={this.filterServices}      
+          sortServices={this.sortServices}     
+          addService={this.addService} 
+          addEntity={this.addEntity} 
+        />
       </React.Fragment>
     );
   }

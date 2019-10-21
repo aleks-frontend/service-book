@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Header from './Header';
+import Body from './Body';
 
 const StyledCustomer = styled.div`
     margin-bottom: 1rem;
@@ -10,7 +11,7 @@ const Customers = (props) => {
   return (
     <React.Fragment>
       <Header title="Customers" />
-      <div className="body">
+      <Body>
           {Object.keys(props.customers).map((key => {
               const customer = props.customers[key];
               return (
@@ -21,7 +22,7 @@ const Customers = (props) => {
                 </StyledCustomer>
               );
           }))}
-      </div>
+      </Body>
     </React.Fragment>
   );
 }
