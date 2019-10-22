@@ -34,11 +34,16 @@ const StyledForm = styled.form`
 `;
 
 const NewService = (props) => {    
+    // const [ state, setState ] = React.useState({
+    //     showCreateCustomer: { show: false },
+    //     showCreateDevice: { show: false },
+
+    // });
     const [ showCreateCustomer, updateShowCreateCustomer ] = React.useState({show: false});
     const [ showCreateDevice, updateShowCreateDevice ] = React.useState({show: false});
     const [ selectedDropdownItems, updateSelectedDropdownItems ] = React.useState({
-        customers: {}, 
-        devices: []
+        customers: '', 
+        devices: ''
     });
     const [ inputs, updateInputs ] = React.useState({
         title: "",
@@ -72,7 +77,8 @@ const NewService = (props) => {
     }
 
     const handleCreateDevice = (event) => {
-        updateShowCreateDevice({show: true, name: event});        
+        updateShowCreateDevice({show: false, name: event});
+        updateShowCreateDevice({show: true, name: event});
     }
 
     const handleDropdownChange =(event, actionMeta) => {
@@ -84,6 +90,23 @@ const NewService = (props) => {
                 updateShowCreateCustomer({show: false, name: event});
                 keysArr.push(event.value);
             }
+        }
+
+        if ( !Array.isArray(event) ) {
+            updateSelectedDropdownItems({...selectedDropdownItems, [actionMeta.name]:{
+                value: event.value, 
+                label: event.label
+            }});
+        } else {
+            const selectedDropdownItemsArr = event.map(item => (
+                {
+                    value: item.value,
+                    label: item.label
+                }
+            ));
+            updateSelectedDropdownItems({...selectedDropdownItems, 
+                [actionMeta.name]: selectedDropdownItemsArr
+            });
         }
         
         updateInputs({...inputs, [actionMeta.name]: keysArr});
@@ -132,6 +155,11 @@ const NewService = (props) => {
         // serial: "12345",
         // title: ""
         const fields = [
+            {
+                name: 'name',
+                label: 'Name',
+                defaultVal: ''
+            },
             {
                 name: 'manufacturer',
                 label: 'Manufacturer',
