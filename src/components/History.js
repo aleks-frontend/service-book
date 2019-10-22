@@ -4,11 +4,13 @@ import Header from './Header';
 import Body from './Body';
 import HistoryCard from './HistoryCard';
 import Controls from './Controls';
+import DeletePrompt from './DeletePrompt';
 
 const History = (props) => {
   const [ searchText, updateSearchText ] = useState('');
   const [ sortCriteria, updateSortCriteria ] = useState('');
   const [ sortDirectionAsc, updateSortDirectionAsc ] = useState(true);
+  const [ promptedId, updatePromptedId ] = React.useState(null);
   const {
     services,
     getCustomerNameById, 
@@ -60,11 +62,24 @@ const History = (props) => {
       getCustomerNameById={getCustomerNameById} 
       getDeviceById={getDeviceById}
       deleteService={deleteService}
+      updatePromptedId={updatePromptedId}
     />
   );
 
+  const renderDeletePrompt = () => {
+    if ( promptedId ) {
+      return (
+        <DeletePrompt 
+          id={promptedId} 
+          deleteService={deleteService} 
+          updatePromptedId={updatePromptedId}
+        />);
+    }      
+  }
+
   return (
     <React.Fragment>
+      {renderDeletePrompt()}
       <Header title="Services History">
         <Controls 
           handleSearchInputChange={handleSearchInputChange} 

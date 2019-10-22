@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
 import Devices from './Devices';
-import DeletePrompt from './DeletePrompt';
 
 const StyledHistoryCard = styled.div`
     padding: 1rem;
@@ -63,20 +62,10 @@ const StyledHistoryCard = styled.div`
 `;
 
 const HistoryCard = (props) => {
-    const { getCustomerNameById, getDeviceById, deleteService, service, id } = props;
-    const [ extended, updateExtended ] = React.useState(false); 
-    const [ prompted, updatePrompted ] = React.useState(false);
+    const { getCustomerNameById, getDeviceById, service, id } = props;
+    const [ extended, updateExtended ] = React.useState(false);     
 
-    const extendHistoryItem = () => updateExtended(!extended);
-    const renderDeletePrompt = () => {
-      if ( prompted ) {
-        return (
-          <DeletePrompt 
-            id={id} 
-            deleteService={deleteService} 
-          />);
-      }      
-    }
+    const extendHistoryItem = () => updateExtended(!extended);    
 
     return (
         <StyledHistoryCard>
@@ -98,9 +87,11 @@ const HistoryCard = (props) => {
                 >{extended ? 'Show Less' : 'Show more'}</button>
                 <button 
                   className="btn"
-                  onClick={updatePrompted}
+                  onClick={() => props.updatePromptedId(id)}
                 >Delete</button>                         
-                <button className="btn">Update</button>
+                <button 
+                  className="btn"
+                >Update</button>
             </div>
             <CSSTransition 
                 in={extended} 
@@ -113,7 +104,6 @@ const HistoryCard = (props) => {
                 {service.description}
             </div>
             </CSSTransition>
-            {renderDeletePrompt()}
         </StyledHistoryCard>
     );
 };

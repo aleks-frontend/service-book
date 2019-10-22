@@ -41,14 +41,20 @@ const StyledDeletePrompt = styled.div`
 
 const DeletePrompt = (props) => {
     return (
-        <StyledDeletePrompt>
-            <div className="box">
+        <StyledDeletePrompt onClick={() => props.updatePromptedId(null)}>
+            <div className="box" onClick={(e) => e.stopPropagation()}>
                 <div className="text">Are you sure you want to delete this service?</div>
                 <div className="buttons">
                     <button 
-                        onClick={() => props.deleteService(props.id)}                        
+                        onClick={() => {
+                            props.deleteService(props.id);
+                            props.updatePromptedId(null);
+                        }}
                     >Yes</button>
-                    <button className="alt">No</button>
+                    <button 
+                        className="alt"
+                        onClick={() => props.updatePromptedId(null)}
+                    >No</button>
                 </div>
             </div>
         </StyledDeletePrompt>
