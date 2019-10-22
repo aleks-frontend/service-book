@@ -18,6 +18,7 @@ const Main = (props) => {
             case 'history':
                 return <History 
                         services={props.services} 
+                        deleteService={props.deleteService}
                         getCustomerNameById={props.getCustomerNameById}
                         getDeviceById={props.getDeviceById} 
                         filterServices={props.filterServices}

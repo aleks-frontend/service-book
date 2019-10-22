@@ -126,6 +126,12 @@ class App extends React.Component {
     this.setState({ services });    
   }
 
+  deleteService = (id) => {
+    const services = {...this.state.services};
+    delete services[id];
+    this.setState({ services });
+  }
+
   addCustomer = (customer, id) => {
     const customers = {...this.state.customers, [id]: customer};
     this.setState({ customers });    
@@ -227,6 +233,7 @@ class App extends React.Component {
           filterServices={this.filterServices}      
           sortServices={this.sortServices}     
           addService={this.addService} 
+          deleteService={this.deleteService}
           addEntity={this.addEntity} 
         />
       </React.Fragment>

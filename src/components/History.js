@@ -9,7 +9,14 @@ const History = (props) => {
   const [ searchText, updateSearchText ] = useState('');
   const [ sortCriteria, updateSortCriteria ] = useState('');
   const [ sortDirectionAsc, updateSortDirectionAsc ] = useState(true);
-  const {services, getCustomerNameById, getDeviceById, filterServices, sortServices} = props;  
+  const {
+    services,
+    getCustomerNameById, 
+    getDeviceById, 
+    filterServices, 
+    sortServices,
+    deleteService
+  } = props;  
   let searchTimeout;
   let sortedArr;  
   
@@ -48,9 +55,11 @@ const History = (props) => {
   const renderService = (service, key) => (
     <HistoryCard 
       key={key} 
+      id={key}
       service={service} 
       getCustomerNameById={getCustomerNameById} 
       getDeviceById={getDeviceById}
+      deleteService={deleteService}
     />
   );
 

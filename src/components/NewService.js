@@ -172,8 +172,8 @@ const NewService = (props) => {
             value: id,
             label: entity.name            
         }];
-
-        updateDropdownOptions({...dropdownOptions, [stateKey]: updatedDropdownState});           
+        
+        updateDropdownOptions({...dropdownOptions, [stateKey]: updatedDropdownState});
 
         if ( !isMulti ) {
             updateSelectedDropdownItems({...selectedDropdownItems, [stateKey]:{
@@ -219,13 +219,13 @@ const NewService = (props) => {
                     {renderCreateCustomer()}
                     <div className="group">
                         <label>Devices:</label>                            
-                        <CreatableSelect 
-                            options={dropdownOptions['devices']} 
+                        <CreatableSelect
+                            options={dropdownOptions['devices']}
                             className="select"
                             value={selectedDropdownItems['devices']}
                             isMulti
                             name="devices"
-                            onCreateOption={handleCreateDevice}  
+                            onCreateOption={handleCreateDevice}
                             onChange={handleDropdownChange}
                         />                            
                     </div>

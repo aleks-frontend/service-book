@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
 import Devices from './Devices';
+import DeletePrompt from './DeletePrompt';
 
 const StyledHistoryCard = styled.div`
     padding: 1rem;
@@ -62,29 +63,44 @@ const StyledHistoryCard = styled.div`
 `;
 
 const HistoryCard = (props) => {
-    const { getCustomerNameById, getDeviceById, service } = props;
-    const [ extended, updateExtended ] = React.useState(false);
+    const { getCustomerNameById, getDeviceById, deleteService, service, id } = props;
+    const [ extended, updateExtended ] = React.useState(false); 
+    const [ prompted, updatePrompted ] = React.useState(false);
 
     const extendHistoryItem = () => updateExtended(!extended);
+    const renderDeletePrompt = () => {
+      if ( prompted ) {
+        return (
+          <DeletePrompt 
+            id={id} 
+            deleteService={deleteService} 
+          />);
+      }      
+    }
 
     return (
         <StyledHistoryCard>
             <div className="body">
-            <div className="section">
-                <div className="text">{service.title}</div>
-                <div className="text service__text--alt">
-                {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
-                </div>
-            </div>
-            <Devices devices={service.devices} getDeviceById={getDeviceById} />
-            <div className="side">
-                <div className="date">{new Date(service.date).toLocaleDateString()}</div>
-                <div className="status">{service.status}</div>  
-            </div>
-            <button 
+              <div className="section">
+                  <div className="text">{service.title}</div>
+                  <div className="text service__text--alt">
+                  {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
+                  </div>
+              </div>
+              <Devices devices={service.devices} getDeviceById={getDeviceById} />
+              <div className="side">
+                  <div className="date">{new Date(service.date).toLocaleDateString()}</div>
+                  <div className="status">{service.status}</div>  
+              </div>
+              <button 
                 className="btn"
-                onClick={() => extendHistoryItem()}
+                onClick={extendHistoryItem}
                 >{extended ? 'Show Less' : 'Show more'}</button>
+                <button 
+                  className="btn"
+                  onClick={updatePrompted}
+                >Delete</button>                         
+                <button className="btn">Update</button>
             </div>
             <CSSTransition 
                 in={extended} 
@@ -97,6 +113,7 @@ const HistoryCard = (props) => {
                 {service.description}
             </div>
             </CSSTransition>
+            {renderDeletePrompt()}
         </StyledHistoryCard>
     );
 };
