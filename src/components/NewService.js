@@ -39,12 +39,17 @@ const NewService = (props) => {
     //     showCreateDevice: { show: false },
 
     // });
-    const [ showCreateCustomer, updateShowCreateCustomer ] = React.useState({show: false});
-    const [ showCreateDevice, updateShowCreateDevice ] = React.useState({show: false});
+
+    const [ showCreateEntity, updateShowCreateEntity ] = React.useState({
+        customers: {show: false},
+        devices: {show: false}
+    });
+
     const [ selectedDropdownItems, updateSelectedDropdownItems ] = React.useState({
         customers: '', 
         devices: ''
     });
+
     const [ inputs, updateInputs ] = React.useState({
         title: "",
         description: "",
@@ -53,6 +58,7 @@ const NewService = (props) => {
         status: "received",
         date: new Date().getTime()
     });
+
     const customerOptionsArr = Object.keys(props.customers).map(key => ({
         value: key,
         label: props.customers[key].name
@@ -73,12 +79,11 @@ const NewService = (props) => {
     }
 
     const handleCreateCustomer = (event) => {
-        updateShowCreateCustomer({show: true, name: event});
+        updateShowCreateEntity({...showCreateEntity, customers: {show: true, name: event}});
     }
 
-    const handleCreateDevice = (event) => {
-        updateShowCreateDevice({show: false, name: event});
-        updateShowCreateDevice({show: true, name: event});
+    const handleCreateDevice = (event) => {    
+        updateShowCreateEntity({...showCreateEntity, devices: {show: true, name: event}});
     }
 
     const handleDropdownChange =(event, actionMeta) => {
@@ -87,12 +92,15 @@ const NewService = (props) => {
             keysArr = event.map(obj => obj.value);
         } else {
             if ( event !== null ) {
-                updateShowCreateCustomer({show: false, name: event});
                 keysArr.push(event.value);
             }
         }
+        
+        updateShowCreateEntity({...showCreateEntity, [actionMeta.name]: {show: false, name: ''}});
 
-        if ( !Array.isArray(event) ) {
+        if ( event === null ) {
+            updateSelectedDropdownItems({...selectedDropdownItems, [actionMeta.name]: ''});
+        } else if ( !Array.isArray(event) ) {            
             updateSelectedDropdownItems({...selectedDropdownItems, [actionMeta.name]:{
                 value: event.value, 
                 label: event.label
@@ -114,7 +122,7 @@ const NewService = (props) => {
     
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        
+        debugger;
         props.addService(inputs);
     }
     
@@ -137,9 +145,9 @@ const NewService = (props) => {
             }
         ];
 
-        if ( showCreateCustomer.show ) {
+        if ( showCreateEntity['customers'].show ) {
             return <CreateEntity 
-                        name={showCreateCustomer.name} 
+                        name={showCreateEntity['customers'].name} 
                         addEntity={addEntity}
                         stateName="customers"
                         fields={fields}
@@ -182,9 +190,9 @@ const NewService = (props) => {
             },
         ];
 
-        if ( showCreateDevice.show ) {
+        if ( showCreateEntity['devices'].show ) {
             return <CreateEntity 
-                        name={showCreateDevice.name} 
+                        name={showCreateEntity['devices'].name} 
                         addEntity={addEntity}
                         stateName="devices"
                         fields={fields}
@@ -216,7 +224,9 @@ const NewService = (props) => {
                 }
             ]});
         }
+        
         props.addEntity(entity, id, stateKey);
+        updateInputs({...inputs, [stateKey]: [...inputs[stateKey], id]});
     }
     
     return (

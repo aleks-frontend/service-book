@@ -57,12 +57,22 @@ const CreateEntity = (props) => {
         props.addEntity(entityState, props.stateName, props.isMulti);
     }
     
+    React.useEffect(() => {
+        defaultState['name'] = props.name;
+        updateEntityState({...defaultState});
+    }, [props.name]);
+
     return (
         <StyledCreateEntity>
             {props.fields.map(field => (
                 <div className="group" key={field.name}>
                     <label>{field.label}</label>
-                    <input type="text" name={field.name} value={entityState[field.name]} onChange={handleInputChange} />
+                    <input 
+                        type="text" 
+                        name={field.name} 
+                        value={entityState[field.name]} 
+                        onChange={handleInputChange}
+                    />
                 </div>    
             ))}
             <button type="submit" onClick={handleFormSubmit}>Create</button>

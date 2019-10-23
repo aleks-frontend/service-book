@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Dashboard from './Dashboard';
 import History from './History';
 import NewService from './NewService';
-import Customers from './Customers';
+import Customers2 from './Customers2';
 import Actions from './Actions';
 
 const StyledMain = styled.div`
@@ -32,7 +32,7 @@ const Main = (props) => {
                             addEntity={props.addEntity}
                         />
             case 'customers':
-                return <Customers
+                return <Customers2
                         customers={props.customers}
                         addEntity={props.addEntity} 
                         />;
