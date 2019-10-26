@@ -130,16 +130,17 @@ class App extends React.Component {
     const services = {...this.state.services};
     delete services[id];
     this.setState({ services });
-  }
-
-  addCustomer = (customer, id) => {
-    const customers = {...this.state.customers, [id]: customer};
-    this.setState({ customers });    
-  }
+  }  
 
   addEntity = (entity, id, key) => {
     const entityState = {...this.state[key], [id]: entity};
     this.setState({ [key]: entityState });    
+  }
+
+  deleteEntity = (id) => {
+    const customers = {...this.state.customers};
+    delete customers[id];
+    this.setState({ customers });
   }
 
   filterServices = (service, searchText) => {
@@ -201,6 +202,10 @@ class App extends React.Component {
     });
   }
 
+  findServiceByCustomerId = (id) => {
+    return Object.keys(this.state.services).find(key => this.state.services[key].customers.indexOf(id) > -1);
+  }
+  
   getCustomerNameById = id => {
     return this.state.customers[id].name;
   }
@@ -235,6 +240,8 @@ class App extends React.Component {
           addService={this.addService} 
           deleteService={this.deleteService}
           addEntity={this.addEntity} 
+          deleteEntity={this.deleteEntity} 
+          findServiceByCustomerId={this.findServiceByCustomerId}
         />
       </React.Fragment>
     );
