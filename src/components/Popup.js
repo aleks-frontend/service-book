@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StyledOverlay = styled.div`
+const StyledPopup = styled.div`
     position: fixed;
     display: flex;
     align-items: center;
@@ -14,12 +14,12 @@ const StyledOverlay = styled.div`
     z-index: 9999;    
 `;
 
-const Overlay = (props) => {
+const Popup = (props) => {
     return (
-        <StyledOverlay onClick={() => props.hidePopup()}>
+        <StyledPopup onClick={() => props.hidePopup()}>
             {props.children}
-        </StyledOverlay>
+        </StyledPopup>
     );
 };
 
-export default Overlay;
+export default Popup;
