@@ -36,6 +36,7 @@ const Main = (props) => {
                         customers={props.customers}
                         addEntity={props.addEntity} 
                         deleteEntity={props.deleteEntity}
+                        updateEntity={props.updateEntity}
                         findServiceByCustomerId={props.findServiceByCustomerId} 
                         />;
             case 'actions':

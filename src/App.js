@@ -143,6 +143,11 @@ class App extends React.Component {
     this.setState({ customers });
   }
 
+  updateEntity = (entity, id, key) => {
+    const customers = {...this.state.customers, [id]: entity};
+    this.setState({customers});
+  }
+
   filterServices = (service, searchText) => {
     if ( searchText === '' ) return true;
     
@@ -241,6 +246,7 @@ class App extends React.Component {
           deleteService={this.deleteService}
           addEntity={this.addEntity} 
           deleteEntity={this.deleteEntity} 
+          updateEntity={this.updateEntity} 
           findServiceByCustomerId={this.findServiceByCustomerId}
         />
       </React.Fragment>

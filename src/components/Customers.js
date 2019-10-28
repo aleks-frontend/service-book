@@ -4,7 +4,7 @@ import Body from './Body';
 import DisplayEntity from './DisplayEntity';
 import CreateEntity from './CreateEntity';
 import CreateEntityButton from './CreateEntityButton';
-import Overlay from './Overlay';
+import Popup from './Popup';
 
 const Customers = (props) => {
 	const [state, setState] = React.useState({
@@ -19,7 +19,7 @@ const Customers = (props) => {
 		setState({ ...state, showPopup: true });
 	}
 
-	const renderOverlay = () => {
+	const renderPopup = () => {
 		const fields = [
 			{
 				name: 'name',
@@ -42,7 +42,7 @@ const Customers = (props) => {
 		];
 		if (state.showPopup) {
 			return (
-				<Overlay hidePopup={hidePopup}>
+				<Popup hidePopup={hidePopup}>
 					<CreateEntity
 						name=""
 						addEntity={props.addEntity}
@@ -52,21 +52,22 @@ const Customers = (props) => {
 						isDirect={true}
 						hidePopup={hidePopup}
 					/>
-				</Overlay>
+				</Popup>
 			);
 		}
 	}
 	return (
 		<React.Fragment>
-			{renderOverlay()}
+			{renderPopup()}
 			<Header title="Customers">
-				<CreateEntityButton showPopup={showPopup} entity="Customers" />
+				<CreateEntityButton showPopup={showPopup} entity="customers" />
 			</Header>
 			<Body>
 				<DisplayEntity
 					customers={props.customers}
 					deleteEntity={props.deleteEntity}
 					findServiceByCustomerId={props.findServiceByCustomerId}
+					updateEntity={props.updateEntity}
 				/>
 			</Body>
 		</React.Fragment>
