@@ -3,6 +3,7 @@ import Header from './Header';
 import Body from './Body';
 import DisplayEntity from './DisplayEntity';
 import CreateEntity from './CreateEntity';
+import CreateEntityButton from './CreateEntityButton';
 import Overlay from './Overlay';
 
 const Customers = (props) => {
@@ -12,6 +13,10 @@ const Customers = (props) => {
 
 	const hidePopup = () => {
 		setState({ ...state, showPopup: false });
+	}
+
+	const showPopup = () => {
+		setState({ ...state, showPopup: true });
 	}
 
 	const renderOverlay = () => {
@@ -54,14 +59,15 @@ const Customers = (props) => {
 	return (
 		<React.Fragment>
 			{renderOverlay()}
-			<Header title="Customers" />
+			<Header title="Customers">
+				<CreateEntityButton showPopup={showPopup} entity="Customers" />
+			</Header>
 			<Body>
 				<DisplayEntity
 					customers={props.customers}
 					deleteEntity={props.deleteEntity}
 					findServiceByCustomerId={props.findServiceByCustomerId}
 				/>
-				<button onClick={() => setState({ ...state, showPopup: true })}>Create Customer</button>
 			</Body>
 		</React.Fragment>
 	);
