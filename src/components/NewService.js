@@ -131,17 +131,20 @@ const NewService = (props) => {
             {
                 name: 'name',
                 label: 'Name',
-                defaultVal: ''
+                defaultVal: '',
+                required: true,
             },
             {
                 name: 'phone',
                 label: 'Phone',
-                defaultVal: 0
+                defaultVal: 0,
+                required: true,
             },
             {
                 name: 'email',
                 label: 'Email',
-                defaultVal: ''
+                defaultVal: '',
+                required: true,
             }
         ];
 

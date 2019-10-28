@@ -77,29 +77,31 @@ const CreateEntity = (props) => {
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        if ( props.isDirect ) {
-            const emptyRequiredInputs = {};
-            for ( const field of props.fields ) {
-                if ( field.required ) {
-                    if ( state.entityState[field.name] === field.defaultVal ) {
-                        emptyRequiredInputs[field.name] = emptyRequiredClassName;
-                    } else if (emptyRequiredInputs.hasOwnProperty(field.name)) {
-                        delete emptyRequiredInputs[field.name];
-                    }
+        const emptyRequiredInputs = {};
+
+        // Checking for empty required fields
+        for ( const field of props.fields ) {
+            if ( field.required ) {
+                if ( state.entityState[field.name] === field.defaultVal ) {
+                    emptyRequiredInputs[field.name] = emptyRequiredClassName;
+                } else if (emptyRequiredInputs.hasOwnProperty(field.name)) {
+                    delete emptyRequiredInputs[field.name];
                 }
             }
+        }
+        
+        setState({...state, emptyRequiredInputs: {...emptyRequiredInputs}});        
+        if ( Object.keys(emptyRequiredInputs).length ) return;
 
-            setState({...state, emptyRequiredInputs: {...emptyRequiredInputs}});
-
-            if ( Object.keys(emptyRequiredInputs).length ) {
-                return;
-            }
-            
+        // Checking if this a regular CreateEntity component 
+        // (not the case when we are calling it from NewService)
+        if ( props.isDirect ) {                        
             const id = new Date().getTime();
             props.addEntity(state.entityState, id, props.stateName);
             props.hidePopup();
             return;
         }
+
         // Used only in NewService component
         props.addEntity(state.entityState, props.stateName, props.isMulti);
     }
