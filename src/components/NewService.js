@@ -204,7 +204,7 @@ const NewService = (props) => {
     }        
 
     const addEntity = (entity, stateKey, isMulti) => {        
-        const id = new Date().getTime();
+        const id = (new Date().getTime()).toString();
         const activeDropdownState = dropdownOptions[stateKey];
         const updatedDropdownState = [...activeDropdownState, {
             value: id,
