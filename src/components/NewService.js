@@ -168,7 +168,8 @@ const NewService = (props) => {
             {
                 name: 'name',
                 label: 'Name',
-                defaultVal: ''
+                defaultVal: '',
+                calculated: ['manufacturer', 'model']
             },
             {
                 name: 'manufacturer',
@@ -178,7 +179,7 @@ const NewService = (props) => {
             {
                 name: 'model',
                 label: 'Model',
-                defaultVal: 0
+                defaultVal: '%name%',                
             },
             {
                 name: 'serial',

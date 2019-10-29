@@ -17,9 +17,18 @@ const StyledCreateEntity = styled.div`
         
         input[type="text"] {
             flex: 1; 
+            padding: 0 1rem;
 
             &.empty-required {
-                border-color: red;
+                border-color: red; }
+
+            &:read-only {
+                color: gray;
+                background-color: #e3e3e3;
+                border-color: gray;
+
+                &:hover {
+                    cursor: default; }
             }
         }
     }
@@ -61,6 +70,16 @@ const CreateEntity = (props) => {
     }
     
     defaultState['name'] = props.name;
+
+    for ( const fieldName of Object.keys(defaultState) ) {
+        if ( defaultState[fieldName].toString().startsWith('%') && defaultState[fieldName].toString().endsWith('%') ) {
+            const fieldValue = defaultState[fieldName].toString();
+            const tempFieldName = fieldValue.slice(1, -1);
+
+            defaultState[fieldName] = defaultState[tempFieldName];
+        }
+    }
+    
     const emptyRequiredClassName = 'empty-required';
 
     const [ state, setState ] = React.useState({
@@ -69,10 +88,19 @@ const CreateEntity = (props) => {
     });
 
     const handleInputChange = (event) => {
-        setState({...state, entityState: {
-            ...state['entityState'],
-            [event.target.name]: event.target.value
-        }});
+        const entityStateCopy = {...state.entityState};
+        for ( const field of props.fields) {
+            if ( field.calculated && field.calculated.indexOf(event.target.name) > -1 ) {
+                const str = field.calculated.map(item => {
+                    return item === event.target.name ? event.target.value : entityStateCopy[item];
+                }).join(' ');
+                
+                entityStateCopy[field.name] = str;
+            }
+        }
+
+        entityStateCopy[event.target.name] = event.target.value;
+        setState({...state, entityState: entityStateCopy});
     }
 
     const handleFormSubmit = (event) => {
@@ -128,6 +156,7 @@ const CreateEntity = (props) => {
                     <input 
                         type="text" 
                         name={field.name} 
+                        readOnly={field.calculated ? true : false}
                         required={field.required}
                         value={state.entityState[field.name]} 
                         onChange={handleInputChange}
