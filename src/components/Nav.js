@@ -53,6 +53,11 @@ const navItems = {
         text: "Actions",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
         url: '/actions',
+    },
+    devices: {
+        text: "Devices",
+        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        url: '/devices',
     }
 };
 

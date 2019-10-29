@@ -207,9 +207,9 @@ class App extends React.Component {
     });
   }
 
-  findServiceByEntityId = (id, entity) => {
+  findServiceByEntityId = (id, entityType) => {
     return Object.keys(this.state.services).find(key => {
-      return this.state.services[key][entity].indexOf(id) > -1;
+      return this.state.services[key][entityType].indexOf(id) > -1;
     });      
   }
   

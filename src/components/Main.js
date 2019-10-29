@@ -5,45 +5,60 @@ import History from './History';
 import NewService from './NewService';
 import Customers from './Customers';
 import Actions from './Actions';
+import DevicesPage from './DevicesPage';
 
 const StyledMain = styled.div`
-    { flex: 1; }
+    flex: 1;
 `;
 
-const Main = (props) => {    
-    const renderComponent = (props) => {        
-        switch(props.activeNavItemKey) {
+const Main = (props) => {
+    const renderComponent = (props) => {
+        switch (props.activeNavItemKey) {
             case 'home':
                 return <Dashboard />;
             case 'history':
-                return <History 
-                        services={props.services} 
-                        deleteService={props.deleteService}
-                        getCustomerNameById={props.getCustomerNameById}
-                        getDeviceById={props.getDeviceById} 
-                        filterServices={props.filterServices}
-                        sortServices={props.sortServices}                        
-                        />;
+                return <History
+                    services={props.services}
+                    deleteService={props.deleteService}
+                    getCustomerNameById={props.getCustomerNameById}
+                    getDeviceById={props.getDeviceById}
+                    filterServices={props.filterServices}
+                    sortServices={props.sortServices}
+                />;
             case 'newService':
                 return <NewService
-                            customers={props.customers} 
-                            devices={props.devices} 
-                            addService={props.addService} 
-                            addEntity={props.addEntity}
-                        />
+                    customers={props.customers}
+                    devices={props.devices}
+                    addService={props.addService}
+                    addEntity={props.addEntity}
+                />
             case 'customers':
                 return <Customers
-                        customers={props.customers}
-                        addEntity={props.addEntity} 
-                        deleteEntity={props.deleteEntity}
-                        updateEntity={props.updateEntity}
-                        findServiceByEntityId={props.findServiceByEntityId}
-                        />;
+                    customers={props.customers}
+                    addEntity={props.addEntity}
+                    deleteEntity={props.deleteEntity}
+                    updateEntity={props.updateEntity}
+                    findServiceByEntityId={props.findServiceByEntityId}
+                />;
             case 'actions':
-                return <Actions />;
+                return <Actions
+                    actions={props.actions}
+                    addEntity={props.addEntity}
+                    deleteEntity={props.deleteEntity}
+                    updateEntity={props.updateEntity}
+                    findServiceByEntityId={props.findServiceByEntityId}
+                />;
+            case 'devices':
+                return <DevicesPage
+                    devices={props.devices}
+                    addEntity={props.addEntity}
+                    deleteEntity={props.deleteEntity}
+                    updateEntity={props.updateEntity}
+                    findServiceByEntityId={props.findServiceByEntityId}
+                />;
             default:
                 return <Dashboard />;
-        }        
+        }
     }
 
     return (
