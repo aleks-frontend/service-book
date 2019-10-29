@@ -19,27 +19,28 @@ const Customers = (props) => {
 		setState({ ...state, showPopup: true });
 	}
 
+	const fields = [
+		{
+			name: 'name',
+			label: 'Name',
+			defaultVal: '',
+			required: true
+		},
+		{
+			name: 'phone',
+			label: 'Phone',
+			defaultVal: 0,
+			required: false
+		},
+		{
+			name: 'email',
+			label: 'Email',
+			defaultVal: '',
+			required: true
+		}
+	];
+
 	const renderPopup = () => {
-		const fields = [
-			{
-				name: 'name',
-				label: 'Name',
-				defaultVal: '',
-				required: true
-			},
-			{
-				name: 'phone',
-				label: 'Phone',
-				defaultVal: 0,
-				required: false
-			},
-			{
-				name: 'email',
-				label: 'Email',
-				defaultVal: '',
-				required: true
-			}
-		];
 		if (state.showPopup) {
 			return (
 				<Popup hidePopup={hidePopup}>
@@ -64,9 +65,11 @@ const Customers = (props) => {
 			</Header>
 			<Body>
 				<DisplayEntity
-					customers={props.customers}
+					name="customers"
+					fields={fields}
+					entities={props.customers}
+					findServiceByEntityId={props.findServiceByEntityId}
 					deleteEntity={props.deleteEntity}
-					findServiceByCustomerId={props.findServiceByCustomerId}
 					updateEntity={props.updateEntity}
 				/>
 			</Body>

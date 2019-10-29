@@ -3,24 +3,30 @@ import MaterialTable from 'material-table';
 import tableIcons from '../tableIcons';
 
 const DisplayEntity = (props) => {
+  const columns = props.fields.map(field => {
+    return {
+      title: field.label,
+      field: field.name
+    }
+  });
+  
   const [state, setState] = React.useState({
-    columns: [
-      { title: 'Name', field: 'name' },
-      { title: 'Email', field: 'email' },
-      { title: 'Phone', field: 'phone' },
-    ],
-    data: Object.keys(props.customers).map(key => {
-      return { ...props.customers[key], id: key };
+    columns: columns,
+    data: Object.keys(props.entities).map(key => {
+      return { ...props.entities[key], id: key };
     })
   });
 
+  const entityLabel = props.name.slice(0, -1);
+  const formatedLabel = entityLabel.charAt(0).toUpperCase() + entityLabel.slice(1, entityLabel.length);
+
   React.useEffect(() => {
-    const newData = Object.keys(props.customers).map(key => {
-      return { ...props.customers[key], id: key };
+    const newData = Object.keys(props.entities).map(key => {
+      return { ...props.entities[key], id: key };
     });
 
     setState({ ...state, data: newData });
-  }, [props.customers]);
+  }, [props.entities]);
 
   return (
     <MaterialTable
@@ -32,9 +38,9 @@ const DisplayEntity = (props) => {
         {
           onRowDelete: oldData =>
             new Promise(resolve => {
-              if (props.findServiceByCustomerId(oldData.id)) {
+              if (props.findServiceByEntityId(oldData.id, props.name)) {
                 resolve();
-                alert('Customer in use');
+                alert(`${formatedLabel} in use`);
                 return;
               }
               setTimeout(() => {
@@ -51,7 +57,6 @@ const DisplayEntity = (props) => {
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
-                console.log({newData, oldData});
                 const data = [...state.data];
                 data[data.indexOf(oldData)] = newData;
                 setState({ ...state, data });

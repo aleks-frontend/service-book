@@ -122,7 +122,6 @@ const NewService = (props) => {
     
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        debugger;
         props.addService(inputs);
     }
     

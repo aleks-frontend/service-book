@@ -207,8 +207,10 @@ class App extends React.Component {
     });
   }
 
-  findServiceByCustomerId = (id) => {
-    return Object.keys(this.state.services).find(key => this.state.services[key].customers.indexOf(id) > -1);
+  findServiceByEntityId = (id, entity) => {
+    return Object.keys(this.state.services).find(key => {
+      return this.state.services[key][entity].indexOf(id) > -1;
+    });      
   }
   
   getCustomerNameById = id => {
@@ -247,7 +249,7 @@ class App extends React.Component {
           addEntity={this.addEntity} 
           deleteEntity={this.deleteEntity} 
           updateEntity={this.updateEntity} 
-          findServiceByCustomerId={this.findServiceByCustomerId}
+          findServiceByEntityId={this.findServiceByEntityId}
         />
       </React.Fragment>
     );
