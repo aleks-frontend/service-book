@@ -123,15 +123,18 @@ const CreateEntity = (props) => {
 
         // Checking if this a regular CreateEntity component 
         // (not the case when we are calling it from NewService)
-        if ( props.isDirect ) {                        
+        if ( props.isDirect ) {
             const id = new Date().getTime();
             props.addEntity(state.entityState, id, props.stateName);
             props.hidePopup();
+            props.showSnackbar(props.stateName, 'created');
             return;
         }
 
         // Used only in NewService component
         props.addEntity(state.entityState, props.stateName, props.isMulti);
+        props.hideCreateEntityForm(props.stateName);
+        props.showSnackbar(props.stateName, 'created');
     }
 
     const renderWarning = () => {

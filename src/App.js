@@ -137,15 +137,15 @@ class App extends React.Component {
     this.setState({ [key]: entityState });    
   }
 
-  deleteEntity = (id) => {
-    const customers = {...this.state.customers};
-    delete customers[id];
-    this.setState({ customers });
+  deleteEntity = (id, key) => {
+    const entityState = {...this.state[key]};
+    delete entityState[id];
+    this.setState({ [key]: entityState });
   }
 
   updateEntity = (entity, id, key) => {
-    const customers = {...this.state.customers, [id]: entity};
-    this.setState({customers});
+    const entityState = {...this.state[key], [id]: entity};
+    this.setState({[key]: entityState});
   }
 
   filterServices = (service, searchText) => {
@@ -239,6 +239,7 @@ class App extends React.Component {
           activeNavItemKey={this.state.activeNavItemKey} 
           services={this.state.services}
           customers={this.state.customers}
+          actions={this.state.actions}
           devices={this.state.devices}
           getCustomerNameById={this.getCustomerNameById} 
           getDeviceById={this.getDeviceById}     

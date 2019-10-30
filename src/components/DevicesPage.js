@@ -19,38 +19,7 @@ const DevicesPage = (props) => {
         setState({ ...state, showPopup: true });
     }
 
-    // manufacturer: "HP",
-    //     model: "Home Server",
-    //         name: "HP Home Server",
-    //             serial: "12345",
-
-	const fields = [
-        {
-            name: 'name',
-            label: 'Name',
-            defaultVal: '',
-            required: true
-        },
-        {
-            name: 'manufacturer',
-            label: 'Manufacturer',
-            defaultVal: 0,
-            required: false
-        },
-        {
-            name: 'model',
-            label: 'Model',
-            defaultVal: 0,
-            required: false
-        },
-        {
-            name: 'serial',
-            label: 'Serial',
-            defaultVal: 0,
-            required: false
-        },
-    ];
-
+	const fields = props.fields.devices;
     const renderPopup = () => {
         if (state.showPopup) {
             return (
@@ -63,6 +32,7 @@ const DevicesPage = (props) => {
                         isMulti={false}
                         isDirect={true}
                         hidePopup={hidePopup}
+                        showSnackbar={props.showSnackbar}
                     />
                 </Popup>
             );
@@ -82,6 +52,7 @@ const DevicesPage = (props) => {
                     findServiceByEntityId={props.findServiceByEntityId}
                     deleteEntity={props.deleteEntity}
                     updateEntity={props.updateEntity}
+                    showSnackbar={props.showSnackbar}
                 />
             </Body>
         </React.Fragment>

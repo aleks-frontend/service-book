@@ -19,20 +19,7 @@ const Actions = (props) => {
 		setState({ ...state, showPopup: true });
 	}
 
-	const fields = [
-		{
-			name: 'name',
-			label: 'Name',
-			defaultVal: '',
-			required: true
-		},
-		{
-			name: 'price',
-			label: 'Price',
-			defaultVal: 0,
-			required: false
-		},
-	];
+	const fields = props.fields.actions;
 
 	const renderPopup = () => {
 		if (state.showPopup) {
@@ -46,6 +33,7 @@ const Actions = (props) => {
 						isMulti={false}
 						isDirect={true}
 						hidePopup={hidePopup}
+						showSnackbar={props.showSnackbar}
 					/>
 				</Popup>
 			);
@@ -65,6 +53,7 @@ const Actions = (props) => {
 					findServiceByEntityId={props.findServiceByEntityId}
 					deleteEntity={props.deleteEntity}
 					updateEntity={props.updateEntity}
+					showSnackbar={props.showSnackbar}
 				/>
 			</Body>
 		</React.Fragment>

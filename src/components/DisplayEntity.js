@@ -50,18 +50,31 @@ const DisplayEntity = (props) => {
                   return element.id === oldData.id;
                 }), 1);
                 setState({ ...state, data });
-                props.deleteEntity(oldData.id);
-              }, 600);
+                props.deleteEntity(oldData.id, props.name);
+                props.showSnackbar(props.name, 'deleted');
+              }, 300);
             }),
           onRowUpdate: (newData, oldData) =>
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
+
+                for ( const field of props.fields) {
+                    if ( field.calculated ) {
+                        const str = field.calculated.map(item => {
+                            return newData[item];
+                        }).join(' ');
+                        
+                        newData[field.name] = str;
+                    }
+                }
+
                 const data = [...state.data];
                 data[data.indexOf(oldData)] = newData;
                 setState({ ...state, data });
-                props.updateEntity(newData, newData.id);
-              }, 600);
+                props.updateEntity(newData, newData.id, props.name);
+                props.showSnackbar(props.name, 'updated');
+              }, 300);
             }),
         }
       }

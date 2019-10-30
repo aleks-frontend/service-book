@@ -19,26 +19,7 @@ const Customers = (props) => {
 		setState({ ...state, showPopup: true });
 	}
 
-	const fields = [
-		{
-			name: 'name',
-			label: 'Name',
-			defaultVal: '',
-			required: true
-		},
-		{
-			name: 'phone',
-			label: 'Phone',
-			defaultVal: 0,
-			required: false
-		},
-		{
-			name: 'email',
-			label: 'Email',
-			defaultVal: '',
-			required: true
-		}
-	];
+	const fields = props.fields.customers;
 
 	const renderPopup = () => {
 		if (state.showPopup) {
@@ -52,6 +33,7 @@ const Customers = (props) => {
 						isMulti={false}
 						isDirect={true}
 						hidePopup={hidePopup}
+						showSnackbar={props.showSnackbar}
 					/>
 				</Popup>
 			);
@@ -61,7 +43,10 @@ const Customers = (props) => {
 		<React.Fragment>
 			{renderPopup()}
 			<Header title="Customers">
-				<CreateEntityButton showPopup={showPopup} entity="customers" />
+				<CreateEntityButton 
+					showPopup={showPopup} 
+					entity="customers"
+				/>
 			</Header>
 			<Body>
 				<DisplayEntity
@@ -71,6 +56,7 @@ const Customers = (props) => {
 					findServiceByEntityId={props.findServiceByEntityId}
 					deleteEntity={props.deleteEntity}
 					updateEntity={props.updateEntity}
+					showSnackbar={props.showSnackbar}
 				/>
 			</Body>
 		</React.Fragment>
