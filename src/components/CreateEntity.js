@@ -118,7 +118,7 @@ const CreateEntity = (props) => {
             }
         }
         
-        setState({...state, emptyRequiredInputs: {...emptyRequiredInputs}});        
+        setState({...state, emptyRequiredInputs: {...emptyRequiredInputs}});
         if ( Object.keys(emptyRequiredInputs).length ) return;
 
         // Checking if this a regular CreateEntity component 

@@ -14,23 +14,25 @@ const StyledForm = styled.form`
         .group {
             display: flex; 
             align-items: center;
+            padding: 0.3rem;
+            border: 1px solid transparent;
             margin-bottom: 1rem;
 
             label { margin-right: 1rem; }
 
             input[type="text"], textarea {
                 flex: 1;
+                padding: 0 0.5rem;
                 height: 38px;
                 border: 1px solid rgb(204, 204, 204);
-                border-radius: 4px;
-            }
+                border-radius: 4px; }
+
+            &.empty-required { 
+                color: red;
+                border-color: red;
         }
 
-        .select {
-            flex: 1;
-        
-    }
-
+        .select { flex: 1; }
 `;
 
 const NewService = (props) => {    
@@ -40,24 +42,47 @@ const NewService = (props) => {
 
     // });
 
+    const defaultStates = {
+        inputs: {
+            title: {
+                value: "",
+                required: true,
+            },
+            description: {
+                value: "",
+                required: true,
+            },
+            customers: {
+                value: [],
+                required: true,
+            },
+            devices: {
+                value: [],
+                required: true,
+            },
+            status: {
+                value: "received",
+                required: false
+            },
+            date: {
+                value: new Date().getTime(),
+                required: false
+            }
+        },
+        selectedDropdownItems: {
+            customers: '', 
+            devices: ''
+        }
+    }
+
     const [ showCreateEntity, updateShowCreateEntity ] = React.useState({
         customers: {show: false},
         devices: {show: false}
     });
 
-    const [ selectedDropdownItems, updateSelectedDropdownItems ] = React.useState({
-        customers: '', 
-        devices: ''
-    });
-
-    const [ inputs, updateInputs ] = React.useState({
-        title: "",
-        description: "",
-        customers: [],
-        devices: [],
-        status: "received",
-        date: new Date().getTime()
-    });
+    const [ selectedDropdownItems, updateSelectedDropdownItems ] = React.useState(defaultStates.selectedDropdownItems);
+    const [ inputs, updateInputs ] = React.useState(defaultStates.inputs);
+    const [ emptyRequiredInputs, updateEmptyRequiredInputs ] = React.useState({});
 
     const hideCreateEntityForm = (entityType) => {
         updateShowCreateEntity({...showCreateEntity, [entityType]: {show: false}});
@@ -78,8 +103,17 @@ const NewService = (props) => {
         devices: deviceOptionsArr,
     });
 
+    const formReset = () => {
+        updateInputs(defaultStates.inputs);
+        updateSelectedDropdownItems(defaultStates.selectedDropdownItems);
+    }
+
     const handleInputChange = (event) => {
-        updateInputs({...inputs, [event.target.name]: event.target.value});
+        updateInputs({...inputs, [event.target.name]: {
+            ...inputs[event.target.name],
+            value: event.target.value
+        }
+        });
     }
 
     const handleCreateCustomer = (event) => {
@@ -99,7 +133,7 @@ const NewService = (props) => {
                 keysArr.push(event.value);
             }
         }
-        
+
         updateShowCreateEntity({...showCreateEntity, [actionMeta.name]: {show: false, name: ''}});
 
         if ( event === null ) {
@@ -121,14 +155,44 @@ const NewService = (props) => {
             });
         }
         
-        updateInputs({...inputs, [actionMeta.name]: keysArr});
+        updateInputs({...inputs, [actionMeta.name]: {
+            ...inputs[actionMeta.name],
+            value:  keysArr
+        }
+        });
     }
-    
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        props.addService(inputs);
+        let inputValues = {};
+        const emptyRequiredInputsCopy = {...emptyRequiredInputs};
+        for ( const key of Object.keys(inputs) ) {
+            const input = inputs[key];
+            const inputVal = input.value;
+            
+            // check for missing required fields here!
+            const emptyArrayCheck = Array.isArray(inputVal) && inputVal.length === 0;
+            const emptyNumCheck = typeof inputVal === 'number' && inputVal === 0;
+            const emptyStringCheck = typeof inputVal === 'string' && inputVal === '';
+
+            if ( input.required ) {
+                if ( emptyArrayCheck || emptyNumCheck || emptyStringCheck ) {
+                    emptyRequiredInputsCopy[key] = 'empty-required';
+                } else {
+                    delete emptyRequiredInputsCopy[key];
+                }
+            }
+
+            inputValues[key] = inputVal;
+        }
+
+        updateEmptyRequiredInputs(emptyRequiredInputsCopy);
+        if ( Object.keys(emptyRequiredInputsCopy).length ) return;
+        props.addService(inputValues);
+        formReset();
+        props.showSnackbar('New service ', 'created');
     }
-    
+
     const renderCreateCustomer = () => {
         const fields = props.fields.customers;
 
@@ -145,7 +209,7 @@ const NewService = (props) => {
         }
     }   
     
-    const renderCreateDevice = (props) => {
+    const renderCreateDevice = () => {
         const fields = props.fields.devices;
 
         if ( showCreateEntity['devices'].show ) {
@@ -159,7 +223,7 @@ const NewService = (props) => {
                         showSnackbar={props.showSnackbar}
                     />;
         }
-    }        
+    }
 
     const addEntity = (entity, stateKey, isMulti) => {
         const id = (new Date().getTime()).toString();
@@ -184,25 +248,44 @@ const NewService = (props) => {
                 }
             ]});
         }
-        
+
         props.addEntity(entity, id, stateKey);
-        updateInputs({...inputs, [stateKey]: [...inputs[stateKey], id]});
+        updateInputs({...inputs, [stateKey]: {
+            ...inputs[stateKey],
+            value: [...inputs[stateKey].value, id]
+        }
+        });
     }
-    
+
     return (
         <React.Fragment>
             <Header title="New Service" />
             <Body>
                 <StyledForm onSubmit={handleFormSubmit}>
-                    <div className="group">
+                    <div 
+                        className={emptyRequiredInputs['title'] ? 'group empty-required' : 'group'} 
+                        >
                         <label>Title:</label>
-                        <input type="text" name="title" value={inputs.title} onChange={handleInputChange} />
+                        <input 
+                            type="text" 
+                            name="title" 
+                            value={inputs.title.value} 
+                            onChange={handleInputChange} 
+                            />
                     </div>
-                    <div className="group">
+                    <div 
+                        className={emptyRequiredInputs['description'] ? 'group empty-required' : 'group'} 
+                        >
                         <label>Description:</label>
-                        <textarea name="description" value={inputs.description} onChange={handleInputChange} />
+                        <textarea 
+                            name="description" 
+                            value={inputs.description.value} 
+                            onChange={handleInputChange} 
+                            />
                     </div>
-                    <div className="group">
+                    <div 
+                        className={emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'} 
+                        >
                         <label>Customer:</label>
                         <CreatableSelect
                             options={dropdownOptions['customers']} 
@@ -215,7 +298,9 @@ const NewService = (props) => {
                         />
                     </div>
                     {renderCreateCustomer()}
-                    <div className="group">
+                    <div 
+                        className={emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'} 
+                        >
                         <label>Devices:</label>
                         <CreatableSelect
                             options={dropdownOptions['devices']}
