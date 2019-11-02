@@ -66,78 +66,74 @@ const NewService = (props) => {
         selectedDropdownItems: {
             customers: '',
             devices: ''
-        }
+        },
+        customerOptionsArr: Object.keys(props.customers).map(key => ({
+            value: key,
+            label: props.customers[key].name
+        })),
+        deviceOptionsArr: Object.keys(props.devices).map(key => ({
+            value: key,
+            label: props.devices[key].name
+        }))
     }
 
+    const [dropdownOptions, updateDropdownOptions] = React.useState({
+        customers: defaultStates.customerOptionsArr,
+        devices: defaultStates.deviceOptionsArr,
+    });
+    
     const [state, setState] = React.useState({
         showCreateEntity: {
             customers: { show: false },
             devices: { show: false }
         },
+        inputs: defaultStates.inputs,
         selectedDropdownItems: defaultStates.selectedDropdownItems,
-        inputs: defaultStates.inputs
+        emptyRequiredInputs: {}
     });
 
-
-    // const [inputs, updateInputs] = React.useState(defaultStates.inputs);
-    const [emptyRequiredInputs, updateEmptyRequiredInputs] = React.useState({});
-
-    const updateState = (stateKey, stateObjKey, value) => {
-        if (stateObjKey) {
-            setState({
-                ...state, [stateKey]: {
-                    ...state[stateKey],
+    const updateState = (stateKey, stateObjKey, value, stateObjCopy) => {        
+        // We are not updating the actual state in this case
+        // Used for cases when we are calling updateState several times in a single method
+        if ( stateObjCopy ) {
+            if (stateObjKey) {
+                stateObjCopy[stateKey] = {
+                    ...stateObjCopy[stateKey],
                     [stateObjKey]: value
-                }
-            });
+                };
+            } else {
+                stateObjCopy[stateKey] = value;
+            }
         } else {
-            setState({ ...state, [stateKey]: value });
+            // This part will be used when we are calling the updateState once in a method
+            // This will update the state directly
+            if (stateObjKey) {
+                setState({
+                    ...state, [stateKey]: {
+                        ...state[stateKey],
+                        [stateObjKey]: value
+                    }
+                });
+            } else {
+                setState({ ...state, [stateKey]: value });
+            }
         }
     }
 
-    setTimeout(() => {
-        updateState('inputs', 'title', {
-            value: "test",
-            required: true
-        });
-    }, 3000);
-
     const hideCreateEntityForm = (entityType) => updateState('showCreateEntity', entityType, { show: false });
 
-    const customerOptionsArr = Object.keys(props.customers).map(key => ({
-        value: key,
-        label: props.customers[key].name
-    }));
+    const formReset = (stateCopy) => {        
+        updateState('inputs', null, defaultStates.inputs, stateCopy);
+        updateState('selectedDropdownItems', null, defaultStates.selectedDropdownItems, stateCopy);
 
-    const deviceOptionsArr = Object.keys(props.devices).map(key => ({
-        value: key,
-        label: props.devices[key].name
-    }));
-
-    const [dropdownOptions, updateDropdownOptions] = React.useState({
-        customers: customerOptionsArr,
-        devices: deviceOptionsArr,
-    });
-
-    const formReset = () => {
-        updateState('inputs', null, defaultStates.inputs);
-        updateState('selectedDropdownItems', null, defaultStates.selectedDropdownItems);
+        // setState(stateCopy);
+        return stateCopy;
     }
 
     const handleInputChange = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.value);
-        console.log({
+        updateState('inputs', event.target.name, {
             ...state.inputs[event.target.name],
             value: event.target.value
-        });
-        // updateState('inputs', event.target.name, {
-        //     ...state.inputs[event.target.name],
-        //     value: event.target.value
-        // });
-        updateState('inputs', 'title', {
-            value: "test2",
-            required: true
         });
     }
 
@@ -151,6 +147,7 @@ const NewService = (props) => {
 
     const handleDropdownChange = (event, actionMeta) => {
         let keysArr = [];
+        const stateCopy = {...state};
         if (Array.isArray(event)) {
             keysArr = event.map(obj => obj.value);
         } else {
@@ -159,15 +156,15 @@ const NewService = (props) => {
             }
         }
 
-        updateState('showCreateEntity', actionMeta.name, { show: false, name: '' });
+        updateState('showCreateEntity', actionMeta.name, { show: false, name: '' }, stateCopy);
 
         if (event === null) {
-            updateState('selectedDropdownItems', actionMeta.name, '');
+            updateState('selectedDropdownItems', actionMeta.name, '', stateCopy);
         } else if (!Array.isArray(event)) {
             updateState('selectedDropdownItems', actionMeta.name, {
                 value: event.value,
                 label: event.label
-            });
+            }, stateCopy);
         } else {
             const selectedDropdownItemsArr = event.map(item => (
                 {
@@ -176,19 +173,22 @@ const NewService = (props) => {
                 }
             ));
 
-            updateState('selectedDropdownItems', actionMeta.name, selectedDropdownItemsArr);
+            updateState('selectedDropdownItems', actionMeta.name, selectedDropdownItemsArr, stateCopy);
         }
 
         updateState('inputs', actionMeta.name, {
             ...state.inputs[actionMeta.name],
             value: keysArr
-        });
+        }, stateCopy);
+
+        // We are now setting the stateCopy to the actual state
+        setState(stateCopy);
     }
 
     const handleFormSubmit = (event) => {
         event.preventDefault();
-        let inputValues = {};
-        const emptyRequiredInputsCopy = { ...emptyRequiredInputs };
+        let inputValues = {};        
+        const emptyRequiredInputsCopy = { ...state.emptyRequiredInputs };
         for (const key of Object.keys(state.inputs)) {
             const input = state.inputs[key];
             const inputVal = input.value;
@@ -209,11 +209,17 @@ const NewService = (props) => {
             inputValues[key] = inputVal;
         }
 
-        updateEmptyRequiredInputs(emptyRequiredInputsCopy);
-        if (Object.keys(emptyRequiredInputsCopy).length) return;
-        props.addService(inputValues);
-        formReset();
-        props.showSnackbar('New service ', 'created');
+        const stateCopy = {...state};
+        updateState('emptyRequiredInputs', null, emptyRequiredInputsCopy, stateCopy);
+        if (Object.keys(emptyRequiredInputsCopy).length) {
+            setState(stateCopy);
+        } else {
+            props.addService(inputValues);
+            formReset(stateCopy);
+            props.showSnackbar('New service ', 'created');
+            
+            setState(stateCopy);
+        }
     }
 
     const renderCreateCustomer = () => {
@@ -250,34 +256,37 @@ const NewService = (props) => {
 
     const addEntity = (entity, stateKey, isMulti) => {
         const id = (new Date().getTime()).toString();
+        const stateCopy = {...state};
         const activeDropdownState = dropdownOptions[stateKey];
         const updatedDropdownState = [...activeDropdownState, {
             value: id,
             label: entity.name
         }];
 
-        updateDropdownOptions({ ...dropdownOptions, [stateKey]: updatedDropdownState });
+        updateDropdownOptions({...dropdownOptions, [stateKey]: updatedDropdownState});
 
         if (!isMulti) {
             updateState('selectedDropdownItems', stateKey, {
                 value: id,
                 label: entity.name
-            });
+            }, stateCopy);
         } else {
             updateState('selectedDropdownItems', stateKey, [
-                ...state.selectedDropdownItems[stateKey],
+                ...stateCopy.selectedDropdownItems[stateKey],
                 {
                     value: id,
                     label: entity.name
                 }
-            ]);
+            ], stateCopy);
         }
 
         props.addEntity(entity, id, stateKey);
         updateState('inputs', stateKey, {
-            ...state.inputs[stateKey],
-            value: [...state.inputs[stateKey].value, id]
-        })
+            ...stateCopy.inputs[stateKey],
+            value: [...stateCopy.inputs[stateKey].value, id]
+        }, stateCopy);;
+
+        setState(stateCopy);
     }
 
     return (
@@ -286,7 +295,7 @@ const NewService = (props) => {
             <Body>
                 <StyledForm onSubmit={handleFormSubmit}>
                     <div
-                        className={emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
+                        className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
                     >
                         <label>Title:</label>
                         <input
@@ -297,7 +306,7 @@ const NewService = (props) => {
                         />
                     </div>
                     <div
-                        className={emptyRequiredInputs['description'] ? 'group empty-required' : 'group'}
+                        className={state.emptyRequiredInputs['description'] ? 'group empty-required' : 'group'}
                     >
                         <label>Description:</label>
                         <textarea
@@ -307,7 +316,7 @@ const NewService = (props) => {
                         />
                     </div>
                     <div
-                        className={emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'}
+                        className={state.emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'}
                     >
                         <label>Customer:</label>
                         <CreatableSelect
@@ -322,7 +331,7 @@ const NewService = (props) => {
                     </div>
                     {renderCreateCustomer()}
                     <div
-                        className={emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'}
+                        className={state.emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'}
                     >
                         <label>Devices:</label>
                         <CreatableSelect
