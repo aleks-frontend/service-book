@@ -133,7 +133,6 @@ const CreateEntity = (props) => {
 
         // Used only in NewService component
         props.addEntity(state.entityState, props.stateName, props.isMulti);
-        props.hideCreateEntityForm(props.stateName);
         props.showSnackbar(props.stateName, 'created');
     }
 

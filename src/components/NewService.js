@@ -76,11 +76,6 @@ const NewService = (props) => {
             label: props.devices[key].name
         }))
     }
-
-    const [dropdownOptions, updateDropdownOptions] = React.useState({
-        customers: defaultStates.customerOptionsArr,
-        devices: defaultStates.deviceOptionsArr,
-    });
     
     const [state, setState] = React.useState({
         showCreateEntity: {
@@ -89,7 +84,11 @@ const NewService = (props) => {
         },
         inputs: defaultStates.inputs,
         selectedDropdownItems: defaultStates.selectedDropdownItems,
-        emptyRequiredInputs: {}
+        emptyRequiredInputs: {},
+        dropdownOptions: {
+            customers: defaultStates.customerOptionsArr,
+            devices: defaultStates.deviceOptionsArr,
+        }
     });
 
     const updateState = (stateKey, stateObjKey, value, stateObjCopy) => {        
@@ -120,7 +119,7 @@ const NewService = (props) => {
         }
     }
 
-    const hideCreateEntityForm = (entityType) => updateState('showCreateEntity', entityType, { show: false });
+    const hideCreateEntityForm = (entityType, stateCopy) => updateState('showCreateEntity', entityType, { show: false }, stateCopy);
 
     const formReset = (stateCopy) => {        
         updateState('inputs', null, defaultStates.inputs, stateCopy);
@@ -232,7 +231,6 @@ const NewService = (props) => {
                 stateName="customers"
                 fields={fields}
                 isMulti={false}
-                hideCreateEntityForm={hideCreateEntityForm}
                 showSnackbar={props.showSnackbar}
             />;
         }
@@ -248,7 +246,6 @@ const NewService = (props) => {
                 stateName="devices"
                 fields={fields}
                 isMulti={true}
-                hideCreateEntityForm={hideCreateEntityForm}
                 showSnackbar={props.showSnackbar}
             />;
         }
@@ -257,13 +254,13 @@ const NewService = (props) => {
     const addEntity = (entity, stateKey, isMulti) => {
         const id = (new Date().getTime()).toString();
         const stateCopy = {...state};
-        const activeDropdownState = dropdownOptions[stateKey];
+        const activeDropdownState = state.dropdownOptions[stateKey];
         const updatedDropdownState = [...activeDropdownState, {
             value: id,
             label: entity.name
         }];
 
-        updateDropdownOptions({...dropdownOptions, [stateKey]: updatedDropdownState});
+        updateState('dropdownOptions', stateKey, updatedDropdownState, stateCopy);
 
         if (!isMulti) {
             updateState('selectedDropdownItems', stateKey, {
@@ -284,9 +281,11 @@ const NewService = (props) => {
         updateState('inputs', stateKey, {
             ...stateCopy.inputs[stateKey],
             value: [...stateCopy.inputs[stateKey].value, id]
-        }, stateCopy);;
+        }, stateCopy);
 
-        setState(stateCopy);
+        hideCreateEntityForm(stateKey, stateCopy);
+
+        setState({...stateCopy});
     }
 
     return (
@@ -320,7 +319,7 @@ const NewService = (props) => {
                     >
                         <label>Customer:</label>
                         <CreatableSelect
-                            options={dropdownOptions['customers']}
+                            options={state.dropdownOptions['customers']}
                             className="select"
                             name="customers"
                             value={state.selectedDropdownItems['customers']}
@@ -335,7 +334,7 @@ const NewService = (props) => {
                     >
                         <label>Devices:</label>
                         <CreatableSelect
-                            options={dropdownOptions['devices']}
+                            options={state.dropdownOptions['devices']}
                             className="select"
                             value={state.selectedDropdownItems['devices']}
                             isMulti
