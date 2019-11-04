@@ -10,7 +10,7 @@ export const fields = {
             name: 'phone',
             label: 'Phone',
             defaultVal: 0,
-            required: false
+            required: true
         },
         {
             name: 'email',

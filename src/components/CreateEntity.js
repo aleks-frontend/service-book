@@ -34,11 +34,6 @@ const StyledCreateEntity = styled.div`
     }
 `;
 
-const StyledWarning = styled.div`
-    margin-bottom: 1rem;
-    color: red;
-`;
-
 // fields = [
 //     {
 //         name: 'name',
@@ -56,12 +51,6 @@ const StyledWarning = styled.div`
 //         type: 'text'
 //     }
 // ]
-
-const Warning = (props) => (
-    <StyledWarning>
-        {props.children}
-    </StyledWarning>
-);
 
 const CreateEntity = (props) => {
     const defaultState = {};
