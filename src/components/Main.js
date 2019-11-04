@@ -31,7 +31,7 @@ const Main = (props) => {
         snackBarAction: ''
     });
 
-    const handleClose = (event, reason) => {
+    const handleClose = (reason) => {
         if (reason === 'clickaway') return;
         setState({...state, snackbarVisible: false});
     };
@@ -44,7 +44,7 @@ const Main = (props) => {
         });
     }
 
-    const renderSnackbar = (props) => {
+    const renderSnackbar = () => {
         const formatedEntityType = state.snackbarEntity.charAt(0).toUpperCase() + state.snackbarEntity.slice(1, -1);
         return (
             <Snackbar
@@ -134,7 +134,7 @@ const Main = (props) => {
     return (
         <StyledMain>
             {renderComponent(props)}
-            {renderSnackbar(props)}
+            {renderSnackbar()}
         </StyledMain>
     );
 };

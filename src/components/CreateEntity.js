@@ -119,7 +119,10 @@ const CreateEntity = (props) => {
         }
         
         setState({...state, emptyRequiredInputs: {...emptyRequiredInputs}});
-        if ( Object.keys(emptyRequiredInputs).length ) return;
+        if ( Object.keys(emptyRequiredInputs).length ) {
+            props.showSnackbar('Required fields ', 'missing');
+            return;
+        }
 
         // Checking if this a regular CreateEntity component 
         // (not the case when we are calling it from NewService)
@@ -135,14 +138,6 @@ const CreateEntity = (props) => {
         props.addEntity(state.entityState, props.stateName, props.isMulti);
         props.showSnackbar(props.stateName, 'created');
     }
-
-    const renderWarning = () => {
-        if ( Object.keys(state.emptyRequiredInputs).length ) {
-            return (
-                <Warning>You are missing required input(s)!</Warning>
-            );
-        }
-    }
     
     React.useEffect(() => {
         defaultState['name'] = props.name;
@@ -151,7 +146,6 @@ const CreateEntity = (props) => {
 
     return (
         <StyledCreateEntity onClick={(e) => e.stopPropagation()}>
-            {renderWarning()}
             {props.fields.map(field => (
                 <div className="group" key={field.name}>
                     <label>{field.label}</label>

@@ -125,7 +125,6 @@ const NewService = (props) => {
         updateState('inputs', null, defaultStates.inputs, stateCopy);
         updateState('selectedDropdownItems', null, defaultStates.selectedDropdownItems, stateCopy);
 
-        // setState(stateCopy);
         return stateCopy;
     }
 
@@ -212,6 +211,7 @@ const NewService = (props) => {
         updateState('emptyRequiredInputs', null, emptyRequiredInputsCopy, stateCopy);
         if (Object.keys(emptyRequiredInputsCopy).length) {
             setState(stateCopy);
+            props.showSnackbar('Required field(s) ', 'missing');
         } else {
             props.addService(inputValues);
             formReset(stateCopy);
