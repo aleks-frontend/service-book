@@ -28,9 +28,7 @@ const StyledHistoryCard = styled.div`
     .text {
       font-size: 1.3rem;
 
-      &--alt { 
-        font-size: 0.9em; 
-        font-weight: 700; }
+      &--alt { font-size: 0.9em; }
     }
 
     .footer { 
@@ -71,8 +69,8 @@ const HistoryCard = (props) => {
         <StyledHistoryCard>
             <div className="body">
               <div className="section">
-                  <div className="text">{service.title}</div>
-                  <div className="text service__text--alt">
+                  <div className="text"><strong>{service.title}</strong></div>
+                  <div className="text text--alt">
                   {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
                   </div>
               </div>
