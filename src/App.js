@@ -62,7 +62,7 @@ class App extends React.Component {
 
   deleteService = (id) => {
     const services = {...this.state.ssot.services};
-    delete services[id];
+    services[id] = null;
     this.setState({ ssot: {...this.state.ssot, ['services']: services} });
   }  
 
@@ -73,7 +73,7 @@ class App extends React.Component {
   
   deleteEntity = (id, key) => {
     const entityState = {...this.state[key]};
-    delete entityState[id];
+    entityState[id] = null;
     this.setState({ ssot: {...this.state.ssot, [key]: entityState} });
   }
 
