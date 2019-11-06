@@ -4,6 +4,8 @@ html {
 }
 *, *:before, *:after { box-sizing: inherit; }
 
+body { font-family: 'Roboto', sans-serif; }
+
 .container {
   display: flex;
   min-height: 100vh;
