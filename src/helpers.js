@@ -62,3 +62,12 @@ export const fields = {
         },
     ]
 };
+
+export const colors = {
+    dpblue: '#358CFF',
+    dpgray: '#313442',
+    gray: '#616161',
+    green: '#32CD32',
+    yellow: '#fbe555',
+    orange: '#f45905',
+};
