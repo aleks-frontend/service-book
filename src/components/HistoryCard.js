@@ -2,106 +2,171 @@ import React from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
-import Devices from './Devices';
+import { colors } from '../helpers';
 
 const StyledHistoryCard = styled.div`
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
     margin-bottom: 2rem;
-    border: 1px solid #000;
+    margin-left: 2rem;
+    width: calc(50% - 2rem);
+    height: 38rem;
     background: #fff;
+    box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
+    max-width: 44rem;
 
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+        display: flex;
+        align-items: center;
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+        border-bottom: ${(props) => `1px solid ${props.colors.gray}`};
 
-      input[type="text"] {
-        margin-left: 1rem;
-        padding: 0.5rem;
-        border: none; }
+        .indicator {
+            width: 4.3rem;
+            height: 4.3rem;
+            border-radius: 50%;
+            background: ${props => {
+        if (props.status === 'received') {
+            return props.colors.yellow;
+        } else if (props.status === 'completed') {
+            return props.colors.green;
+        } else {
+            return props.colors.orange;
+        }
+    }}
+        }
+
+        .text {
+            margin-left: 1.5rem;
+
+            .heading {
+                margin-bottom: 0.9rem;
+                font-size: 1.8rem;
+                font-weight: 700; }
+
+            .subheading { 
+                font-size: 1.5rem; 
+                color: ${props => props.colors.gray}; }
+        }
     }
 
-    .body {
-      flex: 1;
-      display: flex; }
+    .body {       
+        flex: 1;
+        overflow: auto;
 
-    .text {
-      font-size: 1.3rem;
+        .block {
+            margin-bottom: 1.5rem;
 
-      &--alt { font-size: 0.9em; }
+            .heading { 
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem; }
+            
+            .content {
+                font-size: 1.3rem;
+                color: ${props => props.colors.gray}; }
+        }
     }
 
-    .footer { 
-      opacity: 0;
-      max-height: 0;
-      transition: all 500ms;
-      padding-top: 1rem;
-      margin-top: 2rem;
-      border-top: 1px solid #e3e3e3; }
+    .footer {
+        display: flex;
+
+        button {
+            margin-right: 2.5rem;
+            padding: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: ${props => props.colors.dpblue};
+            border: none;
+            background: transparent;
+            text-transform: uppercase;
+
+            &:hover { cursor: pointer; }
+        }
+    }
 
     .display-enter {
-      opacity: 0;
-      max-height: 0; }
+        opacity: 0;
+        max-height: 0; }
 
     .display-enter-active,
     .display-enter-done {
-      opacity: 1;
-      max-height: 600px;
-      transition: all 500ms; }
+        opacity: 1;
+        max-height: 600px;
+        transition: all 500ms; }
 
     .display-exit {
-      opacity: 1;
-      max-height: 600px; }
+        opacity: 1;
+        max-height: 600px; }
 
     .display-exit-active {
-      opacity: 0;
-      max-height: 0;
-      transition: all 500ms; }
+        opacity: 0;
+        max-height: 0;
+        transition: all 500ms; }
 `;
 
 const HistoryCard = (props) => {
     const { getCustomerNameById, getDeviceById, service, id } = props;
-    const [ extended, updateExtended ] = React.useState(false);     
+    const [extended, updateExtended] = React.useState(false);
 
-    const extendHistoryItem = () => updateExtended(!extended);    
+    const extendHistoryItem = () => updateExtended(!extended);
+
+    const renderDevices = () => {
+        return (
+            service.devices.map((id, index) => {
+                const coma = (index < service.devices.length - 1) ? ', ' : '';
+                return `${getDeviceById(id)}${coma}`;
+            })
+        );
+    }
 
     return (
-        <StyledHistoryCard>
+        <StyledHistoryCard colors={colors} status={service.status}>
+            <div className="header">
+                <div className="indicator"></div>
+                <div className="text">
+                    <div className="heading">{service.title}</div>
+                    <div className="subheading">
+                        {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
+                    </div>
+                </div>
+            </div>
             <div className="body">
-              <div className="section">
-                  <div className="text"><strong>{service.title}</strong></div>
-                  <div className="text text--alt">
-                  {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
-                  </div>
-              </div>
-              <Devices devices={service.devices} getDeviceById={getDeviceById} />
-              <div className="side">
-                  <div className="date">{new Date(service.date).toLocaleDateString()}</div>
-                  <div className="status">{service.status}</div>  
-              </div>
-              <button 
-                className="btn"
-                onClick={extendHistoryItem}
-                >{extended ? 'Show Less' : 'Show more'}</button>
-                <button 
-                  className="btn"
-                  onClick={() => props.updatePromptedId(id)}
-                >Delete</button>                         
-                <button 
-                  className="btn"
-                >Update</button>
+                <div className="block">
+                    <div className="heading">Description</div>
+                    <div className="content">{service.description}</div>
+                </div>
+                <div className="block">
+                    <div className="heading">Devices</div>
+                    <div className="content">
+                        {renderDevices()}
+                    </div>
+                </div>
+                <div className="block">
+                    <div className="heading">Date</div>
+                    <div className="content">
+                        {new Date(service.date).toLocaleDateString()}
+                    </div>
+                </div>
+                <CSSTransition
+                    in={extended}
+                    timeout={500}
+                    classNames="display"
+                    unmountOnExit
+                    appear
+                >
+                    <div className="block">
+                        <div className="heading">Description</div>
+                        <div className="content">{service.description}</div>
+                    </div>
+                </CSSTransition>
             </div>
-            <CSSTransition 
-                in={extended} 
-                timeout={500} 
-                classNames="display"
-                unmountOnExit
-                appear
-            >
             <div className="footer">
-                {service.description}
+                <button>Update</button>
+                <button onClick={() => props.updatePromptedId(id)}>Delete</button>
+                <button onClick={extendHistoryItem}>{extended ? 'Collapse' : 'Expand'}</button>
             </div>
-            </CSSTransition>
         </StyledHistoryCard>
     );
 };
