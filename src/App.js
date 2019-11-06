@@ -4,47 +4,18 @@ import Logo from './components/Logo';
 import Nav from './components/Nav';
 import Main from './components/Main';
 import Side from './components/Side';
+import LoadingSpinner from './components/LoadingSpinner';
 import base from './base';
 
 class App extends React.Component {
   state = {
-    activeNavItemKey: "newService",
-    ssot : {
-      services: {
-        service1: {
-          title: "Service item 1",
-          description: "some description",
-          date: "11/09/19",
-          remark: "some remark for service 1",
-          status: "completed",
-          actions: ["action1"],
-          devices: ["device1"],
-          customers: ["customer1"],
-        }
-      },
-      actions: {
-        action1: {
-          name: "Windows intallation",
-          price: 1500
-        }
-      },
-      devices: {
-        device1: {
-          manufacturer: "HP",
-          model: "Home Server",
-          name: "HP Home Server",
-          serial: "12345",
-          title: ""
-        }
-      },
-      customers: {
-        customer1: {
-          name: "Aleksandar Gojkovic",
-          phone: "064/109-61-57",
-          email: "aleksfrontend@gmail.com",
-          facebook: "/",
-        }
-      }
+    activeNavItemKey: "history",
+    loaded: false,
+    ssot: {
+      services: {},
+      actions: {},
+      devices: {},
+      customers: {}
     }
   }
 
@@ -53,6 +24,12 @@ class App extends React.Component {
       context: this,
       state: 'ssot'
     });
+  }
+  
+  componentDidUpdate() {
+    if ( !this.state.loaded ) {
+      this.setState({loaded: true});
+    }
   }
 
   addService = (service) => {
@@ -159,6 +136,12 @@ class App extends React.Component {
     this.setState({ activeNavItemKey: key });
   }
 
+  renderLoadingSpinner = () => {
+    if ( !this.state.loaded ) {
+      return <LoadingSpinner />
+    }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -185,6 +168,7 @@ class App extends React.Component {
           deleteEntity={this.deleteEntity} 
           updateEntity={this.updateEntity} 
           findServiceByEntityId={this.findServiceByEntityId}
+          renderLoadingSpinner={this.renderLoadingSpinner}
         />
       </React.Fragment>
     );

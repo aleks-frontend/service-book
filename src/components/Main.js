@@ -80,6 +80,11 @@ const Main = (props) => {
                 return <Dashboard />;
             case 'history':
                 return <History
+                    customers={props.customers}
+                    devices={props.devices}
+                    actions={props.actions}
+                    addEntity={props.addEntity}
+                    showSnackbar={showSnackbar}                
                     services={props.services}
                     deleteService={props.deleteService}
                     getCustomerNameById={props.getCustomerNameById}
@@ -91,10 +96,12 @@ const Main = (props) => {
                 return <NewService
                     customers={props.customers}
                     devices={props.devices}
+                    actions={props.actions}
                     addService={props.addService}
                     addEntity={props.addEntity}
                     showSnackbar={showSnackbar}
                     fields={fields}
+                    isUpdate={true}
                 />;
             case 'customers':
                 return <Customers
@@ -135,6 +142,7 @@ const Main = (props) => {
         <StyledMain>
             {renderComponent(props)}
             {renderSnackbar()}
+            {props.renderLoadingSpinner()}
         </StyledMain>
     );
 };
