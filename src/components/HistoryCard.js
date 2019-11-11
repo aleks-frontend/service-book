@@ -7,35 +7,54 @@ import { colors } from '../helpers';
 const StyledHistoryCard = styled.div`
     display: flex;
     flex-direction: column;
+    grid-row: ${props => props.extended ? 'span 2' : 'auto'};
     padding: 2rem;
-    margin-bottom: 2rem;
-    margin-left: 2rem;
-    width: calc(50% - 2rem);
-    height: 38rem;
     background: #fff;
     box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
-    max-width: 44rem;
+
+    &.card-appear-active {
+        opacity: 0;
+        transform: scale(0, 0);
+    }
+
+    &.card-appear-done {
+        transition: 0.5s all;
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+
+    &.card-exit {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+
+    &.card-exit-active {
+        transition: 0.5s all;
+        opacity: 0;
+        transform: scale(0, 0);
+    }
 
     .header {
         display: flex;
         align-items: center;
         padding-bottom: 1.5rem;
         margin-bottom: 2rem;
-        border-bottom: ${(props) => `1px solid ${props.colors.gray}`};
+        border-bottom: ${`1px solid ${colors.gray}`};
 
         .indicator {
+            flex-shrink: 0;
             width: 4.3rem;
             height: 4.3rem;
             border-radius: 50%;
             background: ${props => {
-        if (props.status === 'received') {
-            return props.colors.yellow;
-        } else if (props.status === 'completed') {
-            return props.colors.green;
-        } else {
-            return props.colors.orange;
-        }
-    }}
+                if (props.status === 'received') {
+                    return colors.yellow;
+                } else if (props.status === 'completed') {
+                    return colors.green;
+                } else {
+                    return colors.orange;
+                }
+            }}
         }
 
         .text {
@@ -48,7 +67,7 @@ const StyledHistoryCard = styled.div`
 
             .subheading { 
                 font-size: 1.5rem; 
-                color: ${props => props.colors.gray}; }
+                color: ${colors.gray}; }
         }
     }
 
@@ -65,7 +84,7 @@ const StyledHistoryCard = styled.div`
             
             .content {
                 font-size: 1.3rem;
-                color: ${props => props.colors.gray}; }
+                color: ${colors.gray}; }
         }
     }
 
@@ -77,7 +96,7 @@ const StyledHistoryCard = styled.div`
             padding: 0;
             font-size: 1.8rem;
             font-weight: 700;
-            color: ${props => props.colors.dpblue};
+            color: ${colors.dpblue};
             border: none;
             background: transparent;
             text-transform: uppercase;
@@ -107,7 +126,7 @@ const StyledHistoryCard = styled.div`
 `;
 
 const HistoryCard = (props) => {
-    const { getCustomerNameById, getDeviceById, service, id } = props;
+    const { getCustomerNameById, getDeviceById, getActionNameById, service, id } = props;
     const [extended, updateExtended] = React.useState(false);
 
     const extendHistoryItem = () => updateExtended(!extended);
@@ -121,8 +140,20 @@ const HistoryCard = (props) => {
         );
     }
 
+    const renderActions = () => {
+        if ( !service.actions ) {
+            return <li>No actions added yet.</li>;
+        } else {
+            return (
+                service.actions.map(action => {
+                    return <li key={action.rowId}>{getActionNameById(action.actionId)} {action.quantity} {action.price}</li>;
+                })
+            );
+        }
+    }
+
     return (
-        <StyledHistoryCard colors={colors} status={service.status}>
+        <StyledHistoryCard status={service.status} extended={extended}>
             <div className="header">
                 <div className="indicator"></div>
                 <div className="text">
@@ -156,14 +187,24 @@ const HistoryCard = (props) => {
                     unmountOnExit
                     appear
                 >
-                    <div className="block">
-                        <div className="heading">Description</div>
-                        <div className="content">{service.description}</div>
-                    </div>
+                    <React.Fragment>
+                        <div className="block">
+                            <div className="heading">Remarks</div>
+                            <div className="content">{service.remark}</div>
+                        </div>
+                        <div className="block">
+                            <div className="heading">Actions</div>
+                            <div className="content">
+                                <ul>
+                                    {renderActions()}
+                                </ul>
+                            </div>
+                        </div>
+                    </React.Fragment>
                 </CSSTransition>
             </div>
             <div className="footer">
-                <button>Update</button>
+                <button onClick={() => props.showPopup(id)}>Update</button>
                 <button onClick={() => props.updatePromptedId(id)}>Delete</button>
                 <button onClick={extendHistoryItem}>{extended ? 'Collapse' : 'Expand'}</button>
             </div>

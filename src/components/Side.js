@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledSide = styled.div`
+    flex-shrink: 0;
     width: 200px;
     color: #fff;
     background: #313442;

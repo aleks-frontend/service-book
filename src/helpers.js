@@ -67,7 +67,14 @@ export const colors = {
     dpblue: '#358CFF',
     dpgray: '#313442',
     gray: '#616161',
+    lightgray: '#cccccc',
     green: '#32CD32',
     yellow: '#fbe555',
     orange: '#f45905',
 };
+
+export const breakpoints = {
+    pointLargeGrid: 'max-width: 1260px',
+    point1: 'max-width: 1024px',
+    pointSmallGrid: 'max-width: 930px',
+}

@@ -34,7 +34,14 @@ class App extends React.Component {
 
   addService = (service) => {
     const services = {...this.state.ssot.services, [new Date().getTime()]: service};
+    console.log(services);
     this.setState({ ssot: {...this.state.ssot, services: services} });    
+  }
+
+  updateService = (service, id) => {
+    const services = {...this.state.ssot.services};
+    services[id] = service;
+    this.setState({ ssot: {...this.state.ssot, services: services} });
   }
 
   deleteService = (id) => {
@@ -91,8 +98,8 @@ class App extends React.Component {
     return arr.sort((a, b) => {
       let itemA; 
       let itemB; 
-      const propValueA = this.state.ssot.services[a][criteria]
-      const propValueB = this.state.ssot.services[b][criteria]
+      const propValueA = this.state.ssot.services[a][criteria];
+      const propValueB = this.state.ssot.services[b][criteria];
       
       if ( Array.isArray(propValueA) ) {
         itemA = propValueA.length ? this.state.ssot[criteria][propValueA[0]] : '';
@@ -101,9 +108,12 @@ class App extends React.Component {
         itemA = itemA.name || '';
         itemB = itemB.name || '';
         
-      } else {
-        itemA = propValueA.toUpperCase();
-        itemB = propValueB.toUpperCase();
+      } else if ( typeof propValueA === 'string'  ) {
+        itemA = propValueA.toLowerCase();
+        itemB = propValueB.toLowerCase();
+      } else { // Situation when we are sorting by date - so the type will be number
+        // Needed to invert values here
+        [itemA, itemB] = [propValueB, propValueA];
       }
 
       if ( itemA < itemB ) {
@@ -124,13 +134,13 @@ class App extends React.Component {
     });      
   }
   
-  getCustomerNameById = id => {
-    return this.state.ssot.customers[id].name;
-  }
+  getCustomerNameById = id => this.state.ssot.customers[id].name;
 
   getDeviceById = id => {
     return `${this.state.ssot.devices[id].manufacturer} ${this.state.ssot.devices[id].model}`;
   }
+
+  getActionNameById = id => this.state.ssot.actions[id].name;
 
   setNavActive = key => {    
     this.setState({ activeNavItemKey: key });
@@ -159,10 +169,12 @@ class App extends React.Component {
           actions={this.state.ssot.actions}
           devices={this.state.ssot.devices}
           getCustomerNameById={this.getCustomerNameById} 
-          getDeviceById={this.getDeviceById}     
+          getDeviceById={this.getDeviceById}   
+          getActionNameById={this.getActionNameById}  
           filterServices={this.filterServices}      
           sortServices={this.sortServices}     
           addService={this.addService} 
+          updateService={this.updateService}
           deleteService={this.deleteService}
           addEntity={this.addEntity} 
           deleteEntity={this.deleteEntity} 

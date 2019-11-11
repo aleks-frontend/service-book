@@ -1,11 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 import SortArrow from './SortArrow';
+import { colors } from '../helpers';
 
 const StyledControls = styled.div`
     display: flex;
-    align-items: center;
     justify-content: space-between;
+
+    .sort {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        margin-right: 1rem;
+        border: 1px solid ${colors.lightgray};
+        border-radius: 0.4rem;
+
+        label {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            color: ${colors.gray} }
+    }
+
+    input[type="text"] {
+        padding: 0 0.5rem;
+        border-radius: 0.3rem;
+        border: 1px solid ${colors.lightgray};
+    }
 `;
 
 const Controls = (props) => {
@@ -16,18 +36,23 @@ const Controls = (props) => {
     const filterInputRef = React.createRef();  
     const sortInputRef = React.createRef();
 
-
-
     return (
         <StyledControls>
-            <SortArrow 
-                sortDirectionAsc={props.sortDirectionAsc}
-                handleSortDirectionClick={props.handleSortDirectionClick}     
-            />
-            <select ref={sortInputRef} onChange={() => props.handleSortCriteriaChange(sortInputRef.current.value)}>
-                <option value="customers">Customer Name</option>
-                <option value="title">Service Title</option>
-            </select>
+            <div className="sort">
+                <label>Sort by: </label>
+                <select 
+                    ref={sortInputRef} 
+                    onChange={() => props.handleSortCriteriaChange(sortInputRef.current.value)}
+                >
+                    <option value="date">Date</option>
+                    <option value="customers">Customer Name</option>
+                    <option value="title">Service Title</option>
+                </select>
+                <SortArrow 
+                    sortDirectionAsc={props.sortDirectionAsc}
+                    handleSortDirectionClick={props.handleSortDirectionClick}     
+                />
+            </div>
             <input 
             type="text" 
             placeholder="Filter" 

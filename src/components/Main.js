@@ -15,6 +15,7 @@ import DevicesPage from './DevicesPage';
 
 const StyledMain = styled.div`
     flex: 1;
+    overflow: auto;
 `;
 
 const useStyles = makeStyles(theme => ({
@@ -83,12 +84,14 @@ const Main = (props) => {
                     customers={props.customers}
                     devices={props.devices}
                     actions={props.actions}
+                    updateService={props.updateService}
                     addEntity={props.addEntity}
                     showSnackbar={showSnackbar}                
                     services={props.services}
                     deleteService={props.deleteService}
                     getCustomerNameById={props.getCustomerNameById}
                     getDeviceById={props.getDeviceById}
+                    getActionNameById={props.getActionNameById}
                     filterServices={props.filterServices}
                     sortServices={props.sortServices}
                 />;
