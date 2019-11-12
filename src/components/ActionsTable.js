@@ -131,11 +131,15 @@ const ActionsTable = (props) => {
         setState({...state, actionRows: actionRowsStateCopy});
 
         // Validating rows and sending to ServiceForm
+        validateAndSendToServiceForm(actionRowsStateCopy);
+    }
+
+    const validateAndSendToServiceForm = (actionRowsStateCopy) => {
         let validatedActionRows = actionRowsStateCopy.filter(actionRow => ( 
             actionRow.actionId !== "" && actionRow.quantity !== "" && actionRow.price !== "" )
         );
 
-        props.updateServiceFormActionsState(validatedActionRows);
+        props.updateServiceFormActionsState(validatedActionRows);        
     }
 
     /** Input Handler Methods **/
@@ -168,11 +172,13 @@ const ActionsTable = (props) => {
         const actionRowsStateCopy = [ ...state.actionRows ].filter(row => row.rowId !== rowId);
 
         setState({...state, actionRows: actionRowsStateCopy});
+        // Validating rows and sending to ServiceForm
+        validateAndSendToServiceForm(actionRowsStateCopy);
     }
 
     /** Render Methods **/
     const renderTableHeder = () => {
-        if (state.actionRows.length) {
+        if (state.actionRows) {
             return (
                 <React.Fragment>
                     <div className="headerBg"></div>
@@ -190,6 +196,8 @@ const ActionsTable = (props) => {
     }
 
     const renderRows = () => {
+        if ( !state.actionRows ) return null;
+
         return state.actionRows.map((actionRow, index) => {
             return (
                 <React.Fragment key={actionRow.rowId}>
@@ -200,13 +208,17 @@ const ActionsTable = (props) => {
                         }))}
                         className="select"
                         name={actionRow.rowId}
-                        value={actionRow.actionId !== "" ? {
+                        value={actionRow.actionId !== '' ? {
                             value: actionRow.actionId,
                             label: props.mainStateActions[actionRow.actionId].name
-                        } : ""}
+                        } : ''}
                         onChange={handleDropdownChange}
                         onCreateOption={handleCreateAction}                        
-                        isValidNewOption={() => index === state.actionRows.length - 1}
+                        isValidNewOption={(inputValue) => {
+                            if ( inputValue !== "" && index === state.actionRows.length - 1 ) {
+                                return true;
+                            }
+                        }}
                         tabSelectsValue={false}
                     />
                     <StyledActionsTableCell col={2}>
@@ -239,6 +251,8 @@ const ActionsTable = (props) => {
     }
 
     const renderTotal = () => {
+        if ( !state.actionRows ) return null;
+        
         return state.actionRows.reduce((total, row) => {
             return total + Number(row.price * row.quantity);
         }, 0);
