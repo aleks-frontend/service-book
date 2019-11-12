@@ -70,7 +70,12 @@ class App extends React.Component {
     if ( searchText === '' ) return true;
     
     for ( const serviceKey of Object.keys(service) ) {
-      const serviceProp = service[serviceKey];
+      let serviceProp;
+      if ( serviceKey === 'actions' ) {
+        serviceProp = service[serviceKey].map(actionItem => actionItem.actionId);
+      } else {
+        serviceProp = service[serviceKey];
+      }
 
       if ( typeof serviceProp === 'boolean' || typeof serviceProp === 'number' ) continue;
       if ( !Array.isArray(serviceProp)  ) {
@@ -80,7 +85,6 @@ class App extends React.Component {
       } else {
         for ( const servicePropKey of serviceProp ) {
           const relatedObj = this.state.ssot[serviceKey][servicePropKey];
-          
           for ( const relatedObjKey of Object.keys(relatedObj) ) {
             if ( String(relatedObj[relatedObjKey]).toLowerCase().includes(searchText.toLowerCase()) ) {
               return true;
@@ -129,9 +133,23 @@ class App extends React.Component {
   }
 
   findServiceByEntityId = (id, entityType) => {
-    return Object.keys(this.state.ssot.services).find(key => {
-      return this.state.ssot.services[key][entityType].indexOf(id) > -1;
-    });      
+    if ( entityType === 'actions' ) {
+      return Object.keys(this.state.ssot.services).find(key => {
+        // Checking if actions is an empty string or undefined
+        if ( !this.state.ssot.services[key][entityType] ) return false;
+        
+        return this.state.ssot.services[key][entityType].find(actionItem => {          
+          if ( actionItem.actionId === id ) {
+            return true;
+          }
+        });
+      });        
+    } else {
+      return Object.keys(this.state.ssot.services).find(key => {
+        return this.state.ssot.services[key][entityType].indexOf(id) > -1;
+      });
+    }
+    
   }
   
   getCustomerNameById = id => this.state.ssot.customers[id].name;

@@ -43,6 +43,7 @@ const DisplayEntity = (props) => {
                 alert(`${formatedLabel} in use`);
                 return;
               }
+              
               setTimeout(() => {
                 resolve();
                 const data = [...state.data];

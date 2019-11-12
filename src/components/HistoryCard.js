@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
 import { colors } from '../helpers';
+import color from '@material-ui/core/colors/green';
 
 const StyledHistoryCard = styled.div`
     display: flex;
@@ -102,6 +103,7 @@ const StyledHistoryCard = styled.div`
             text-transform: uppercase;
 
             &:hover { cursor: pointer; }
+            &:focus { outline: 0; }
         }
     }
 
@@ -125,6 +127,41 @@ const StyledHistoryCard = styled.div`
         transition: all 500ms; }
 `;
 
+const StyledActions = styled.div`
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-gap: 2rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    font-size: 1.3rem;
+    color: #000;
+    border-top: 1px solid ${colors.gray};
+    
+    .name { margin-bottom: 0.5rem; }
+    
+    .quantity {
+        font-size: 1.1rem;
+        color: ${colors.gray}; }
+
+    .price { 
+        text-align: right; 
+
+        &--total {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .divider {
+        grid-column: 1 / -1;
+        height: 1px;
+        background-color: ${colors.gray}; }
+
+    .total {
+        font-size: 1.5rem;
+        color: ${colors.gray}; 
+        text-transform: uppercase; }
+`;
+
 const HistoryCard = (props) => {
     const { getCustomerNameById, getDeviceById, getActionNameById, service, id } = props;
     const [extended, updateExtended] = React.useState(false);
@@ -141,15 +178,42 @@ const HistoryCard = (props) => {
     }
 
     const renderActions = () => {
-        if ( !service.actions ) {
-            return <li>No actions added yet.</li>;
-        } else {
-            return (
-                service.actions.map(action => {
-                    return <li key={action.rowId}>{getActionNameById(action.actionId)} {action.quantity} {action.price}</li>;
-                })
-            );
-        }
+        return (
+            <StyledActions>
+                {renderActionsRows()}
+                {renderActionsFooter()}
+            </StyledActions>
+        )
+    }
+
+    const renderActionsRows = () => {
+        return (
+            service.actions.map(action => {
+                return (                    
+                    <React.Fragment key={action.rowId}>
+                    <div className="text">
+                        <div className="name">{getActionNameById(action.actionId)}</div>
+                        <div className="quantity">quantity: {action.quantity}</div>
+                    </div>
+                    <div className="price">$ {action.price * action.quantity}</div>
+                    </React.Fragment>
+                )
+            })
+        )
+    }
+
+    const renderActionsFooter = () => {
+        const total = service.actions.reduce((total, action) => {
+            return total + action.quantity * action.price;
+        }, 0);
+
+        return (
+            <React.Fragment>
+                <div className="divider"></div>
+                <div className="total">Total</div>
+                <div className="price price--total">$ {total}</div>
+            </React.Fragment>
+        );
     }
 
     return (
@@ -193,11 +257,9 @@ const HistoryCard = (props) => {
                             <div className="content">{service.remark}</div>
                         </div>
                         <div className="block">
-                            <div className="heading">Actions</div>
+                            <div className="heading">Actions and pricing</div>
                             <div className="content">
-                                <ul>
-                                    {renderActions()}
-                                </ul>
+                                {service.actions ? renderActions() : 'No actions added yet.'}
                             </div>
                         </div>
                     </React.Fragment>
