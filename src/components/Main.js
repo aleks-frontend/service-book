@@ -11,7 +11,7 @@ import History from './History';
 import NewService from './NewService';
 import Customers from './Customers';
 import Actions from './Actions';
-import DevicesPage from './DevicesPage';
+import Devices from './Devices';
 
 const StyledMain = styled.div`
     flex: 1;
@@ -127,7 +127,7 @@ const Main = (props) => {
                     fields={fields}
                 />;
             case 'devices':
-                return <DevicesPage
+                return <Devices
                     devices={props.devices}
                     addEntity={props.addEntity}
                     deleteEntity={props.deleteEntity}
