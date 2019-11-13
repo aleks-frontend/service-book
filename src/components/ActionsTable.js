@@ -161,7 +161,7 @@ const ActionsTable = (props) => {
     const handleInputFocus = (event) => event.target.select();
 
     const handleCreateAction = (event) => {
-        const actionId = new Date().getTime();
+        const actionId = String(new Date().getTime());
         const rowId = state.actionRows[state.actionRows.length - 1].rowId;
 
         props.addEntity({name: event, price: 0}, actionId, 'actions');
