@@ -71,6 +71,7 @@ export const colors = {
     green: '#32CD32',
     yellow: '#fbe555',
     orange: '#f45905',
+    purple: '#8A2BE2',
 };
 
 export const breakpoints = {

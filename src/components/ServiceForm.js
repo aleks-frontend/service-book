@@ -389,6 +389,7 @@ const ServiceForm = (props) => {
                             <option value="received">Received</option>
                             <option value="in progress">In Progress</option>
                             <option value="completed">Completed</option>
+                            <option value="shipped">Shipped</option>
                         </select>
                     </div>
                 </React.Fragment>

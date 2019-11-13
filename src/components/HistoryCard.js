@@ -52,6 +52,8 @@ const StyledHistoryCard = styled.div`
                     return colors.yellow;
                 } else if (props.status === 'completed') {
                     return colors.green;
+                } else if (props.status === 'shipped') {
+                    return colors.purple;
                 } else {
                     return colors.orange;
                 }

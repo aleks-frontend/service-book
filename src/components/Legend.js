@@ -8,7 +8,7 @@ const StyledLegend = styled.div`
     margin-bottom: 2rem;
 `;
 
-const StyledLegenItem = styled.div`
+const StyledLegendItem = styled.div`
     display: flex;
     align-items: center;
     margin-right: 2rem;
@@ -20,11 +20,13 @@ const StyledLegenItem = styled.div`
         border-radius: 50%;
         background: ${ props => {
             if (props.status === 'received') {
-                return props.colors.yellow;
+                return colors.yellow;
             } else if (props.status === 'completed') {
-                return props.colors.green;
+                return colors.green;
+            } else if (props.status === 'shipped') {
+                return colors.purple;
             } else {
-                return props.colors.orange;
+                return colors.orange;
             }
         }};
     }
@@ -35,18 +37,22 @@ const StyledLegenItem = styled.div`
 const Legend = () => {
     return (
         <StyledLegend>
-            <StyledLegenItem colors={colors} status="received">
+            <StyledLegendItem colors={colors} status="received">
                 <div className="legend__indicator"></div>
                 <div className="legend__label">Received</div>
-            </StyledLegenItem>
-            <StyledLegenItem colors={colors} status="in progress">
+            </StyledLegendItem>
+            <StyledLegendItem colors={colors} status="in progress">
                 <div className="legend__indicator"></div>
                 <div className="legend__label">In Progress</div>
-            </StyledLegenItem>
-            <StyledLegenItem colors={colors} status="completed">
+            </StyledLegendItem>
+            <StyledLegendItem colors={colors} status="completed">
                 <div className="legend__indicator"></div>
                 <div className="legend__label">Completed</div>
-            </StyledLegenItem>
+            </StyledLegendItem>
+            <StyledLegendItem colors={colors} status="shipped">
+                <div className="legend__indicator"></div>
+                <div className="legend__label">Shipped</div>
+            </StyledLegendItem>
         </StyledLegend>
     );
 };
