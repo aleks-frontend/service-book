@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.css';
-import Logo from './components/Logo';
-import Nav from './components/Nav';
+import Logo from './components/UI/Logo';
+import Nav from './components/UI/Nav';
 import Main from './components/Main';
-import Side from './components/Side';
-import LoadingSpinner from './components/LoadingSpinner';
+import Side from './components/UI/Side';
+import LoadingSpinner from './components/UI/LoadingSpinner';
 import base from './base';
 
 class App extends React.Component {

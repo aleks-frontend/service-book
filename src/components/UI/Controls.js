@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SortArrow from './SortArrow';
-import { colors } from '../helpers';
+import { colors } from '../../helpers';
 
 const StyledControls = styled.div`
     display: flex;

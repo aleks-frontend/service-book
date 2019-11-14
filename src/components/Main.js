@@ -5,13 +5,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-import Dashboard from './Dashboard';
+import ScreensDashboard from '../screens/Dashboard';
 import { fields } from '../helpers';
-import History from './History';
-import NewService from './NewService';
-import Customers from './Customers';
-import Actions from './Actions';
-import Devices from './Devices';
+import ScreensHistory from '../screens/History';
+import ScreensNewService from '../screens/NewService';
+import ScreensCustomers from '../screens/Customers';
+import ScreensActions from '../screens/Actions';
+import ScreensDevices from '../screens/Devices';
 
 const StyledMain = styled.div`
     flex: 1;
@@ -78,9 +78,9 @@ const Main = (props) => {
     const renderComponent = (props) => {
         switch (props.activeNavItemKey) {
             case 'home':
-                return <Dashboard />;
+                return <ScreensDashboard />;
             case 'history':
-                return <History
+                return <ScreensHistory
                     customers={props.customers}
                     devices={props.devices}
                     actions={props.actions}
@@ -96,7 +96,7 @@ const Main = (props) => {
                     sortServices={props.sortServices}
                 />;
             case 'newService':
-                return <NewService
+                return <ScreensNewService
                     customers={props.customers}
                     devices={props.devices}
                     actions={props.actions}
@@ -107,7 +107,7 @@ const Main = (props) => {
                     isUpdate={true}
                 />;
             case 'customers':
-                return <Customers
+                return <ScreensCustomers
                     customers={props.customers}
                     addEntity={props.addEntity}
                     deleteEntity={props.deleteEntity}
@@ -117,7 +117,7 @@ const Main = (props) => {
                     fields={fields}
                 />;
             case 'actions':
-                return <Actions
+                return <ScreensActions
                     actions={props.actions}
                     addEntity={props.addEntity}
                     deleteEntity={props.deleteEntity}
@@ -127,7 +127,7 @@ const Main = (props) => {
                     fields={fields}
                 />;
             case 'devices':
-                return <Devices
+                return <ScreensDevices
                     devices={props.devices}
                     addEntity={props.addEntity}
                     deleteEntity={props.deleteEntity}
@@ -137,7 +137,7 @@ const Main = (props) => {
                     fields={fields}
                 />;
             default:
-                return <Dashboard />;
+                return <ScreensDashboard />;
         }
     }
 

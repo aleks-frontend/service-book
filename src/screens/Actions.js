@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from './Header';
-import Body from './Body';
-import DisplayEntity from './DisplayEntity';
-import CreateEntity from './CreateEntity';
-import CreateEntityButton from './CreateEntityButton';
-import Popup from './Popup';
+import Header from '../components/UI/Header';
+import Body from '../components/UI/Body';
+import DisplayEntity from '../components/DisplayEntity';
+import CreateEntity from '../components/CreateEntity';
+import CreateEntityButton from '../components/UI/CreateEntityButton';
+import Popup from '../components/UI/Popup';
 
-const Actions = (props) => {
+const ScreensActions = (props) => {
 	const [state, setState] = React.useState({
 		showPopup: false
 	});
@@ -60,4 +60,4 @@ const Actions = (props) => {
 	);
 }
 
-export default Actions;
+export default ScreensActions;

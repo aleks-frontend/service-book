@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from './Header';
-import Body from './Body';
-import ServiceForm from './ServiceForm';
+import Header from '../components/UI/Header';
+import Body from '../components/UI/Body';
+import ServiceForm from '../components/ServiceForm';
 
 
-const NewService = (props) => {
+const ScreensNewService = (props) => {
     return (
         <React.Fragment>
             <Header title="New Service" />
@@ -24,4 +24,4 @@ const NewService = (props) => {
     );
 }
 
-export default NewService;
+export default ScreensNewService;

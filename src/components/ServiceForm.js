@@ -9,7 +9,6 @@ import { colors } from '../helpers';
 const StyledForm = styled.form`
     padding: 1.5rem 1.5rem 2.5rem;
     width: 80rem;
-    max-height: 100%;
     max-width: 100%;
     background: #fff;
     border-radius: 0.4rem;
@@ -399,7 +398,10 @@ const ServiceForm = (props) => {
 
     return (
         <React.Fragment>
-            <StyledForm onSubmit={handleFormSubmit} onClick={e => e.stopPropagation()}>
+            <StyledForm 
+                onSubmit={handleFormSubmit} 
+                onClick={e => e.stopPropagation()}
+            >
                 <div
                     className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
                 >

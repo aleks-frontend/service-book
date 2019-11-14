@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from './Header';
-import Body from './Body';
-import DisplayEntity from './DisplayEntity';
-import CreateEntity from './CreateEntity';
-import CreateEntityButton from './CreateEntityButton';
-import Popup from './Popup';
+import Header from '../components/UI/Header';
+import Body from '../components/UI/Body';
+import DisplayEntity from '../components/DisplayEntity';
+import CreateEntity from '../components/CreateEntity';
+import CreateEntityButton from '../components/UI/CreateEntityButton';
+import Popup from '../components/UI/Popup';
 
-const Devices = (props) => {
+const ScreensDevices = (props) => {
     const [state, setState] = React.useState({
         showPopup: false
     });
@@ -59,4 +59,4 @@ const Devices = (props) => {
     );
 }
 
-export default Devices;
+export default ScreensDevices;

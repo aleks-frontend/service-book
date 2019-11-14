@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
-import Header from './Header';
-import Body from './Body';
-import HistoryCard from './HistoryCard';
-import ServiceForm from './ServiceForm';
-import Controls from './Controls';
-import DeletePrompt from './DeletePrompt';
-import Popup from './Popup';
-import { fields, breakpoints } from '../helpers';
-import Legend from './Legend';
+import Header from '../components/UI/Header';
+import Body from '../components/UI/Body';
+import HistoryCard from '../components/HistoryCard';
+import ServiceForm from '../components/ServiceForm';
+import Controls from '../components/UI/Controls';
+import DeletePrompt from '../components/UI/DeletePrompt';
+import Popup from '../components/UI/Popup';
+import { fields } from '../helpers';
+import Legend from '../components/UI/Legend';
 
 const StyledHistoryContainer = styled.div`
 	display: grid;
