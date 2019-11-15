@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 
+import Button from './UI/Button.js'
 import { colors } from '../helpers';
 
 const StyledActionsTable = styled.div`
@@ -263,10 +264,10 @@ const ActionsTable = (props) => {
             {renderTableHeder()}
             {renderRows()}
             <div className="footer">
-                <div 
-                    className="button"
+                <Button 
                     onClick={addActionRow}
-                >Add Action</div>
+                    type="button"
+                >Add Action</Button>
                 <div className="total">Total: {renderTotal()}</div>
             </div>
         </StyledActionsTable>

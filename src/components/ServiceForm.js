@@ -3,13 +3,17 @@ import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 import CreateEntity from './CreateEntity';
 import ActionsTable from './ActionsTable';
+import Button from './UI/Button';
 import { breakpoints } from '../helpers';
 import { colors } from '../helpers';
 
 const StyledForm = styled.form`
+    position: relative;
+    overflow: ${props => props.isUpdate ? 'auto' : 'visible'};
     padding: 1.5rem 1.5rem 2.5rem;
     width: 80rem;
     max-width: 100%;
+    max-height: ${props => props.isUpdate ? '100%' : 'none'};
     background: #fff;
     border-radius: 0.4rem;
 
@@ -396,36 +400,49 @@ const ServiceForm = (props) => {
         }
     };
 
+    const renderCancelButton = () => {
+        if ( props.isUpdate ) {
+            return (
+                <Button
+                    type="button"
+                    onClick={props.hidePopup}
+                    isText={true}
+                >Cancel</Button>
+            );
+        }
+    }
+
     return (
         <React.Fragment>
             <StyledForm 
                 onSubmit={handleFormSubmit} 
                 onClick={e => e.stopPropagation()}
+                isUpdate={props.isUpdate}
             >
                 <div
                     className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
-                >
+                    >
                     <label>Title:</label>
                     <input
                         type="text"
                         name="title"
                         value={state.inputs.title.value}
                         onChange={handleInputChange}
-                    />
+                        />
                 </div>
                 <div
                     className={state.emptyRequiredInputs['description'] ? 'group empty-required' : 'group'}
-                >
+                    >
                     <label>Description:</label>
                     <textarea
                         name="description"
                         value={state.inputs.description.value}
                         onChange={handleInputChange}
-                    />
+                        />
                 </div>
                 <div
                     className={state.emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'}
-                >
+                    >
                     <label>Customer:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['customers']}
@@ -435,12 +452,12 @@ const ServiceForm = (props) => {
                         onChange={handleDropdownChange}
                         onCreateOption={handleCreateCustomer}
                         isClearable
-                    />
+                        />
                 </div>
                 {renderCreateCustomer()}
                 <div
                     className={state.emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'}
-                >
+                    >
                     <label>Devices:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['devices']}
@@ -450,13 +467,17 @@ const ServiceForm = (props) => {
                         name="devices"
                         onCreateOption={handleCreateDevice}
                         onChange={handleDropdownChange}
-                    />
+                        />
                 </div>
                 {renderCreateDevice()}
                 {renderUpdateFields()}
-                <button type="submit">
+                <Button 
+                    type="submit"
+                    onClick={handleFormSubmit}
+                >
                     {props.isUpdate ? 'Update' : 'Create'}
-                </button>
+                </Button>
+                {renderCancelButton()}
             </StyledForm>
         </React.Fragment>
     );
