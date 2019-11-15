@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { CSSTransition } from 'react-transition-group';
 
 import { colors } from '../helpers';
 import color from '@material-ui/core/colors/green';
@@ -108,25 +107,6 @@ const StyledHistoryCard = styled.div`
             &:focus { outline: 0; }
         }
     }
-
-    .display-enter {
-        opacity: 0;
-        max-height: 0; }
-
-    .display-enter-active,
-    .display-enter-done {
-        opacity: 1;
-        max-height: 600px;
-        transition: all 500ms; }
-
-    .display-exit {
-        opacity: 1;
-        max-height: 600px; }
-
-    .display-exit-active {
-        opacity: 0;
-        max-height: 0;
-        transition: all 500ms; }
 `;
 
 const StyledActions = styled.div`
@@ -166,10 +146,14 @@ const StyledActions = styled.div`
 
 const HistoryCard = (props) => {
     const { getCustomerNameById, getDeviceById, getActionNameById, service, id } = props;
+
+    /** Setting up the state **/
     const [extended, updateExtended] = React.useState(false);
 
+    /** Expand and collapse the HistoryCard **/
     const extendHistoryItem = () => updateExtended(!extended);
 
+    /** Render Methods **/
     const renderDevices = () => {
         return (
             service.devices.map((id, index) => {
@@ -246,13 +230,7 @@ const HistoryCard = (props) => {
                         {new Date(service.date).toLocaleDateString()}
                     </div>
                 </div>
-                <CSSTransition
-                    in={extended}
-                    timeout={500}
-                    classNames="display"
-                    unmountOnExit
-                    appear
-                >
+                {extended && (
                     <React.Fragment>
                         <div className="block">
                             <div className="heading">Remarks</div>
@@ -265,7 +243,7 @@ const HistoryCard = (props) => {
                             </div>
                         </div>
                     </React.Fragment>
-                </CSSTransition>
+                )}
             </div>
             <div className="footer">
                 <button onClick={() => props.showPopup(id)}>Update</button>

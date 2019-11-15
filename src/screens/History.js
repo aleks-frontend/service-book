@@ -20,6 +20,7 @@ const StyledHistoryContainer = styled.div`
 `;
 
 const History = (props) => {
+	/** Setting up the state **/
 	const [searchText, updateSearchText] = useState('');
 	const [sortCriteria, updateSortCriteria] = useState('');
 	const [sortDirectionAsc, updateSortDirectionAsc] = useState(true);
@@ -39,10 +40,8 @@ const History = (props) => {
 		popupServiceId: ''
 	});
 
-	const hidePopup = () => {
-		setState({ ...state, showPopup: false });
-	}
-
+	/** Helper methods for hiding the showing the popup **/
+	const hidePopup = () => setState({ ...state, showPopup: false });
 	const showPopup = (id) => {
 		setState({
 			...state,
@@ -54,9 +53,12 @@ const History = (props) => {
 	let searchTimeout;
 	let sortedArr;
 
+	/** Event Handler Methods **/
 	const handleSearchInputChange = (value) => {
 		clearTimeout(searchTimeout);
 
+		// Adding a setTimeout so the state is not updated on 
+		// each key press event while the user is typing
 		searchTimeout = setTimeout(() => {
 			updateSearchText(value);
 		}, 500);
@@ -70,6 +72,7 @@ const History = (props) => {
 		updateSortDirectionAsc(!sortDirectionAsc);
 	}
 
+	/** Render Methods **/
 	const renderServices = () => {
 		if (sortCriteria === '') return;
 		const filteredArr = [];

@@ -22,12 +22,14 @@ const StyledCreateEntity = styled.div`
 `;
 
 const CreateCustomer = (props) => {
+    /** Setting up the state **/
     const [ customer, updateCustomer ] = React.useState({
         name: props.name,
         phone: "",
         email: ""
     });
 
+    /** Event Handler Methods **/
     const handleInputChange = (event) => {
         updateCustomer({...customer, [event.target.name]: event.target.value});
     }

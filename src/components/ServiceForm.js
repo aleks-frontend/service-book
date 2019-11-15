@@ -120,6 +120,7 @@ const ServiceForm = (props) => {
         }))
     }
 
+    /** Setting up the state **/
     const [state, setState] = React.useState({
         showCreateEntity: {
             customers: { show: false },
@@ -135,6 +136,7 @@ const ServiceForm = (props) => {
         }
     });
 
+    /** Helpper method for updating the state **/
     const updateState = (stateKey, stateObjKey, value, stateObjCopy) => {
         // We are not updating the actual state in this case
         // Used for cases when we are calling updateState several times in a single method
@@ -163,6 +165,7 @@ const ServiceForm = (props) => {
         }
     }
 
+    /** Additional helper method for updating the Actions state - because of the different state structure  **/
     const updateActionsState = (actionRows) => {
         updateState('inputs', 'actions', {
             ...state.inputs.actions,
@@ -170,8 +173,10 @@ const ServiceForm = (props) => {
         });
     }
 
+    /** Helper method for hiding the Create Entity Form **/
     const hideCreateEntityForm = (entityType, stateCopy) => updateState('showCreateEntity', entityType, { show: false }, stateCopy);
 
+    /** Helper method for reseting the form after it's submitted **/
     const formReset = (stateCopy) => {
         updateState('inputs', null, defaultStates.inputs, stateCopy);
         updateState('selectedDropdownItems', null, defaultStates.selectedDropdownItems, stateCopy);
@@ -179,6 +184,45 @@ const ServiceForm = (props) => {
         return stateCopy;
     }
 
+    /** Helper method for adding the new entity to the local state **/
+    const addEntity = (entity, stateKey, isMulti) => {
+        const id = (new Date().getTime()).toString();
+        const stateCopy = { ...state };
+        const activeDropdownState = state.dropdownOptions[stateKey];
+        const updatedDropdownState = [...activeDropdownState, {
+            value: id,
+            label: entity.name
+        }];
+
+        updateState('dropdownOptions', stateKey, updatedDropdownState, stateCopy);
+
+        if (!isMulti) {
+            updateState('selectedDropdownItems', stateKey, {
+                value: id,
+                label: entity.name
+            }, stateCopy);
+        } else {
+            updateState('selectedDropdownItems', stateKey, [
+                ...stateCopy.selectedDropdownItems[stateKey],
+                {
+                    value: id,
+                    label: entity.name
+                }
+            ], stateCopy);
+        }
+
+        props.addEntity(entity, id, stateKey);
+        updateState('inputs', stateKey, {
+            ...stateCopy.inputs[stateKey],
+            value: [...stateCopy.inputs[stateKey].value, id]
+        }, stateCopy);
+
+        hideCreateEntityForm(stateKey, stateCopy);
+
+        setState({ ...stateCopy });
+    }    
+
+    /** Event Handler Methods **/
     const handleInputChange = (event) => {
         updateState('inputs', event.target.name, {
             ...state.inputs[event.target.name],
@@ -294,6 +338,7 @@ const ServiceForm = (props) => {
         }
     }
 
+    /** Render Methods **/
     const renderCreateCustomer = () => {
         const fields = props.fields.customers;
 
@@ -322,43 +367,6 @@ const ServiceForm = (props) => {
                 showSnackbar={props.showSnackbar}
             />;
         }
-    }
-
-    const addEntity = (entity, stateKey, isMulti) => {
-        const id = (new Date().getTime()).toString();
-        const stateCopy = { ...state };
-        const activeDropdownState = state.dropdownOptions[stateKey];
-        const updatedDropdownState = [...activeDropdownState, {
-            value: id,
-            label: entity.name
-        }];
-
-        updateState('dropdownOptions', stateKey, updatedDropdownState, stateCopy);
-
-        if (!isMulti) {
-            updateState('selectedDropdownItems', stateKey, {
-                value: id,
-                label: entity.name
-            }, stateCopy);
-        } else {
-            updateState('selectedDropdownItems', stateKey, [
-                ...stateCopy.selectedDropdownItems[stateKey],
-                {
-                    value: id,
-                    label: entity.name
-                }
-            ], stateCopy);
-        }
-
-        props.addEntity(entity, id, stateKey);
-        updateState('inputs', stateKey, {
-            ...stateCopy.inputs[stateKey],
-            value: [...stateCopy.inputs[stateKey].value, id]
-        }, stateCopy);
-
-        hideCreateEntityForm(stateKey, stateCopy);
-
-        setState({ ...stateCopy });
     }
 
     const renderUpdateFields = () => {

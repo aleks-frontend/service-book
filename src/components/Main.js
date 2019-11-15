@@ -26,12 +26,15 @@ const useStyles = makeStyles(theme => ({
 
 const Main = (props) => {
     const classes = useStyles();
+    /** Setting up the state **/
     const [ state, setState ] = React.useState({
         snackbarVisible: false,
         snackbarEntity: '',
         snackBarAction: ''
     });
 
+    
+    /** Event Handler Methods **/
     const handleClose = (reason) => {
         if (reason === 'clickaway') return;
         setState({...state, snackbarVisible: false});
@@ -45,6 +48,7 @@ const Main = (props) => {
         });
     }
 
+    /** Render Methods **/
     const renderSnackbar = () => {
         const formatedEntityType = state.snackbarEntity.charAt(0).toUpperCase() + state.snackbarEntity.slice(1, -1);
         return (

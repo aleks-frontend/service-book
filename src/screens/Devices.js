@@ -7,19 +7,18 @@ import CreateEntityButton from '../components/UI/CreateEntityButton';
 import Popup from '../components/UI/Popup';
 
 const ScreensDevices = (props) => {
+    /** Setting up the state **/
     const [state, setState] = React.useState({
         showPopup: false
     });
 
-    const hidePopup = () => {
-        setState({ ...state, showPopup: false });
-    }
+    /** Helper methods for hiding the showing the popup **/
+    const hidePopup = () => setState({ ...state, showPopup: false });
+    const showPopup = () => setState({ ...state, showPopup: true });
 
-    const showPopup = () => {
-        setState({ ...state, showPopup: true });
-    }
-
-	const fields = props.fields.devices;
+    const fields = props.fields.devices;
+    
+    /** Render Methods **/
     const renderPopup = () => {
         if (state.showPopup) {
             return (

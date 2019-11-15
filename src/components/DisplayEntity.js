@@ -3,6 +3,7 @@ import MaterialTable from 'material-table';
 import tableIcons from '../tableIcons';
 
 const DisplayEntity = (props) => {
+  /** Populating columns variable with fields received from props **/
   const columns = props.fields.map(field => {
     return {
       title: field.label,
@@ -10,6 +11,7 @@ const DisplayEntity = (props) => {
     }
   });
   
+  /** Setting up the state **/
   const [state, setState] = React.useState({
     columns: columns,
     data: Object.keys(props.entities).map(key => {
@@ -17,9 +19,11 @@ const DisplayEntity = (props) => {
     })
   });
 
+  /** Generating the entity label **/
   const entityLabel = props.name.slice(0, -1);
   const formatedLabel = entityLabel.charAt(0).toUpperCase() + entityLabel.slice(1, entityLabel.length);
 
+  /** Updating the state on props change **/
   React.useEffect(() => {
     const newData = Object.keys(props.entities).map(key => {
       return { ...props.entities[key], id: key };

@@ -7,20 +7,18 @@ import CreateEntityButton from '../components/UI/CreateEntityButton';
 import Popup from '../components/UI/Popup';
 
 const ScreensActions = (props) => {
+	/** Setting up the state **/
 	const [state, setState] = React.useState({
 		showPopup: false
 	});
 
-	const hidePopup = () => {
-		setState({ ...state, showPopup: false });
-	}
-
-	const showPopup = () => {
-		setState({ ...state, showPopup: true });
-	}
+	/** Helper methods for hiding the showing the popup **/
+	const hidePopup = () => setState({ ...state, showPopup: false });	
+	const showPopup = () => setState({ ...state, showPopup: true });	
 
 	const fields = props.fields.actions;
 
+	/** Render Methods **/
 	const renderPopup = () => {
 		if (state.showPopup) {
 			return (
@@ -39,6 +37,7 @@ const ScreensActions = (props) => {
 			);
 		}
 	}
+	
 	return (
 		<React.Fragment>
 			{renderPopup()}

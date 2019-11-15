@@ -143,7 +143,7 @@ const ActionsTable = (props) => {
         props.updateServiceFormActionsState(validatedActionRows);        
     }
 
-    /** Input Handler Methods **/
+    /** Event Handler Methods **/
     const handleDropdownChange = (event, actionMeta) => {
         const rowId = actionMeta.name;
         const value = event.value;

@@ -34,25 +34,8 @@ const StyledCreateEntity = styled.div`
     }
 `;
 
-// fields = [
-//     {
-//         name: 'name',
-//         label: 'Name',
-//         type: 'text'
-//     },
-//     {
-//         name: 'phone',
-//         label: 'Phone',
-//         type: 'text'
-//     },
-//     {
-//         name: 'email',
-//         label: 'Email',
-//         type: 'text'
-//     }
-// ]
-
 const CreateEntity = (props) => {
+    /** Preseting defaultState Object **/
     const defaultState = {};
     for ( const field of props.fields ) {
         defaultState[field.name] = field.defaultVal;
@@ -71,11 +54,13 @@ const CreateEntity = (props) => {
     
     const emptyRequiredClassName = 'empty-required';
 
+    /** Setting up the real state **/
     const [ state, setState ] = React.useState({
         entityState: { ...defaultState },
         emptyRequiredInputs: {}
     });
 
+    /** Event Handler Methods **/
     const handleInputChange = (event) => {
         const entityStateCopy = {...state.entityState};
         for ( const field of props.fields) {
