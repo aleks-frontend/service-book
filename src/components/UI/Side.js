@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { colors } from '../../helpers';
+
 const StyledSide = styled.div`
     flex-shrink: 0;
     width: 200px;
     color: #fff;
-    background: #313442;
+    background: ${colors.dpgray};
     text-align: center;
 `;
 

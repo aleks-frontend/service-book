@@ -32,32 +32,26 @@ const navItems = {
     home: {
         text: "Home",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-        url: '/',
     },
     newService: {
         text: "New Service",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-        url: '/new-service',
     },
     history: {
         text: "History",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-        url: '/history',
     },
     customers: {
         text: "Customers",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-        url: '/customers',
     },
     actions: {
         text: "Actions",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-        url: '/actions',
     },
     devices: {
         text: "Devices",
         icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
-        url: '/devices',
     }
 };
 

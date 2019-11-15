@@ -7,7 +7,7 @@ const StyledArrow = styled.div`
     height: 3.4rem;
     background: url('arrow-icon.png') no-repeat center;
     background-size: contain;
-    transform: rotate(${props => props.sortDirectionAsc ? 'odeg' : '180deg'});
+    transform: rotate(${props => props.sortDirectionAsc ? '0deg' : '180deg'});
     transition: 0.3s all;
 
     &:hover { cursor: pointer; }

@@ -54,10 +54,10 @@ const Controls = (props) => {
                 />
             </div>
             <input 
-            type="text" 
-            placeholder="Filter" 
-            ref={filterInputRef} 
-            onChange={() => props.handleSearchInputChange(filterInputRef.current.value)} 
+                type="text" 
+                placeholder="Filter" 
+                ref={filterInputRef} 
+                onChange={() => props.handleSearchInputChange(filterInputRef.current.value)} 
             />
         </StyledControls>
     );

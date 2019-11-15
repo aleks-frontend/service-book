@@ -7,6 +7,7 @@ const LogoContainer = styled.div`
     justify-content: center;
     height: 80px;
     background-color: #000;    
+    
     .logo {
         max-width: 80%;
         max-height: 60%;
