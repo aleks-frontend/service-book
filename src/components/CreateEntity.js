@@ -84,7 +84,11 @@ const CreateEntity = (props) => {
         // Checking for empty required fields
         for ( const field of props.fields ) {
             if ( field.required ) {
-                if ( state.entityState[field.name] === field.defaultVal ) {
+                const isSameAsDefaultVal = state.entityState[field.name] === field.defaultVal;
+                const isEmptyString = state.entityState[field.name] === '';
+                const isZero = state.entityState[field.name] === 0;
+                
+                if ( isSameAsDefaultVal || isEmptyString || isZero ) {
                     emptyRequiredInputs[field.name] = emptyRequiredClassName;
                 } else if (emptyRequiredInputs.hasOwnProperty(field.name)) {
                     delete emptyRequiredInputs[field.name];
