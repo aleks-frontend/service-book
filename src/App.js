@@ -68,11 +68,14 @@ class App extends React.Component {
 
   filterServices = (service, searchText) => {
     if ( searchText === '' ) return true;
-    
     for ( const serviceKey of Object.keys(service) ) {
       let serviceProp;
       if ( serviceKey === 'actions' ) {
-        serviceProp = service[serviceKey].map(actionItem => actionItem.actionId);
+        if ( service[serviceKey] === '' ) {
+          serviceProp = ''
+        } else {
+          serviceProp = service[serviceKey].map(actionItem => actionItem.actionId);
+        }
       } else {
         serviceProp = service[serviceKey];
       }
