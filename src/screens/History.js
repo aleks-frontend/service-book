@@ -20,8 +20,7 @@ const StyledHistoryContainer = styled.div`
 `;
 
 const History = (props) => {
-	/** Setting up the state **/
-	// const [promptedId, updatePromptedId] = React.useState(null);
+	/** Destructuring the props **/
 	const {
 		services,
 		getCustomerNameById,
@@ -31,7 +30,8 @@ const History = (props) => {
 		sortServices,
 		deleteService
 	} = props;
-
+	
+	/** Setting up the state **/
 	const [state, setState] = React.useState({
 		showPopup: false,
 		popupServiceId: '',
