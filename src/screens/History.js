@@ -11,13 +11,7 @@ import DeletePrompt from '../components/UI/DeletePrompt';
 import Popup from '../components/UI/Popup';
 import { fields } from '../helpers';
 import Legend from '../components/UI/Legend';
-
-const StyledHistoryContainer = styled.div`
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(35rem, 1fr));
-	grid-auto-rows: 38rem;
-	grid-gap: 2rem;
-`;
+import GridBasic from '../components/UI/GridBasic';
 
 const History = (props) => {
 	/** Destructuring the props **/
@@ -181,9 +175,9 @@ const History = (props) => {
 			</Header>
 			<Body>
 				<Legend />
-				<StyledHistoryContainer>
+				<GridBasic>
 					{renderServices()}
-				</StyledHistoryContainer>
+				</GridBasic>
 				{renderUpdateServicePopup()}
 			</Body>
 		</React.Fragment>
