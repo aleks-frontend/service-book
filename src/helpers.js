@@ -24,17 +24,19 @@ export const fields = {
             name: 'name',
             label: 'Name',
             defaultVal: '',
-            calculated: ['manufacturer', 'model']
+            calculated: ['manufacturer', 'model'],
         },
         {
             name: 'manufacturer',
             label: 'Manufacturer',
-            defaultVal: ''
+            defaultVal: '',
+            required: true,
         },
         {
             name: 'model',
             label: 'Model',
             defaultVal: '%name%',
+            required: true,
         },
         {
             name: 'serial',
@@ -58,7 +60,7 @@ export const fields = {
             name: 'price',
             label: 'Price',
             defaultVal: 0,
-            required: false
+            required: true
         },
     ]
 };

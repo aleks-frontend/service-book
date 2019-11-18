@@ -165,7 +165,8 @@ const ServiceForm = (props) => {
         }
     }
 
-    /** Additional helper method for updating the Actions state - because of the different state structure  **/
+    /** Additional helper method for updating the Actions state - 
+     *  because of the different state structure  **/
     const updateActionsState = (actionRows) => {
         updateState('inputs', 'actions', {
             ...state.inputs.actions,
@@ -430,7 +431,7 @@ const ServiceForm = (props) => {
                 <div
                     className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
                     >
-                    <label>Title:</label>
+                    <label>{state.inputs.title.required && '* '}Title:</label>
                     <input
                         type="text"
                         name="title"
@@ -441,7 +442,7 @@ const ServiceForm = (props) => {
                 <div
                     className={state.emptyRequiredInputs['description'] ? 'group empty-required' : 'group'}
                     >
-                    <label>Description:</label>
+                    <label>{state.inputs.description.required && '* '}Description:</label>
                     <textarea
                         name="description"
                         value={state.inputs.description.value}
@@ -451,7 +452,7 @@ const ServiceForm = (props) => {
                 <div
                     className={state.emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'}
                     >
-                    <label>Customer:</label>
+                    <label>{state.inputs.customers.required && '* '}Customer:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['customers']}
                         className="select"
@@ -466,7 +467,7 @@ const ServiceForm = (props) => {
                 <div
                     className={state.emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'}
                     >
-                    <label>Devices:</label>
+                    <label>{state.inputs.devices.required && '* '}Devices:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['devices']}
                         className="select"

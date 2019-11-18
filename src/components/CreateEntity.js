@@ -94,7 +94,7 @@ const CreateEntity = (props) => {
         
         setState({...state, emptyRequiredInputs: {...emptyRequiredInputs}});
         if ( Object.keys(emptyRequiredInputs).length ) {
-            props.showSnackbar('Required fields ', 'missing');
+            props.showSnackbar('Required field(s) ', 'missing');
             return;
         }
 
@@ -122,7 +122,7 @@ const CreateEntity = (props) => {
         <StyledCreateEntity onClick={(e) => e.stopPropagation()}>
             {props.fields.map(field => (
                 <div className="group" key={field.name}>
-                    <label>{field.label}</label>
+                    <label>{field.required && '* '}{field.label}</label>
                     <input 
                         type="text" 
                         name={field.name} 
@@ -132,9 +132,10 @@ const CreateEntity = (props) => {
                         onChange={handleInputChange}
                         className={state.emptyRequiredInputs[field.name] ? state.emptyRequiredInputs[field.name] : ''}
                     />
-                </div>    
+                </div>
             ))}
             <button type="submit" onClick={handleFormSubmit}>Create</button>
+            <button type="button" onClick={props.hidePopup}>Cancel</button>
         </StyledCreateEntity>
     );
 };
