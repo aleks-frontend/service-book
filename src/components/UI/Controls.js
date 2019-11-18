@@ -29,9 +29,9 @@ const StyledControls = styled.div`
 `;
 
 const Controls = (props) => {
-    React.useEffect(() => {
+    React.useEffect(() => {        
         props.updateSortCriteria(sortInputRef.current.value);
-    });
+    }, []);
 
     const filterInputRef = React.createRef();  
     const sortInputRef = React.createRef();

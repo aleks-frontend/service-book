@@ -21,10 +21,7 @@ const StyledHistoryContainer = styled.div`
 
 const History = (props) => {
 	/** Setting up the state **/
-	const [searchText, updateSearchText] = useState('');
-	const [sortCriteria, updateSortCriteria] = useState('');
-	const [sortDirectionAsc, updateSortDirectionAsc] = useState(true);
-	const [promptedId, updatePromptedId] = React.useState(null);
+	// const [promptedId, updatePromptedId] = React.useState(null);
 	const {
 		services,
 		getCustomerNameById,
@@ -37,7 +34,22 @@ const History = (props) => {
 
 	const [state, setState] = React.useState({
 		showPopup: false,
-		popupServiceId: ''
+		popupServiceId: '',
+		searchText: '',
+		sortCriteria: '',
+		sortDirectionAsc: true,
+		promptedId: null,
+	});
+
+	/** Custom methods for updating the sortCriteria and promptedId states **/
+	const updateSortCriteria = (value) => setState({
+		...state,
+		sortCriteria: value
+	});
+
+	const updatePromptedId = (value) => setState({
+		...state,
+		promptedId: value
 	});
 
 	/** Helper methods for hiding the showing the popup **/
@@ -60,32 +72,41 @@ const History = (props) => {
 		// Adding a setTimeout so the state is not updated on 
 		// each key press event while the user is typing
 		searchTimeout = setTimeout(() => {
-			updateSearchText(value);
+			setState({
+				...state, 
+				searchText: value
+			});
 		}, 500);
 	}
 
 	const handleSortCriteriaChange = (value) => {
-		updateSortCriteria(value);
+		setState({
+			...state,
+			sortCriteria: value
+		});
 	}
 
 	const handleSortDirectionClick = () => {
-		updateSortDirectionAsc(!sortDirectionAsc);
+		setState({
+			...state,
+			sortDirectionAsc: !state.sortDirectionAsc
+		});
 	}
 
 	/** Render Methods **/
 	const renderServices = () => {
-		if (sortCriteria === '') return;
+		if (state.sortCriteria === '') return;
 		const filteredArr = [];
 
 		// First we filter services and populate filteredArr with keys
 		for (const serviceKey of Object.keys(services)) {
-			if (filterServices(services[serviceKey], searchText)) {
+			if (filterServices(services[serviceKey], state.searchText)) {
 				filteredArr.push(serviceKey);
 			}
 		}
 
 		// After filtering, we are sorting the array
-		sortedArr = sortServices(filteredArr, sortCriteria, sortDirectionAsc);
+		sortedArr = sortServices(filteredArr, state.sortCriteria, state.sortDirectionAsc);
 		return sortedArr.map(key => renderHistoryCard(services[key], key));
 	}
 
@@ -114,10 +135,10 @@ const History = (props) => {
 	);
 
 	const renderDeletePrompt = () => {
-		if (promptedId) {
+		if (state.promptedId) {
 			return (
 				<DeletePrompt
-					id={promptedId}
+					id={state.promptedId}
 					deleteService={deleteService}
 					updatePromptedId={updatePromptedId}
 				/>);
@@ -155,7 +176,7 @@ const History = (props) => {
 					handleSortCriteriaChange={handleSortCriteriaChange}
 					handleSortDirectionClick={handleSortDirectionClick}
 					updateSortCriteria={updateSortCriteria}
-					sortDirectionAsc={sortDirectionAsc}
+					sortDirectionAsc={state.sortDirectionAsc}
 				/>
 			</Header>
 			<Body>
