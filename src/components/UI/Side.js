@@ -5,9 +5,9 @@ import { colors } from '../../helpers';
 
 const StyledSide = styled.div`
     flex-shrink: 0;
-    width: 200px;
+    width: 9rem;
     color: #fff;
-    background: ${colors.dpgray};
+    background: ${colors.rdgray};
     text-align: center;
 `;
 

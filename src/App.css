@@ -9,5 +9,5 @@ body { font-family: 'Roboto', sans-serif; }
 .container {
   display: flex;
   min-height: 100vh;
-  background-color: #E5E5E5;
+  background-color:#d1d3d9;
 }

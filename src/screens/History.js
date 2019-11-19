@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { CSSTransition } from 'react-transition-group';
 
 import Header from '../components/UI/Header';
@@ -12,6 +11,7 @@ import Popup from '../components/UI/Popup';
 import { fields } from '../helpers';
 import Legend from '../components/UI/Legend';
 import GridBasic from '../components/UI/GridBasic';
+import TopBar from '../components/UI/TopBar';
 
 const History = (props) => {
 	/** Destructuring the props **/
@@ -24,7 +24,7 @@ const History = (props) => {
 		sortServices,
 		deleteService
 	} = props;
-	
+
 	/** Setting up the state **/
 	const [state, setState] = React.useState({
 		showPopup: false,
@@ -67,7 +67,7 @@ const History = (props) => {
 		// each key press event while the user is typing
 		searchTimeout = setTimeout(() => {
 			setState({
-				...state, 
+				...state,
 				searchText: value
 			});
 		}, 500);
@@ -164,17 +164,18 @@ const History = (props) => {
 	return (
 		<React.Fragment>
 			{renderDeletePrompt()}
-			<Header title="Services History">
-				<Controls
-					handleSearchInputChange={handleSearchInputChange}
-					handleSortCriteriaChange={handleSortCriteriaChange}
-					handleSortDirectionClick={handleSortDirectionClick}
-					updateSortCriteria={updateSortCriteria}
-					sortDirectionAsc={state.sortDirectionAsc}
-				/>
-			</Header>
+			<Header title="Services History" />
 			<Body>
-				<Legend />
+				<TopBar>
+					<Legend />
+					<Controls
+						handleSearchInputChange={handleSearchInputChange}
+						handleSortCriteriaChange={handleSortCriteriaChange}
+						handleSortDirectionClick={handleSortDirectionClick}
+						updateSortCriteria={updateSortCriteria}
+						sortDirectionAsc={state.sortDirectionAsc}
+					/>
+				</TopBar>
 				<GridBasic>
 					{renderServices()}
 				</GridBasic>

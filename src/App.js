@@ -177,7 +177,6 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Side>
-          <Logo />
           <Nav margin="2rem 0 0" 
             activeNavItemKey={this.state.activeNavItemKey} 
             setNavActive={this.setNavActive} 

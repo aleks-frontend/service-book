@@ -1,57 +1,89 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { colors } from '../../helpers';
+import { svgIcons } from '../../helpers';
+
 const StyledNav = styled.div`
-    margin: ${props => props.margin};
+    margin-top: 8rem;
     
     .nav__item {        
         display: flex;
+        flex-direction: column;
         align-items: center;
-        padding: 1.5rem 2rem;
-        color: #fff;
+        justify-content: center;
+        padding: 1.5rem 0;
+        font-weight: 700;
+        color: ${colors.rdlightgray};
+        text-align: center;
         text-decoration: none;
         transition: 0.3s all;
         &:hover { 
             cursor: pointer; 
-            background: rgba(0,0,0, 0.5);
+            color: ${colors.rdblue};
+
+            svg path, 
+            svg polygon, 
+            svg ellipse,
+            svg line,
+            svg rect { stroke: ${colors.rdblue}; }
         }
 
-        &--active {
-            background: #000;
+        &--active { 
+            color: ${colors.rdblue}; 
+
+            svg path, 
+            svg polygon, 
+            svg ellipse,
+            svg line,
+            svg rect { stroke: ${colors.rdblue}; }
         }
+
+        svg path, 
+        svg polygon,
+        svg ellipse,
+        svg line,
+        svg rect { transition: 0.3s all; }
     }
 
-    .nav__icon {
-        width: 2.5rem;
-        height: 2.5rem;
-        margin-right: 1rem;
+    .nav__icon { 
+        margin-bottom: 0.5rem;
+        width: 3.5rem; 
+        
+        svg { width: 100%; }
     }
 `;
 
 const navItems = {
     home: {
         text: "Home",
-        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        icon: svgIcons.home,
+        iconActive: "/icons/home-icon-active.svg",
     },
     newService: {
         text: "New Service",
-        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        icon: svgIcons.newService,
+        iconActive: "/icons/new-service-icon-active.svg",
     },
     history: {
         text: "History",
-        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        icon: svgIcons.history,
+        iconActive: "/icons/history-icon-active.svg",
     },
     customers: {
         text: "Customers",
-        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        icon: svgIcons.customers,
+        iconActive: "/icons/customers-icon-active.svg",
     },
     actions: {
         text: "Actions",
-        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        icon: svgIcons.actions,
+        iconActive: "/icons/actions-icon-active.svg",
     },
     devices: {
         text: "Devices",
-        icon: "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/dashboard-alt-icon.png",
+        icon: svgIcons.devices,
+        iconActive: "/icons/devices-icon-active.svg",
     }
 };
 
@@ -59,23 +91,19 @@ class Nav extends React.Component {
     render() {
         return (
             <React.Fragment>
-            <StyledNav margin={this.props.margin}>
-                {Object.keys(navItems).map((key) => (
-                    <div
-                        className={(this.props.activeNavItemKey === key) ? 'nav__item nav__item--active' : 'nav__item'} 
-                        key={key}
-                        onClick={(e) => this.props.setNavActive(key)}
-                    >
-                        <img 
-                            className="nav__icon" 
-                            src={navItems[key].icon} 
-                            alt={navItems[key].text} 
-                        />
-                        <div className="nav__text">{navItems[key].text}</div>
-                    </div>    
+                <StyledNav>
+                    {Object.keys(navItems).map((key) => (
+                        <div
+                            className={(this.props.activeNavItemKey === key) ? 'nav__item nav__item--active' : 'nav__item'}
+                            key={key}
+                            onClick={(e) => this.props.setNavActive(key)}
+                        >
+                            <div className="nav__icon" dangerouslySetInnerHTML={{ __html: navItems[key].icon }}></div>
+                            <div className="nav__text">{navItems[key].text}</div>
+                        </div>
                     )
-                )}
-            </StyledNav>
+                    )}
+                </StyledNav>
             </React.Fragment>
         );
     }
