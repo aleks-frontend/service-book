@@ -6,13 +6,13 @@ import { colors } from '../../helpers';
 const StyledButton = styled.button`
     display: inline-flex;
     align-items: center;
-    height: 3rem;
-    padding: 0 3.5rem;
-    color: ${props => props.isText ? colors.dpblue :  '#fff'};
-    background: ${props => props.isText ? 'transparent' :  colors.dpblue};
+    margin: ${props => props.margin ? props.margin : '0'};
+    padding: ${props => props.compact ? '0 2rem' : '0 3.5rem'};
+    height: ${props => props.compact ? '2.5rem' : '3rem'};
+    color: ${props => props.isText ? colors.rdgray2 :  '#fff'};
+    background: ${props => props.isText ? 'transparent' :  colors.rdgray2};
     border: none;
     border-radius: 0.3rem;
-    text-transform: uppercase;
     box-shadow: ${props => props.isText ? 'none' : '0px 2px 4px rgba(0, 0, 0, 0.25)'}; 
 
     &:hover { cursor: pointer; }
@@ -25,6 +25,8 @@ const Button = (props) => {
             isText={props.isText}
             onClick={props.onClick}
             type={props.type}
+            compact={props.compact}
+            margin={props.margin}
         >
             {props.children}
         </StyledButton>
