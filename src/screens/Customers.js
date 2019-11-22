@@ -48,6 +48,9 @@ const ScreensCustomers = (props) => {
 				/>
 			</Header>
 			<Body>
+				<CreateEntityButton 
+					entity="Customer"
+					showPopup={showPopup} />
 				<DisplayEntity
 					name="customers"
 					fields={fields}

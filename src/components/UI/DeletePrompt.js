@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import Button from './Button';
+import { colors } from '../../helpers';
+
 const StyledDeletePrompt = styled.div`
     position: fixed;
     top: 0;
@@ -19,24 +22,14 @@ const StyledDeletePrompt = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 35rem;
-        height: 20rem;
-        background: #fff;
+        padding: 4rem 1rem;
+        width: 33rem;
+        background: ${colors.rdlightgray};
+        border-radius: 0.3rem;
 
         .text {
-            margin-bottom: 2rem; }
-
-        .buttons {
-            button {
-                margin: 0 0.5rem;
-                padding: 0.5rem 2rem;
-                border: 1px solid #e3e3e3;
-                border-radius: 3px;
-                
-                &.alt { background: #e3e3e3; }
-                &:hover { cursor: pointer; }
-            }
-        }
+            margin-bottom: 2rem; 
+            color: ${colors.rddarkgray}; }
     }
 `;
 
@@ -46,16 +39,22 @@ const DeletePrompt = (props) => {
             <div className="box" onClick={(e) => e.stopPropagation()}>
                 <div className="text">Are you sure you want to delete this service?</div>
                 <div className="buttons">
-                    <button 
+                    <Button 
                         onClick={() => {
                             props.deleteService(props.id);
                             props.updatePromptedId(null);
                         }}
-                    >Yes</button>
-                    <button 
-                        className="alt"
+                        type="button"
+                        margin="0 0.5rem"
+                        >Yes
+                    </Button>
+                    <Button 
                         onClick={() => props.updatePromptedId(null)}
-                    >No</button>
+                        isText={true}
+                        type="button"
+                        margin="0 0.5rem"
+                        >No
+                    </Button>
                 </div>
             </div>
         </StyledDeletePrompt>

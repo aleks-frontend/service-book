@@ -16,6 +16,8 @@ import ScreensDevices from '../screens/Devices';
 const StyledMain = styled.div`
     flex: 1;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
 `;
 
 const useStyles = makeStyles(theme => ({
@@ -82,7 +84,9 @@ const Main = (props) => {
     const renderComponent = (props) => {
         switch (props.activeNavItemKey) {
             case 'home':
-                return <ScreensDashboard />;
+                return <ScreensDashboard
+                    services={props.services}
+                    />;
             case 'history':
                 return <ScreensHistory
                     customers={props.customers}
@@ -98,6 +102,7 @@ const Main = (props) => {
                     getActionNameById={props.getActionNameById}
                     filterServices={props.filterServices}
                     sortServices={props.sortServices}
+                    mainStateIsLoaded={props.mainStateIsLoaded}
                 />;
             case 'newService':
                 return <ScreensNewService

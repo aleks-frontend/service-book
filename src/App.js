@@ -66,8 +66,14 @@ class App extends React.Component {
     this.setState({ ssot: {...this.state.ssot, [key]: entityState} });
   }
 
-  filterServices = (service, searchText) => {
-    if ( searchText === '' ) return true;
+  filterServices = (service, searchText, statusFilters) => {
+    if ( searchText === '' && !statusFilters.length ) return true;
+    
+    // Filtering by service status
+    if ( statusFilters.length && ( !statusFilters.includes(service.status) ) ) {
+      return false;
+    }
+
     for ( const serviceKey of Object.keys(service) ) {
       let serviceProp;
       if ( serviceKey === 'actions' ) {
@@ -201,6 +207,7 @@ class App extends React.Component {
           updateEntity={this.updateEntity} 
           findServiceByEntityId={this.findServiceByEntityId}
           renderLoadingSpinner={this.renderLoadingSpinner}
+          mainStateIsLoaded={this.state.loaded}
         />
       </React.Fragment>
     );

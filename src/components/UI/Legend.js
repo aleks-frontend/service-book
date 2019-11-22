@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { colors, svgIcons } from '../../helpers';
+import { statusEnum, colors, svgIcons } from '../../helpers';
 
 const StyledLegend = styled.div`
     display: flex;
@@ -11,14 +11,12 @@ const StyledLegendItem = styled.div`
     display: flex;
     align-items: center;
     margin-right: 1rem;
-    transition: 0.3s all;
+    opacity: 0.9;
+    transition: 0.5s all;
 
     &:hover { 
-        cursor: pointer; 
-
-        .legend__indicator svg path { fill: ${colors.rdblue}; }
-        .legend__label { color: ${colors.rdblue}; }
-    }
+        opacity: 1;
+        cursor: pointer; }
 
     .legend__indicator {
         margin-right: 0.5rem;
@@ -36,22 +34,45 @@ const StyledLegendItem = styled.div`
         transition: 0.3s all; }
 `;
 
-const Legend = () => {
+const Legend = (props) => {
+    const [state, updateState] = React.useState({
+        statusFilters: props.statusFilters
+    });
+
+    React.useEffect(() => {
+        updateState({
+            ...state,
+            statusFilters: props.statusFilters
+        })
+    }, [props.statusFilters]);
+    
     return (
         <StyledLegend>
-            <StyledLegendItem colors={colors} status="received" selected={true}>
+            <StyledLegendItem 
+                colors={colors}
+                selected={state.statusFilters.includes(statusEnum.RECEIVED)}
+                onClick={() => props.updateStatusFilters(statusEnum.RECEIVED)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.received }}></div>
                 <div className="legend__label">Received</div>
             </StyledLegendItem>
-            <StyledLegendItem colors={colors} status="in progress">
+            <StyledLegendItem 
+                colors={colors}
+                selected={state.statusFilters.includes(statusEnum.INPROGRESS)}
+                onClick={() => props.updateStatusFilters(statusEnum.INPROGRESS)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.inProgress }}></div>
                 <div className="legend__label">In Progress</div>
             </StyledLegendItem>
-            <StyledLegendItem colors={colors} status="completed">
+            <StyledLegendItem 
+                colors={colors}
+                selected={state.statusFilters.includes(statusEnum.COMPLETED)}
+                onClick={() => props.updateStatusFilters(statusEnum.COMPLETED)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.completed }}></div>
                 <div className="legend__label">Completed</div>
             </StyledLegendItem>
-            <StyledLegendItem colors={colors} status="shipped">
+            <StyledLegendItem 
+                colors={colors}
+                selected={state.statusFilters.includes(statusEnum.SHIPPED)}
+                onClick={() => props.updateStatusFilters(statusEnum.SHIPPED)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.shipped }}></div>
                 <div className="legend__label">Shipped</div>
             </StyledLegendItem>

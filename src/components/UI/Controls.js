@@ -10,22 +10,21 @@ const StyledControls = styled.div`
     .sort {
         display: flex;
         align-items: center;
-        padding: 0.5rem 1rem;
+        padding: 0 1rem;
         margin-right: 1rem;
-        border: 1px solid ${colors.lightgray};
-        border-radius: 0.4rem;
 
         label {
             margin-right: 1rem;
             font-size: 1.2rem;
             color: ${colors.gray} }
+
+        select { height: 3.4rem; }
     }
 
     input[type="text"] {
         padding: 0 0.5rem;
         border-radius: 0.3rem;
-        border: 1px solid ${colors.lightgray};
-    }
+        border: 1px solid ${colors.lightgray}; }
 `;
 
 const Controls = (props) => {
@@ -42,7 +41,9 @@ const Controls = (props) => {
                 <label>Sort by: </label>
                 <select 
                     ref={sortInputRef} 
-                    onChange={() => props.handleSortCriteriaChange(sortInputRef.current.value)}
+                    onChange={() => {
+                        props.handleSortCriteriaChange(sortInputRef.current.value)
+                    }}
                 >
                     <option value="date">Date</option>
                     <option value="customers">Customer Name</option>

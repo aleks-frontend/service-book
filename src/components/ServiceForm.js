@@ -5,7 +5,7 @@ import CreateEntity from './CreateEntity';
 import ActionsTable from './ActionsTable';
 import Button from './UI/Button';
 import { breakpoints } from '../helpers';
-import { colors } from '../helpers';
+import { statusEnum, colors } from '../helpers';
 
 const StyledForm = styled.form`
     position: relative;
@@ -77,7 +77,7 @@ const ServiceForm = (props) => {
                 isArray: true,
             },
             status: {
-                value: props.isUpdate ? props.service.status : "received",
+                value: props.isUpdate ? props.service.status : statusEnum.RECEIVED,
                 required: false,
                 show: props.isUpdate
             },
@@ -398,10 +398,10 @@ const ServiceForm = (props) => {
                             value={state.inputs.status.value}
                             onChange={handleInputChange}
                         >
-                            <option value="received">Received</option>
-                            <option value="in progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                            <option value="shipped">Shipped</option>
+                            <option value={statusEnum.RECEIVED}>Received</option>
+                            <option value={statusEnum.INPROGRESS}>In Progress</option>
+                            <option value={statusEnum.COMPLETED}>Completed</option>
+                            <option value={statusEnum.SHIPPED}>Shipped</option>
                         </select>
                     </div>
                 </React.Fragment>

@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { colors } from '../helpers';
-import color from '@material-ui/core/colors/green';
+import IconButton from './UI/IconButton.js'
+import { statusEnum, colors, svgIcons } from '../helpers';
 
 const StyledHistoryCard = styled.div`
     display: flex;
     flex-direction: column;
     grid-row: ${props => props.extended ? 'span 2' : 'auto'};
-    padding: 2rem;
+    overflow: hidden;
     background: #fff;
+    border-radius: 0.5rem;
     box-shadow: 0px 4px 4px rgba(0,0,0,0.25);
 
     &.card-appear-active {
@@ -37,110 +38,96 @@ const StyledHistoryCard = styled.div`
     .header {
         display: flex;
         align-items: center;
-        padding-bottom: 1.5rem;
-        margin-bottom: 2rem;
-        border-bottom: ${`1px solid ${colors.gray}`};
+        padding: 1rem 1.5rem;
+        background: ${colors.rdgray2};
 
-        .indicator {
+        .statusIcon {
             flex-shrink: 0;
             width: 4.3rem;
             height: 4.3rem;
-            border-radius: 50%;
-            background: ${props => {
-                if (props.status === 'received') {
-                    return colors.yellow;
-                } else if (props.status === 'completed') {
-                    return colors.green;
-                } else if (props.status === 'shipped') {
-                    return colors.purple;
-                } else {
-                    return colors.orange;
-                }
-            }}
+
+            svg { 
+                fill: #fff;
+                width: 100%; }
         }
 
         .text {
             margin-left: 1.5rem;
+            color: #fff;
 
             .heading {
-                margin-bottom: 0.9rem;
-                font-size: 1.8rem;
-                font-weight: 700; }
+                margin-bottom: 0.2rem;
+                font-size: 2.1rem; }
 
-            .subheading { 
-                font-size: 1.5rem; 
-                color: ${colors.gray}; }
+            .subheading { font-size: 1.8rem; }
         }
     }
 
     .body {       
         flex: 1;
         overflow: auto;
+        padding: 1rem;
 
         .block {
             margin-bottom: 1.5rem;
 
             .heading { 
-                font-size: 1.5rem;
-                margin-bottom: 0.5rem; }
+                font-size: 2rem;
+                color: ${colors.rddarkgray};
+                margin-bottom: 0.5rem; 
+
+                &--colored {
+                    padding: 0.3rem;
+                    color: #fff;
+                    background: ${colors.rdgray2};
+                }
+            }
             
-            .content {
-                font-size: 1.3rem;
-                color: ${colors.gray}; }
+            .content { font-size: 1.3rem; }
         }
     }
 
     .footer {
         display: flex;
-
-        button {
-            margin-right: 2.5rem;
-            padding: 0;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: ${colors.dpblue};
-            border: none;
-            background: transparent;
-            text-transform: uppercase;
-
-            &:hover { cursor: pointer; }
-            &:focus { outline: 0; }
-        }
-    }
+        justify-content: flex-end;
+        padding: 1.5rem; }
 `;
 
 const StyledActions = styled.div`
     display: grid;
     grid-template-columns: 1fr auto;
-    grid-gap: 2rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
+    padding: 0 0.3rem;
     font-size: 1.3rem;
     color: #000;
-    border-top: 1px solid ${colors.gray};
     
     .name { margin-bottom: 0.5rem; }
     
-    .quantity {
-        font-size: 1.1rem;
-        color: ${colors.gray}; }
+    .quantity { color: ${colors.rdgray}; }
 
     .price { 
         text-align: right; 
+        color: ${colors.rdgray};
+        font-size: 1.7rem;
 
         &--total {
-            font-size: 1.5rem;
-        }
+            margin-top: 3rem;
+            padding: 0.5rem;
+            color: #000; 
+            background: ${colors.rdlightgray}; }
     }
     
     .divider {
         grid-column: 1 / -1;
-        height: 1px;
-        background-color: ${colors.gray}; }
+        margin: 1rem 0;
+        height: 0.2rem;
+        background-color: ${colors.rdlightgray}; }
 
     .total {
+        margin-top: 3rem;
+        padding: 0.5rem;
         font-size: 1.5rem;
-        color: ${colors.gray}; 
+        color: #000; 
+        background: ${colors.rdlightgray};
         text-transform: uppercase; }
 `;
 
@@ -163,6 +150,21 @@ const HistoryCard = (props) => {
         );
     }
 
+    const renderStatusIcon = (status) => {
+        switch (status) {
+            case statusEnum.RECEIVED:
+                return svgIcons.received;
+            case statusEnum.INPROGRESS:
+                return svgIcons.inProgress;
+            case statusEnum.COMPLETED:
+                return svgIcons.completed;
+            case statusEnum.SHIPPED:
+                return svgIcons.shipped;
+            default:
+                return svgIcons.received;
+        }
+    }
+
     const renderActions = () => {
         return (
             <StyledActions>
@@ -174,14 +176,15 @@ const HistoryCard = (props) => {
 
     const renderActionsRows = () => {
         return (
-            service.actions.map(action => {
-                return (                    
+            service.actions.map((action, index) => {
+                return (
                     <React.Fragment key={action.rowId}>
-                    <div className="text">
-                        <div className="name">{getActionNameById(action.actionId)}</div>
-                        <div className="quantity">quantity: {action.quantity}</div>
-                    </div>
-                    <div className="price">$ {action.price * action.quantity}</div>
+                        <div className="text">
+                            <div className="name">{getActionNameById(action.actionId)}</div>
+                            <div className="quantity">quantity: {action.quantity}</div>
+                        </div>
+                        <div className="price">$ {action.price * action.quantity}</div>
+                        {index !== service.actions.length - 1 && <div className="divider"></div> }                        
                     </React.Fragment>
                 )
             })
@@ -195,7 +198,6 @@ const HistoryCard = (props) => {
 
         return (
             <React.Fragment>
-                <div className="divider"></div>
                 <div className="total">Total</div>
                 <div className="price price--total">$ {total}</div>
             </React.Fragment>
@@ -205,7 +207,10 @@ const HistoryCard = (props) => {
     return (
         <StyledHistoryCard status={service.status} extended={extended}>
             <div className="header">
-                <div className="indicator"></div>
+                <div
+                    className="statusIcon"
+                    dangerouslySetInnerHTML={{ __html: renderStatusIcon(service.status) }}>
+                </div>
                 <div className="text">
                     <div className="heading">{service.title}</div>
                     <div className="subheading">
@@ -234,10 +239,10 @@ const HistoryCard = (props) => {
                     <React.Fragment>
                         <div className="block">
                             <div className="heading">Remarks</div>
-                            <div className="content">{service.remark}</div>
+                            <div className="content">{service.remark ? service.remark : 'No Remarks added yet.' }</div>
                         </div>
                         <div className="block">
-                            <div className="heading">Actions and pricing</div>
+                            <div className="heading heading--colored">Actions and pricing</div>
                             <div className="content">
                                 {service.actions ? renderActions() : 'No actions added yet.'}
                             </div>
@@ -246,9 +251,15 @@ const HistoryCard = (props) => {
                 )}
             </div>
             <div className="footer">
-                <button onClick={() => props.showPopup(id)}>Update</button>
-                <button onClick={() => props.updatePromptedId(id)}>Delete</button>
-                <button onClick={extendHistoryItem}>{extended ? 'Collapse' : 'Expand'}</button>
+                <IconButton
+                    icon="update"
+                    onClick={() => props.showPopup(id)} />
+                <IconButton
+                    icon="delete"
+                    onClick={() => props.updatePromptedId(id)} />
+                <IconButton
+                    icon="expand"
+                    onClick={extendHistoryItem} />
             </div>
         </StyledHistoryCard>
     );

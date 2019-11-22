@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+import styled from 'styled-components';
 
 import Header from '../components/UI/Header';
 import Body from '../components/UI/Body';
@@ -8,10 +9,11 @@ import ServiceForm from '../components/ServiceForm';
 import Controls from '../components/UI/Controls';
 import DeletePrompt from '../components/UI/DeletePrompt';
 import Popup from '../components/UI/Popup';
-import { fields } from '../helpers';
 import Legend from '../components/UI/Legend';
 import GridBasic from '../components/UI/GridBasic';
 import TopBar from '../components/UI/TopBar';
+import FilterCriteriaEmpty from '../components/UI/FilterCriteriaEmpty';
+import { fields } from '../helpers';
 
 const History = (props) => {
 	/** Destructuring the props **/
@@ -33,7 +35,26 @@ const History = (props) => {
 		sortCriteria: '',
 		sortDirectionAsc: true,
 		promptedId: null,
+		statusFilters: [],
+		showNoServiceMessage: false
 	});
+	
+
+	/** Custom methods for updating the statusFilters state **/
+	const updateStatusFilters = (value) => {
+		let statusFiltersStateCopy = [...state.statusFilters];
+
+		if ( statusFiltersStateCopy.includes(value) ) {
+			statusFiltersStateCopy = statusFiltersStateCopy.filter( status => ( status !== value ) );
+		} else {
+			statusFiltersStateCopy.push(value);
+		}
+
+		setState({
+			...state,
+			statusFilters: statusFiltersStateCopy
+		});
+	};
 
 	/** Custom methods for updating the sortCriteria and promptedId states **/
 	const updateSortCriteria = (value) => setState({
@@ -94,8 +115,25 @@ const History = (props) => {
 
 		// First we filter services and populate filteredArr with keys
 		for (const serviceKey of Object.keys(services)) {
-			if (filterServices(services[serviceKey], state.searchText)) {
+			if (filterServices(services[serviceKey], state.searchText, state.statusFilters)) {
 				filteredArr.push(serviceKey);
+			}
+		}
+
+		// Checking if no service matches the searched text
+		if (filteredArr.length === 0 && props.mainStateIsLoaded) {
+			if ( state.showNoServiceMessage === false ) {
+				setState({
+					...state,
+					showNoServiceMessage: true
+				});
+			}
+		} else {
+			if ( state.showNoServiceMessage === true ) {
+				setState({
+					...state,
+					showNoServiceMessage: false
+				});
 			}
 		}
 
@@ -167,7 +205,10 @@ const History = (props) => {
 			<Header title="Services History" />
 			<Body>
 				<TopBar>
-					<Legend />
+					<Legend 
+						updateStatusFilters={updateStatusFilters} 
+						statusFilters={state.statusFilters}
+						/>
 					<Controls
 						handleSearchInputChange={handleSearchInputChange}
 						handleSortCriteriaChange={handleSortCriteriaChange}
@@ -176,6 +217,7 @@ const History = (props) => {
 						sortDirectionAsc={state.sortDirectionAsc}
 					/>
 				</TopBar>
+				{state.showNoServiceMessage && <FilterCriteriaEmpty>No service meets the filtered criteria!</FilterCriteriaEmpty>}
 				<GridBasic>
 					{renderServices()}
 				</GridBasic>
