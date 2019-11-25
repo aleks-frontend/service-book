@@ -86,6 +86,7 @@ const Main = (props) => {
             case 'home':
                 return <ScreensDashboard
                     services={props.services}
+                    mainStateIsLoaded={props.mainStateIsLoaded}
                     />;
             case 'history':
                 return <ScreensHistory

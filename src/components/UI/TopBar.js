@@ -6,6 +6,7 @@ const StyledTopBar = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: 0 0 2rem;
+    width: 100%;
 `;
 
 const TopBar = (props) => {
