@@ -14,24 +14,20 @@ const StyledForm = styled.form`
     width: 80rem;
     max-width: 100%;
     max-height: ${props => props.isUpdate ? '100%' : 'none'};
-    background: #fff;
+    background: ${colors.lightgray2};
     border-radius: 0.4rem;
 
     .group {
-        display: flex; 
-        align-items: flex-start;
-        padding: 0.3rem;
         border: 1px solid transparent;
-        margin-bottom: 1rem;
-
-        @media screen and (${breakpoints.point1}) {
-            flex-direction: column;
-            align-items: stretch;
-            margin-bottom: 1rem; }
+        margin-bottom: 0.5rem;
 
         label { 
-            margin-right: 1rem; 
-            line-height: 3.8rem;
+            display: block;
+            padding: 0.5rem 0.3rem;
+            color: #fff;
+            background: ${colors.rdgray2};
+            border-top-left-radius: 4px; 
+            border-top-right-radius: 4px;
             
             @media screen and (${breakpoints.point1}) {
                 line-height: 1.2em;
@@ -39,19 +35,30 @@ const StyledForm = styled.form`
         }
 
         input[type="text"], textarea {
-            flex: 1;
+            display: block;
+            width: 100%;
             padding: 0 0.5rem;
             height: 3.8rem;
-            border: 1px solid ${colors.lightgray};
-            border-radius: 4px; }
+            border: none;
+            border-bottom-left-radius: 4px; 
+            border-bottom-right-radius: 4px; 
+            
+            &:focus { outline: none; }
+        }
 
-        textarea { height: 8rem; } 
+        textarea { height: 6rem; } 
+
+        select {
+            width: 100%;
+            height: 3rem; }
 
         &.empty-required { 
             color: red;
             border-color: red; }
 
-        .select { flex: 1; }
+        .select { 
+            flex: 1; 
+            border: none; }
     }
 `;
 
