@@ -22,15 +22,21 @@ const StyledLegendItem = styled.div`
         margin-right: 0.5rem;
         width: 3.3rem;
         height: 3.3rem; 
+        padding: ${props => props.selected ? '0.3rem' : '0'};
+        border: ${props => props.selected ? `0.1rem solid ${colors.rddarkgray}` : 'none'};
+        border-radius: ${props => props.selected ? '50%' : '0'};
+        transition: 0.3s all;
     
         svg path { 
-            fill: ${props => props.selected ? colors.rdblue : colors.rddarkgray}; 
+            fill: ${props => props.color}; 
             transition: 0.3s all; }
     }
 
     .legend__label { 
         font-size: 1.2rem; 
-        color: ${props => props.selected ? colors.rdblue : colors.rddarkgray}; 
+        font-weight: ${props => props.selected ? 700 : 400};
+        color: ${colors.rddarkgray}; 
+        user-select: none;
         transition: 0.3s all; }
 `;
 
@@ -50,6 +56,7 @@ const Legend = (props) => {
         <StyledLegend>
             <StyledLegendItem 
                 colors={colors}
+                color={colors.yellow}
                 selected={state.statusFilters.includes(statusEnum.RECEIVED)}
                 onClick={() => props.updateStatusFilters(statusEnum.RECEIVED)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.received }}></div>
@@ -57,6 +64,7 @@ const Legend = (props) => {
             </StyledLegendItem>
             <StyledLegendItem 
                 colors={colors}
+                color={colors.orange}
                 selected={state.statusFilters.includes(statusEnum.INPROGRESS)}
                 onClick={() => props.updateStatusFilters(statusEnum.INPROGRESS)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.inProgress }}></div>
@@ -64,6 +72,7 @@ const Legend = (props) => {
             </StyledLegendItem>
             <StyledLegendItem 
                 colors={colors}
+                color={colors.green}
                 selected={state.statusFilters.includes(statusEnum.COMPLETED)}
                 onClick={() => props.updateStatusFilters(statusEnum.COMPLETED)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.completed }}></div>
@@ -71,6 +80,7 @@ const Legend = (props) => {
             </StyledLegendItem>
             <StyledLegendItem 
                 colors={colors}
+                color={colors.blue}
                 selected={state.statusFilters.includes(statusEnum.SHIPPED)}
                 onClick={() => props.updateStatusFilters(statusEnum.SHIPPED)}>
                 <div className="legend__indicator" dangerouslySetInnerHTML={{ __html: svgIcons.shipped }}></div>

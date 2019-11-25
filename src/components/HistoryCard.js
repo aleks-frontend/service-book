@@ -47,7 +47,20 @@ const StyledHistoryCard = styled.div`
             height: 4.3rem;
 
             svg { 
-                fill: #fff;
+                fill: ${props => {
+                    switch (props.status) {
+                        case statusEnum.RECEIVED:
+                            return colors.yellow;
+                        case statusEnum.INPROGRESS:
+                            return colors.orange;
+                        case statusEnum.COMPLETED:
+                            return colors.green;
+                        case statusEnum.SHIPPED:
+                            return colors.blue;
+                        default:
+                            return colors.yellow;
+                    }                    
+                }};
                 width: 100%; }
         }
 
@@ -209,6 +222,7 @@ const HistoryCard = (props) => {
             <div className="header">
                 <div
                     className="statusIcon"
+                    status={service.status}
                     dangerouslySetInnerHTML={{ __html: renderStatusIcon(service.status) }}>
                 </div>
                 <div className="text">
