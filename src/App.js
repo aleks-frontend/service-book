@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Logo from './components/UI/Logo';
 import Nav from './components/UI/Nav';
 import Main from './components/Main';
 import Side from './components/UI/Side';
@@ -9,7 +8,7 @@ import base from './base';
 
 class App extends React.Component {
   state = {
-    activeNavItemKey: "history",
+    activeNavItemKey: "home",
     loaded: false,
     ssot: {
       services: {},
@@ -34,7 +33,6 @@ class App extends React.Component {
 
   addService = (service) => {
     const services = {...this.state.ssot.services, [new Date().getTime()]: service};
-    console.log(services);
     this.setState({ ssot: {...this.state.ssot, services: services} });    
   }
 

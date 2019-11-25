@@ -44,6 +44,8 @@ const ScreensDashboard = (props) => {
       }
     }
 
+    lastSixMonthsTotals.push(0);
+
     return lastSixMonthsTotals;
   }
 
@@ -52,15 +54,26 @@ const ScreensDashboard = (props) => {
     datasets: [
       {
         label: 'Earnings per month',
-        backgroundColor: colors.rdgray2,
+        backgroundColor: colors.rdblue,
         borderColor: colors.rddarkgray,
         borderWidth: 1,
-        hoverBackgroundColor: colors.rdblue,
+        hoverBackgroundColor: colors.rdgray2,
         hoverBorderColor: colors.rddarkgray,
         data: calculateTotalMonthEarnings()
       }
     ]
   };
+
+  const renderBar = () => {
+    return (
+      <Bar
+          data={data}
+          options={{
+            maintainAspectRatio: false
+          }}
+        />
+    );
+  }
 
   return (
     <React.Fragment>
@@ -72,12 +85,7 @@ const ScreensDashboard = (props) => {
             height: 300
           }
         }>
-          <Bar
-            data={data}
-            options={{
-              maintainAspectRatio: false
-            }}
-          />
+          {props.mainStateIsLoaded && renderBar()}          
         </div>
       </Body>
     </React.Fragment>
