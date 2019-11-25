@@ -69,6 +69,7 @@ const StyledActionsTableCell = styled.div`
     font-size: 1.2rem;
     font-weight: ${props => props.header ? '700' : '400'};
     color: ${props => props.header ? '#fff' : '#000'};
+    background: ${props => props.header ? 'transparent' : '#fff'};
     border: ${props => props.header ? 'none' : `1px solid ${colors.lightgray}`};
     border-radius: 0.3rem;
     text-align: ${props => (props.col === 1) ? 'left' : 'center'};

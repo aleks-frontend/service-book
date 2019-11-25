@@ -1,6 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
 import MaterialTable from 'material-table';
 import tableIcons from '../tableIcons';
+
+const StyledTableWrapper = styled.div`
+  width: 100%;
+`;
 
 const DisplayEntity = (props) => {
   /** Populating columns variable with fields received from props **/
@@ -10,7 +15,7 @@ const DisplayEntity = (props) => {
       field: field.name
     }
   });
-  
+
   /** Setting up the state **/
   const [state, setState] = React.useState({
     columns: columns,
@@ -33,57 +38,59 @@ const DisplayEntity = (props) => {
   }, [props.entities]);
 
   return (
-    <MaterialTable
-      icons={tableIcons}
-      title=""
-      columns={state.columns}
-      data={state.data}
-      editable={
-        {
-          onRowDelete: oldData =>
-            new Promise(resolve => {
-              if (props.findServiceByEntityId(oldData.id, props.name)) {
-                resolve();
-                alert(`${formatedLabel} in use`);
-                return;
-              }
-              
-              setTimeout(() => {
-                resolve();
-                const data = [...state.data];
-                data.splice(data.findIndex((element) => {
-                  return element.id === oldData.id;
-                }), 1);
-                setState({ ...state, data });
-                props.deleteEntity(oldData.id, props.name);
-                props.showSnackbar(props.name, 'deleted');
-              }, 300);
-            }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-
-                for ( const field of props.fields) {
-                    if ( field.calculated ) {
-                        const str = field.calculated.map(item => {
-                            return newData[item];
-                        }).join(' ');
-                        
-                        newData[field.name] = str;
-                    }
+    <StyledTableWrapper>
+      <MaterialTable
+        icons={tableIcons}
+        title=""
+        columns={state.columns}
+        data={state.data}
+        editable={
+          {
+            onRowDelete: oldData =>
+              new Promise(resolve => {
+                if (props.findServiceByEntityId(oldData.id, props.name)) {
+                  resolve();
+                  alert(`${formatedLabel} in use`);
+                  return;
                 }
 
-                const data = [...state.data];
-                data[data.indexOf(oldData)] = newData;
-                setState({ ...state, data });
-                props.updateEntity(newData, newData.id, props.name);
-                props.showSnackbar(props.name, 'updated');
-              }, 300);
-            }),
+                setTimeout(() => {
+                  resolve();
+                  const data = [...state.data];
+                  data.splice(data.findIndex((element) => {
+                    return element.id === oldData.id;
+                  }), 1);
+                  setState({ ...state, data });
+                  props.deleteEntity(oldData.id, props.name);
+                  props.showSnackbar(props.name, 'deleted');
+                }, 300);
+              }),
+            onRowUpdate: (newData, oldData) =>
+              new Promise(resolve => {
+                setTimeout(() => {
+                  resolve();
+
+                  for (const field of props.fields) {
+                    if (field.calculated) {
+                      const str = field.calculated.map(item => {
+                        return newData[item];
+                      }).join(' ');
+
+                      newData[field.name] = str;
+                    }
+                  }
+
+                  const data = [...state.data];
+                  data[data.indexOf(oldData)] = newData;
+                  setState({ ...state, data });
+                  props.updateEntity(newData, newData.id, props.name);
+                  props.showSnackbar(props.name, 'updated');
+                }, 300);
+              }),
+          }
         }
-      }
-    />
+      />
+    </StyledTableWrapper>
   );
 }
 
