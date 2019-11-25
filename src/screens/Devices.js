@@ -17,7 +17,7 @@ const ScreensDevices = (props) => {
     const showPopup = () => setState({ ...state, showPopup: true });
 
     const fields = props.fields.devices;
-    
+
     /** Render Methods **/
     const renderPopup = () => {
         if (state.showPopup) {
@@ -44,6 +44,10 @@ const ScreensDevices = (props) => {
                 <CreateEntityButton showPopup={showPopup} entity="devices" />
             </Header>
             <Body>
+                <CreateEntityButton
+                    entity="Device"
+                    showPopup={showPopup}
+                    injectIntoTable={true} />
                 <DisplayEntity
                     name="devices"
                     fields={fields}

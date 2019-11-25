@@ -13,8 +13,8 @@ const ScreensActions = (props) => {
 	});
 
 	/** Helper methods for hiding the showing the popup **/
-	const hidePopup = () => setState({ ...state, showPopup: false });	
-	const showPopup = () => setState({ ...state, showPopup: true });	
+	const hidePopup = () => setState({ ...state, showPopup: false });
+	const showPopup = () => setState({ ...state, showPopup: true });
 
 	const fields = props.fields.actions;
 
@@ -37,7 +37,7 @@ const ScreensActions = (props) => {
 			);
 		}
 	}
-	
+
 	return (
 		<React.Fragment>
 			{renderPopup()}
@@ -45,6 +45,10 @@ const ScreensActions = (props) => {
 				<CreateEntityButton showPopup={showPopup} entity="actions" />
 			</Header>
 			<Body>
+				<CreateEntityButton
+					entity="Action"
+					showPopup={showPopup}
+					injectIntoTable={true} />
 				<DisplayEntity
 					name="actions"
 					fields={fields}

@@ -11,8 +11,16 @@ const StyledCreateEntityButton = styled.button`
     background: #313442;
     border: 1px solid black;
     border-radius: 0.5rem;
+    user-select: none;
+    ${props => {
+        if ( props.injectIntoTable ) {
+            return `transform: translate(1rem, calc(100% + 1rem));
+             z-index: 999;`
+        }
+    }};
 
     &:hover { cursor: pointer; }
+    &:focus { outline: none; }    
 
     &::before {
         content: '';
@@ -30,8 +38,10 @@ const StyledCreateEntityButton = styled.button`
 
 const CreateEntityButton = (props) => {
     return (
-        <StyledCreateEntityButton onClick={props.showPopup}>
-            Create {props.entity}
+        <StyledCreateEntityButton 
+            onClick={props.showPopup}
+            injectIntoTable={props.injectIntoTable}
+        >Create {props.entity}
         </StyledCreateEntityButton>
     );
 };

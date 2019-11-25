@@ -50,7 +50,8 @@ const ScreensCustomers = (props) => {
 			<Body>
 				<CreateEntityButton 
 					entity="Customer"
-					showPopup={showPopup} />
+					showPopup={showPopup}
+					injectIntoTable={true} />
 				<DisplayEntity
 					name="customers"
 					fields={fields}
