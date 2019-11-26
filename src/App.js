@@ -162,19 +162,13 @@ class App extends React.Component {
   
   getCustomerNameById = id => this.state.ssot.customers[id].name;
 
-  getDeviceById = id => {
-    return `${this.state.ssot.devices[id].manufacturer} ${this.state.ssot.devices[id].model}`;
-  }
+  getDeviceById = id => `${this.state.ssot.devices[id].manufacturer} ${this.state.ssot.devices[id].model}`;
 
   getActionNameById = id => this.state.ssot.actions[id].name;
 
-  setNavActive = key => {    
-    this.setState({ activeNavItemKey: key });
-  }
+  setNavActive = key => this.setState({ activeNavItemKey: key });
 
-  setFilteredServicesArray = status => {
-    this.setState({ filteredServicesArray: status });
-  }
+  setFilteredServicesArray = status => this.setState({ filteredServicesArray: status });
 
   renderLoadingSpinner = () => {
     if ( !this.state.loaded ) {
