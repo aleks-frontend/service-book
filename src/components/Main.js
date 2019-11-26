@@ -108,6 +108,7 @@ const Main = (props) => {
                     sortServices={props.sortServices}
                     mainStateIsLoaded={props.mainStateIsLoaded}
                     filteredServicesArray={props.filteredServicesArray}
+                    setFilteredServicesArray={props.setFilteredServicesArray}
                 />;
             case 'newService':
                 return <ScreensNewService

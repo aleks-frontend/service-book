@@ -5,6 +5,9 @@ import tableIcons from '../tableIcons';
 
 const StyledTableWrapper = styled.div`
   width: 100%;
+
+  .MuiTableCell-root { font-size: 1.1rem; }
+  .MuiTypography-caption { font-size: 1rem; }
 `;
 
 const DisplayEntity = (props) => {
@@ -40,6 +43,7 @@ const DisplayEntity = (props) => {
   return (
     <StyledTableWrapper>
       <MaterialTable
+        className="test"
         icons={tableIcons}
         title=""
         columns={state.columns}

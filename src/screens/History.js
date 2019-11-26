@@ -38,6 +38,9 @@ const History = (props) => {
 		showNoServiceMessage: false
 	});
 	
+	React.useEffect(() => {
+		props.setFilteredServicesArray([]);
+	}, []);
 
 	/** Custom methods for updating the statusFilters state **/
 	const updateStatusFilters = (value) => {

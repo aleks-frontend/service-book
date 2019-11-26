@@ -13,10 +13,7 @@ const StyledNav = styled.div`
         align-items: center;
         justify-content: center;
         padding: 1.5rem 0;
-        font-weight: 700;
         color: ${colors.rdlightgray};
-        text-align: center;
-        text-decoration: none;
         transition: 0.3s all;
         &:hover { 
             cursor: pointer; 
@@ -51,6 +48,13 @@ const StyledNav = styled.div`
         width: 3.5rem; 
         
         svg { width: 100%; }
+    }
+
+    .nav__text {
+        font-size: 1.1rem;
+        font-weight: 700;        
+        text-align: center;
+        text-decoration: none;
     }
 `;
 
@@ -96,10 +100,7 @@ class Nav extends React.Component {
                         <div
                             className={(this.props.activeNavItemKey === key) ? 'nav__item nav__item--active' : 'nav__item'}
                             key={key}
-                            onClick={(e) => {
-                                this.props.setNavActive(key)
-                                this.props.setFilteredServicesArray([]);
-                            }}
+                            onClick={(e) => this.props.setNavActive(key)}
                         >
                             <div className="nav__icon" dangerouslySetInnerHTML={{ __html: navItems[key].icon }}></div>
                             <div className="nav__text">{navItems[key].text}</div>

@@ -31,7 +31,10 @@ const StyledGrid = styled.div`
       flex: 1;
       display: flex;
       align-items: center;
-      justify-content: center; }
+      justify-content: center;
+      
+      &--padding { padding: 2rem 1rem; } 
+    }
 
     &--grid  { 
       grid-column: span 2; 
@@ -196,7 +199,7 @@ const ScreensDashboard = (props) => {
         </div>        
         <div className="cell cell--grid">
           <div className="header">Earnings (Last 6 months)</div>
-          <div className="body">
+          <div className="body body--padding">
             <Bar
               data={data}
               legend={null}

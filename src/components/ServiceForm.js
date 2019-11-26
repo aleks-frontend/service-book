@@ -24,6 +24,7 @@ const StyledForm = styled.form`
         label { 
             display: block;
             padding: 0.5rem 0.3rem;
+            font-size: 1.2rem;
             color: #fff;
             background: ${colors.rdgray2};
             border-top-left-radius: 4px; 
