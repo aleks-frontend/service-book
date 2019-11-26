@@ -31,10 +31,7 @@ const StyledGrid = styled.div`
       flex: 1;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      font-size: 13rem;
-      color: ${colors.rdgray}; }
+      justify-content: center; }
 
     &--grid  { 
       grid-column: span 2; 
@@ -42,9 +39,54 @@ const StyledGrid = styled.div`
 
     &--clickable:hover { cursor: pointer; }
   }
+`;
 
+const StyledThumbnail = styled.div`
+  display: flex;
+  flex: 1;
 
-  
+  .digit {
+    flex-basis: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13rem;
+    color: ${colors.rdgray}; }
+`;
+
+const StyledFrame = styled.div`
+  flex-basis: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+    .frame {
+      display: flex;
+      flex-direction: column;
+      width: 60%;
+      height: 60%;
+      border: 0.1rem solid ${colors.rdgray2};
+      border-radius: 0.3rem;
+
+      .header {
+        padding: 0.5rem 0.9rem;
+        font-size: 1.1rem;
+      }
+
+      .body {
+        .icon {
+          width: 25%;
+          margin: 0 0.5rem; 
+
+          svg path { fill: ${props => props.status === statusEnum.COMPLETED ? colors.green : colors.orange }; }
+        }
+
+        .label {
+          margin: 0 0.5rem; 
+          color: ${colors.rdgray};
+          font-size: 1.1rem; }
+      }
+    }
 `;
 
 const ScreensDashboard = (props) => {
@@ -114,18 +156,44 @@ const ScreensDashboard = (props) => {
         >
           <div className="header">Services in progress</div>
           <div className="body">
-            {renderFilteredServicesCount(statusEnum.INPROGRESS)}
+            <StyledThumbnail>
+              <div className="digit">
+                {renderFilteredServicesCount(statusEnum.INPROGRESS)}
+              </div>
+              <StyledFrame status={statusEnum.INPROGRESS}>
+                <div className="frame">
+                  <div className="header">Status</div>
+                  <div className="body">
+                    <div className="icon" dangerouslySetInnerHTML={{ __html: svgIcons.inProgress }}></div>
+                    <div className="label">In Progress</div>
+                  </div>
+                </div>
+              </StyledFrame>
+            </StyledThumbnail>
           </div>
         </div>
         <div
           className="cell cell--clickable"
           onClick={() => goToFilteredServices('history', statusEnum.COMPLETED)}
         >
-          <div className="header">Services ready for delivery</div>
+          <div className="header">Completed services</div>
           <div className="body">
-            {renderFilteredServicesCount(statusEnum.COMPLETED)}
+            <StyledThumbnail>
+              <div className="digit">
+              {renderFilteredServicesCount(statusEnum.COMPLETED)}
+              </div>
+              <StyledFrame status={statusEnum.COMPLETED}>
+                <div className="frame">
+                  <div className="header">Status</div>
+                  <div className="body">
+                    <div className="icon" dangerouslySetInnerHTML={{ __html: svgIcons.completed }}></div>
+                    <div className="label">Completed</div>
+                  </div>
+                </div>
+              </StyledFrame>
+            </StyledThumbnail>
           </div>
-        </div>
+        </div>        
         <div className="cell cell--grid">
           <div className="header">Earnings (Last 6 months)</div>
           <div className="body">
