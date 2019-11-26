@@ -15,7 +15,8 @@ class App extends React.Component {
       actions: {},
       devices: {},
       customers: {}
-    }
+    },
+    filteredServicesArray: []
   }
 
   componentDidMount() {
@@ -171,6 +172,10 @@ class App extends React.Component {
     this.setState({ activeNavItemKey: key });
   }
 
+  setFilteredServicesArray = status => {
+    this.setState({ filteredServicesArray: status });
+  }
+
   renderLoadingSpinner = () => {
     if ( !this.state.loaded ) {
       return <LoadingSpinner />
@@ -184,6 +189,7 @@ class App extends React.Component {
           <Nav margin="2rem 0 0" 
             activeNavItemKey={this.state.activeNavItemKey} 
             setNavActive={this.setNavActive} 
+            setFilteredServicesArray={this.setFilteredServicesArray}
           />
         </Side>       
         <Main
@@ -206,6 +212,9 @@ class App extends React.Component {
           findServiceByEntityId={this.findServiceByEntityId}
           renderLoadingSpinner={this.renderLoadingSpinner}
           mainStateIsLoaded={this.state.loaded}
+          setNavActive={this.setNavActive} 
+          setFilteredServicesArray={this.setFilteredServicesArray}
+          filteredServicesArray={this.state.filteredServicesArray}
         />
       </React.Fragment>
     );

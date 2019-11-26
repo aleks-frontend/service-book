@@ -1,6 +1,5 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
 
 import Header from '../components/UI/Header';
 import Body from '../components/UI/Body';
@@ -35,7 +34,7 @@ const History = (props) => {
 		sortCriteria: '',
 		sortDirectionAsc: true,
 		promptedId: null,
-		statusFilters: [],
+		statusFilters: props.filteredServicesArray,
 		showNoServiceMessage: false
 	});
 	

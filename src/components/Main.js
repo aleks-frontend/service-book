@@ -29,21 +29,22 @@ const useStyles = makeStyles(theme => ({
 const Main = (props) => {
     const classes = useStyles();
     /** Setting up the state **/
-    const [ state, setState ] = React.useState({
+    const [state, setState] = React.useState({
         snackbarVisible: false,
         snackbarEntity: '',
         snackBarAction: ''
     });
 
-    
+
     /** Event Handler Methods **/
     const handleClose = (reason) => {
         if (reason === 'clickaway') return;
-        setState({...state, snackbarVisible: false});
+        setState({ ...state, snackbarVisible: false });
     };
 
     const showSnackbar = (entityType, actionLabel) => {
-        setState({...state, 
+        setState({
+            ...state,
             snackbarVisible: true,
             snackbarEntity: entityType,
             snackbarAction: actionLabel
@@ -73,7 +74,7 @@ const Main = (props) => {
                         color="inherit"
                         className={classes.close}
                         onClick={handleClose}
-                        >
+                    >
                         <CloseIcon />
                     </IconButton>,
                 ]}
@@ -87,7 +88,9 @@ const Main = (props) => {
                 return <ScreensDashboard
                     services={props.services}
                     mainStateIsLoaded={props.mainStateIsLoaded}
-                    />;
+                    setNavActive={props.setNavActive}
+                    setFilteredServicesArray={props.setFilteredServicesArray}
+                />;
             case 'history':
                 return <ScreensHistory
                     customers={props.customers}
@@ -95,7 +98,7 @@ const Main = (props) => {
                     actions={props.actions}
                     updateService={props.updateService}
                     addEntity={props.addEntity}
-                    showSnackbar={showSnackbar}                
+                    showSnackbar={showSnackbar}
                     services={props.services}
                     deleteService={props.deleteService}
                     getCustomerNameById={props.getCustomerNameById}
@@ -104,6 +107,7 @@ const Main = (props) => {
                     filterServices={props.filterServices}
                     sortServices={props.sortServices}
                     mainStateIsLoaded={props.mainStateIsLoaded}
+                    filteredServicesArray={props.filteredServicesArray}
                 />;
             case 'newService':
                 return <ScreensNewService
@@ -147,7 +151,11 @@ const Main = (props) => {
                     fields={fields}
                 />;
             default:
-                return <ScreensDashboard />;
+                return <ScreensDashboard
+                    services={props.services}
+                    mainStateIsLoaded={props.mainStateIsLoaded}
+                    setNavActive={props.setNavActive}
+                />;
         }
     }
 

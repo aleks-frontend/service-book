@@ -88,7 +88,7 @@ const navItems = {
 };
 
 class Nav extends React.Component {
-    render() {
+    render(props) {
         return (
             <React.Fragment>
                 <StyledNav>
@@ -96,7 +96,10 @@ class Nav extends React.Component {
                         <div
                             className={(this.props.activeNavItemKey === key) ? 'nav__item nav__item--active' : 'nav__item'}
                             key={key}
-                            onClick={(e) => this.props.setNavActive(key)}
+                            onClick={(e) => {
+                                this.props.setNavActive(key)
+                                this.props.setFilteredServicesArray([]);
+                            }}
                         >
                             <div className="nav__icon" dangerouslySetInnerHTML={{ __html: navItems[key].icon }}></div>
                             <div className="nav__text">{navItems[key].text}</div>
