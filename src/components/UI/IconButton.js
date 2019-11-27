@@ -11,6 +11,7 @@ const StyledIconButton = styled.button`
     padding: 0;
     width: 2.5rem;
     height: 2.5rem;
+    background: transparent;
     border: none;
     border-radius: 0.3rem;
     opacity: 0.8;

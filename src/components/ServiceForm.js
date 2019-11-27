@@ -1,11 +1,52 @@
 import React from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
+import { PDFDownloadLink, Document, Page, Text } from '@react-pdf/renderer';
+import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
+
 import CreateEntity from './CreateEntity';
 import ActionsTable from './ActionsTable';
 import Button from './UI/Button';
 import { breakpoints } from '../helpers';
 import { statusEnum, colors } from '../helpers';
+
+const MyDoc = () => (
+    <Document>
+        <Page>
+            <Text>Table heading</Text>
+            <Table
+                data={[
+                    { firstName: "John", lastName: "Smith", dob: new Date(2000, 1, 1), country: "Australia", phoneNumber: "xxx-0000-0000" }
+                ]}
+            >
+                <TableHeader>
+                    <TableCell>
+                        First Name
+                        </TableCell>
+                    <TableCell>
+                        Last Name
+                        </TableCell>
+                    <TableCell>
+                        DOB
+                        </TableCell>
+                    <TableCell>
+                        Country
+                        </TableCell>
+                    <TableCell>
+                        Phone Number
+                        </TableCell>
+                </TableHeader>
+                <TableBody>
+                    <DataTableCell getContent={(r) => r.firstName} />
+                    <DataTableCell getContent={(r) => r.lastName} />
+                    <DataTableCell getContent={(r) => r.dob.toLocaleString()} />
+                    <DataTableCell getContent={(r) => r.country} />
+                    <DataTableCell getContent={(r) => r.phoneNumber} />
+                </TableBody>
+            </Table>
+        </Page>
+    </Document>
+)
 
 const StyledForm = styled.form`
     position: relative;
@@ -229,7 +270,7 @@ const ServiceForm = (props) => {
         hideCreateEntityForm(stateKey, stateCopy);
 
         setState({ ...stateCopy });
-    }    
+    }
 
     /** Event Handler Methods **/
     const handleInputChange = (event) => {
@@ -282,18 +323,18 @@ const ServiceForm = (props) => {
             ...state.inputs[actionMeta.name],
             value: keysArr
         }, stateCopy);
-        
+
         // We are now setting the stateCopy to the actual state
         setState(stateCopy);
     }
-    
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
         let inputValues = {};
         const emptyRequiredInputsCopy = { ...state.emptyRequiredInputs };
         for (const key of Object.keys(state.inputs)) {
             const input = state.inputs[key];
-            
+
             if (input.show === false) {
                 inputValues[key] = defaultStates.inputs[key].value;
                 continue;
@@ -316,14 +357,14 @@ const ServiceForm = (props) => {
             }
 
             // Hack for converting an empty array to string - because Firebase is not supporting empty arrays
-            if ( input.isArray && Array.isArray(inputVal) && inputVal.length === 0 ) {
+            if (input.isArray && Array.isArray(inputVal) && inputVal.length === 0) {
                 inputVal = '';
             }
 
             inputValues[key] = inputVal;
 
             // Hiding the Popup if we are in the `UpdateService' form and all required inputs are filled in
-            if ( props.isUpdate && !Object.keys(emptyRequiredInputsCopy).length ) {
+            if (props.isUpdate && !Object.keys(emptyRequiredInputsCopy).length) {
                 props.hidePopup();
             }
         }
@@ -384,10 +425,10 @@ const ServiceForm = (props) => {
                 <React.Fragment>
                     <div className="group">
                         <label>Actions:</label>
-                        <ActionsTable 
-                            mainStateActions={props.actions} 
+                        <ActionsTable
+                            mainStateActions={props.actions}
                             actions={state.inputs.actions}
-                            addEntity={props.addEntity} 
+                            addEntity={props.addEntity}
                             updateServiceFormActionsState={updateActionsState}
                         />
                     </div>
@@ -418,7 +459,7 @@ const ServiceForm = (props) => {
     };
 
     const renderCancelButton = () => {
-        if ( props.isUpdate ) {
+        if (props.isUpdate) {
             return (
                 <Button
                     type="button"
@@ -431,35 +472,35 @@ const ServiceForm = (props) => {
 
     return (
         <React.Fragment>
-            <StyledForm 
-                onSubmit={handleFormSubmit} 
+            <StyledForm
+                onSubmit={handleFormSubmit}
                 onClick={e => e.stopPropagation()}
                 isUpdate={props.isUpdate}
             >
                 <div
                     className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.title.required && '* '}Title:</label>
                     <input
                         type="text"
                         name="title"
                         value={state.inputs.title.value}
                         onChange={handleInputChange}
-                        />
+                    />
                 </div>
                 <div
                     className={state.emptyRequiredInputs['description'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.description.required && '* '}Description:</label>
                     <textarea
                         name="description"
                         value={state.inputs.description.value}
                         onChange={handleInputChange}
-                        />
+                    />
                 </div>
                 <div
                     className={state.emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.customers.required && '* '}Customer:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['customers']}
@@ -469,12 +510,12 @@ const ServiceForm = (props) => {
                         onChange={handleDropdownChange}
                         onCreateOption={handleCreateCustomer}
                         isClearable
-                        />
+                    />
                 </div>
                 {renderCreateCustomer()}
                 <div
                     className={state.emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.devices.required && '* '}Devices:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['devices']}
@@ -484,11 +525,11 @@ const ServiceForm = (props) => {
                         name="devices"
                         onCreateOption={handleCreateDevice}
                         onChange={handleDropdownChange}
-                        />
+                    />
                 </div>
                 {renderCreateDevice()}
                 {renderUpdateFields()}
-                <Button 
+                <Button
                     type="submit"
                     onClick={handleFormSubmit}
                 >
@@ -496,6 +537,10 @@ const ServiceForm = (props) => {
                 </Button>
                 {renderCancelButton()}
             </StyledForm>
+            <PDFDownloadLink document={<MyDoc />} fileName="somename.pdf">
+                {({ loading }) => (loading ? 'Loading document...' : 'Download now!')}
+            </PDFDownloadLink>
+
         </React.Fragment>
     );
 }
