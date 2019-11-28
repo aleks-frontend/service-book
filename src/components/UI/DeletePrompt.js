@@ -24,7 +24,7 @@ const StyledDeletePrompt = styled.div`
         justify-content: center;
         padding: 4rem 1rem;
         width: 33rem;
-        background: ${colors.rdlightgray};
+        background: #fff;
         border-radius: 0.3rem;
 
         .text {
