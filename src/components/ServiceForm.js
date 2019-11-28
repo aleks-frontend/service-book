@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+
 import CreateEntity from './CreateEntity';
 import ActionsTable from './ActionsTable';
 import Button from './UI/Button';
+import PdfDispatchNote from './PDF/PdfDispatchNote';
 import { breakpoints } from '../helpers';
 import { statusEnum, colors } from '../helpers';
 
@@ -141,7 +144,9 @@ const ServiceForm = (props) => {
             customers: defaultStates.customerOptionsArr,
             devices: defaultStates.deviceOptionsArr,
             actions: defaultStates.actionOptionsArr
-        }
+        },
+        showGeneratedPdfButton: false,
+        tempInputs: {}
     });
 
     /** Helpper method for updating the state **/
@@ -186,11 +191,14 @@ const ServiceForm = (props) => {
     const hideCreateEntityForm = (entityType, stateCopy) => updateState('showCreateEntity', entityType, { show: false }, stateCopy);
 
     /** Helper method for reseting the form after it's submitted **/
-    const formReset = (stateCopy) => {
+    const formReset = () => {
+        const stateCopy = { ...state };
+
         updateState('inputs', null, defaultStates.inputs, stateCopy);
         updateState('selectedDropdownItems', null, defaultStates.selectedDropdownItems, stateCopy);
+        updateState('showGeneratedPdfButton', null, false, stateCopy);
 
-        return stateCopy;
+        setState(stateCopy);
     }
 
     /** Helper method for adding the new entity to the local state **/
@@ -229,7 +237,7 @@ const ServiceForm = (props) => {
         hideCreateEntityForm(stateKey, stateCopy);
 
         setState({ ...stateCopy });
-    }    
+    }
 
     /** Event Handler Methods **/
     const handleInputChange = (event) => {
@@ -282,18 +290,18 @@ const ServiceForm = (props) => {
             ...state.inputs[actionMeta.name],
             value: keysArr
         }, stateCopy);
-        
+
         // We are now setting the stateCopy to the actual state
         setState(stateCopy);
     }
-    
+
     const handleFormSubmit = (event) => {
         event.preventDefault();
         let inputValues = {};
         const emptyRequiredInputsCopy = { ...state.emptyRequiredInputs };
         for (const key of Object.keys(state.inputs)) {
             const input = state.inputs[key];
-            
+
             if (input.show === false) {
                 inputValues[key] = defaultStates.inputs[key].value;
                 continue;
@@ -316,19 +324,19 @@ const ServiceForm = (props) => {
             }
 
             // Hack for converting an empty array to string - because Firebase is not supporting empty arrays
-            if ( input.isArray && Array.isArray(inputVal) && inputVal.length === 0 ) {
+            if (input.isArray && Array.isArray(inputVal) && inputVal.length === 0) {
                 inputVal = '';
             }
 
             inputValues[key] = inputVal;
 
             // Hiding the Popup if we are in the `UpdateService' form and all required inputs are filled in
-            if ( props.isUpdate && !Object.keys(emptyRequiredInputsCopy).length ) {
+            if (props.isUpdate && !Object.keys(emptyRequiredInputsCopy).length) {
                 props.hidePopup();
             }
         }
 
-        const stateCopy = { ...state };
+        let stateCopy = { ...state };
         updateState('emptyRequiredInputs', null, emptyRequiredInputsCopy, stateCopy);
         if (Object.keys(emptyRequiredInputsCopy).length) {
             setState(stateCopy);
@@ -336,7 +344,12 @@ const ServiceForm = (props) => {
         } else {
             if (!props.isUpdate) {
                 props.addService(inputValues);
-                formReset(stateCopy);
+                // Showing the 'Generate PDF' button
+                updateState('showGeneratedPdfButton', null, true, stateCopy);
+                // Saving current inputs from the stateCopy to 'tempInputs' state
+                // cause 'inputs' state will be reset before the PDF is generated
+                // so we temporary store it here and pass this data to PdfDispatchNote 
+                updateState('tempInputs', null, stateCopy['inputs'], stateCopy);
                 props.showSnackbar('New service ', 'created');
             } else {
                 props.updateService(inputValues, props.serviceId);
@@ -384,10 +397,10 @@ const ServiceForm = (props) => {
                 <React.Fragment>
                     <div className="group">
                         <label>Actions:</label>
-                        <ActionsTable 
-                            mainStateActions={props.actions} 
+                        <ActionsTable
+                            mainStateActions={props.actions}
                             actions={state.inputs.actions}
-                            addEntity={props.addEntity} 
+                            addEntity={props.addEntity}
                             updateServiceFormActionsState={updateActionsState}
                         />
                     </div>
@@ -418,48 +431,84 @@ const ServiceForm = (props) => {
     };
 
     const renderCancelButton = () => {
-        if ( props.isUpdate ) {
+        if (props.isUpdate) {
             return (
                 <Button
                     type="button"
                     onClick={props.hidePopup}
+                    isText={true}
                     isText={true}
                 >Cancel</Button>
             );
         }
     }
 
+    const renderResetButton = () => {
+        if (state.showGeneratedPdfButton) {
+            return (
+                <Button
+                    type="button"
+                    margin="0 0.5rem"
+                    onClick={formReset}
+                >Reset</Button>
+            );
+        }
+    }
+
+    const renderGeneratePdfButton = () => {
+        if (state.showGeneratedPdfButton) {
+            return (
+                <Button
+                    type="button"
+                    margin="0 0 0 0.5rem"
+                    onClick={formReset}
+                >
+                    <PDFDownloadLink
+                        document={<PdfDispatchNote
+                            inputs={state.tempInputs}
+                            customers={props.customers}
+                            devices={props.devices}
+                        />}
+                        fileName={`dispatch-note-${state.inputs.title.value}.pdf`}
+                    >
+                        {({ loading }) => (loading ? 'Loading document...' : 'Generate PDF')}
+                    </PDFDownloadLink>
+                </Button>
+            )
+        }
+    }
+
     return (
         <React.Fragment>
-            <StyledForm 
-                onSubmit={handleFormSubmit} 
+            <StyledForm
+                onSubmit={handleFormSubmit}
                 onClick={e => e.stopPropagation()}
                 isUpdate={props.isUpdate}
             >
                 <div
                     className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.title.required && '* '}Title:</label>
                     <input
                         type="text"
                         name="title"
                         value={state.inputs.title.value}
                         onChange={handleInputChange}
-                        />
+                    />
                 </div>
                 <div
                     className={state.emptyRequiredInputs['description'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.description.required && '* '}Description:</label>
                     <textarea
                         name="description"
                         value={state.inputs.description.value}
                         onChange={handleInputChange}
-                        />
+                    />
                 </div>
                 <div
                     className={state.emptyRequiredInputs['customers'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.customers.required && '* '}Customer:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['customers']}
@@ -469,12 +518,12 @@ const ServiceForm = (props) => {
                         onChange={handleDropdownChange}
                         onCreateOption={handleCreateCustomer}
                         isClearable
-                        />
+                    />
                 </div>
                 {renderCreateCustomer()}
                 <div
                     className={state.emptyRequiredInputs['devices'] ? 'group empty-required' : 'group'}
-                    >
+                >
                     <label>{state.inputs.devices.required && '* '}Devices:</label>
                     <CreatableSelect
                         options={state.dropdownOptions['devices']}
@@ -484,17 +533,20 @@ const ServiceForm = (props) => {
                         name="devices"
                         onCreateOption={handleCreateDevice}
                         onChange={handleDropdownChange}
-                        />
+                    />
                 </div>
                 {renderCreateDevice()}
                 {renderUpdateFields()}
-                <Button 
+                <Button
                     type="submit"
                     onClick={handleFormSubmit}
+                    disabled={state.showGeneratedPdfButton}
                 >
                     {props.isUpdate ? 'Update' : 'Create'}
                 </Button>
                 {renderCancelButton()}
+                {renderGeneratePdfButton()}
+                {renderResetButton()}
             </StyledForm>
         </React.Fragment>
     );
