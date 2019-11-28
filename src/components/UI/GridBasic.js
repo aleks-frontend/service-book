@@ -6,6 +6,7 @@ const StyledGrid = styled.div`
     grid-template-columns: ${props => `repeat(auto-fill, minmax(${props.columnSize}rem, 1fr))`};
 	grid-auto-rows: ${props => `${props.rowSize}rem`};
 	grid-gap: ${props => `${props.gapSize}rem`};
+    width: 100%;
 `;
 
 const GridBasic = (props) => {
