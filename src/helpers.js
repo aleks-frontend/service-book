@@ -24,7 +24,7 @@ export const fields = {
             name: 'email',
             label: 'Email',
             defaultVal: '',
-            required: true
+            required: false
         }
     ],
     devices: [
