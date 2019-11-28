@@ -17,6 +17,13 @@ const StyledButton = styled.button`
 
     &:hover { cursor: pointer; }
     &:focus { outline: none; }
+    &:disabled { 
+        opacity: 0.8;
+        cursor: default; }
+
+    a { 
+        color: ${props => props.isText ? colors.rdgray2 :  '#fff'}; 
+        text-decoration: none; }
 `;
 
 const Button = (props) => {
@@ -27,6 +34,7 @@ const Button = (props) => {
             type={props.type}
             compact={props.compact}
             margin={props.margin}
+            disabled={props.disabled}
         >
             {props.children}
         </StyledButton>
