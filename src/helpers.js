@@ -81,7 +81,7 @@ export const colors = {
     lightgray2: '#ececef',
     green: '#81C159',
     yellow: '#C8AC04',
-    orange: '#CA7D23',
+    orange: '#d98c34',
     red: '#ed1749',
     blue: '#76ABCE',
     purple: '#8A2BE2',
