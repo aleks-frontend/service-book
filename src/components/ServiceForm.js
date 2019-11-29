@@ -471,7 +471,7 @@ const ServiceForm = (props) => {
                         />}
                         fileName={`dispatch-note-${state.inputs.title.value}.pdf`}
                     >
-                        {({ loading }) => (loading ? 'Loading document...' : 'Generate PDF')}
+                        {({ loading }) => (loading ? 'Generating PDF...' : 'Generate PDF')}
                     </PDFDownloadLink>
                 </Button>
             )
@@ -492,6 +492,7 @@ const ServiceForm = (props) => {
                     <input
                         type="text"
                         name="title"
+                        disabled={state.showGeneratedPdfButton}
                         value={state.inputs.title.value}
                         onChange={handleInputChange}
                     />
@@ -502,6 +503,7 @@ const ServiceForm = (props) => {
                     <label>{state.inputs.description.required && '* '}Description:</label>
                     <textarea
                         name="description"
+                        disabled={state.showGeneratedPdfButton}
                         value={state.inputs.description.value}
                         onChange={handleInputChange}
                     />
@@ -514,6 +516,7 @@ const ServiceForm = (props) => {
                         options={state.dropdownOptions['customers']}
                         className="select"
                         name="customers"
+                        isDisabled={state.showGeneratedPdfButton}
                         value={state.selectedDropdownItems['customers']}
                         onChange={handleDropdownChange}
                         onCreateOption={handleCreateCustomer}
@@ -531,6 +534,7 @@ const ServiceForm = (props) => {
                         value={state.selectedDropdownItems['devices']}
                         isMulti
                         name="devices"
+                        isDisabled={state.showGeneratedPdfButton}
                         onCreateOption={handleCreateDevice}
                         onChange={handleDropdownChange}
                     />
