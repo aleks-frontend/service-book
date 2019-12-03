@@ -162,7 +162,7 @@ class App extends React.Component {
   
   getCustomerNameById = id => this.state.ssot.customers[id].name;
 
-  getDeviceById = id => `${this.state.ssot.devices[id].manufacturer} ${this.state.ssot.devices[id].model}`;
+  getDeviceNameById = id => `${this.state.ssot.devices[id].manufacturer} ${this.state.ssot.devices[id].model}`;
 
   getActionNameById = id => this.state.ssot.actions[id].name;
 
@@ -193,7 +193,7 @@ class App extends React.Component {
           actions={this.state.ssot.actions}
           devices={this.state.ssot.devices}
           getCustomerNameById={this.getCustomerNameById} 
-          getDeviceById={this.getDeviceById}   
+          getDeviceNameById={this.getDeviceNameById}
           getActionNameById={this.getActionNameById}  
           filterServices={this.filterServices}      
           sortServices={this.sortServices}     

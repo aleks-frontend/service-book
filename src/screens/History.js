@@ -19,7 +19,7 @@ const History = (props) => {
 	const {
 		services,
 		getCustomerNameById,
-		getDeviceById,
+		getDeviceNameById,
 		getActionNameById,
 		filterServices,
 		sortServices,
@@ -158,7 +158,7 @@ const History = (props) => {
 				id={key}
 				service={service}
 				getCustomerNameById={getCustomerNameById}
-				getDeviceById={getDeviceById}
+				getDeviceNameById={getDeviceNameById}
 				getActionNameById={getActionNameById}
 				deleteService={deleteService}
 				updatePromptedId={updatePromptedId}
@@ -195,6 +195,7 @@ const History = (props) => {
 						service={props.services[state.popupServiceId]}
 						serviceId={state.popupServiceId}
 						hidePopup={hidePopup}
+						getDeviceNameById={props.getDeviceNameById}
 					/>
 				</Popup>
 			)

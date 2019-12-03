@@ -102,7 +102,7 @@ const Main = (props) => {
                     services={props.services}
                     deleteService={props.deleteService}
                     getCustomerNameById={props.getCustomerNameById}
-                    getDeviceById={props.getDeviceById}
+                    getDeviceNameById={props.getDeviceNameById}
                     getActionNameById={props.getActionNameById}
                     filterServices={props.filterServices}
                     sortServices={props.sortServices}

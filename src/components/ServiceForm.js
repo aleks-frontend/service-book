@@ -426,7 +426,7 @@ const ServiceForm = (props) => {
                             addEntity={props.addEntity}
                             updateServiceFormNewDevicesState={updateNewDevicesState}
                             showSnackbar={props.showSnackbar}
-                            getDeviceById={props.getDeviceById}
+                            getDeviceNameById={props.getDeviceNameById}
                         />
                     </div>
                     <div className="group">

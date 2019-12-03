@@ -145,7 +145,7 @@ const StyledActions = styled.div`
 `;
 
 const HistoryCard = (props) => {
-    const { getCustomerNameById, getDeviceById, getActionNameById, service, id } = props;
+    const { getCustomerNameById, getDeviceNameById, getActionNameById, service, id } = props;
 
     /** Setting up the state **/
     const [extended, updateExtended] = React.useState(false);
@@ -158,7 +158,7 @@ const HistoryCard = (props) => {
         return (
             service.devices.map((id, index) => {
                 const coma = (index < service.devices.length - 1) ? ', ' : '';
-                return `${getDeviceById(id)}${coma}`;
+                return `${getDeviceNameById(id)}${coma}`;
             })
         );
     }
@@ -182,6 +182,7 @@ const HistoryCard = (props) => {
         return (
             <StyledActions>
                 {renderActionsRows()}
+                {renderNewDevicesRows()}
                 {renderActionsFooter()}
             </StyledActions>
         )
@@ -197,7 +198,28 @@ const HistoryCard = (props) => {
                             <div className="quantity">quantity: {action.quantity}</div>
                         </div>
                         <div className="price">$ {action.price * action.quantity}</div>
-                        {index !== service.actions.length - 1 && <div className="divider"></div> }                        
+                        {/* {index !== service.actions.length - 1 && <div className="divider"></div> } */}
+                        <div className="divider"></div>
+                    </React.Fragment>
+                )
+            })
+        )
+    }
+
+    const renderNewDevicesRows = () => {
+        const { newDevices} = service;
+        if ( newDevices === undefined || newDevices === "" ) return null;
+        return (
+            newDevices.map((newDevice, index) => {
+                return (
+                    <React.Fragment key={newDevice.rowId}>
+                        <div className="text">
+                            <div className="name">{getDeviceNameById(newDevice.deviceId)}</div>
+                            <div className="quantity">quantity: {newDevice.quantity}</div>
+                        </div>
+                        <div className="price">$ {newDevice.price * newDevice.quantity}</div>
+                        {/* {index !== service.newDevices.length - 1 && <div className="divider"></div> } */}
+                        <div className="divider"></div>
                     </React.Fragment>
                 )
             })
@@ -205,14 +227,21 @@ const HistoryCard = (props) => {
     }
 
     const renderActionsFooter = () => {
-        const total = service.actions.reduce((total, action) => {
+        let newDevicesTotal = 0;
+        const actionsTotal = service.actions.reduce((total, action) => {
             return total + action.quantity * action.price;
         }, 0);
+
+        if ( service.newDevices !== undefined && service.newDevices !== "" ) {
+            newDevicesTotal = service.newDevices.reduce((total, newDevice) => {
+                return total + newDevice.quantity * newDevice.price;
+            }, 0);
+        }
 
         return (
             <React.Fragment>
                 <div className="total">Total</div>
-                <div className="price price--total">$ {total}</div>
+                <div className="price price--total">$ {actionsTotal + newDevicesTotal}</div>
             </React.Fragment>
         );
     }
@@ -256,7 +285,7 @@ const HistoryCard = (props) => {
                             <div className="content">{service.remark ? service.remark : 'No Remarks added yet.' }</div>
                         </div>
                         <div className="block">
-                            <div className="heading heading--colored">Actions and pricing</div>
+                            <div className="heading heading--colored">Actions and new devices</div>
                             <div className="content">
                                 {service.actions ? renderActions() : 'No actions added yet.'}
                             </div>

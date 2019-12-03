@@ -151,9 +151,8 @@ const NewDevicesTable = (props) => {
     const addEntityToLocalState = (entity, stateKey) => {
         const id = new Date().getTime();
         
-        props.addEntity(entity, id, stateKey); 
+        props.addEntity(entity, id, stateKey);
         addNewDeviceRow(id, entity);
-        //hidePopup();
     }
 
     /** Event Handler Methods **/
@@ -212,8 +211,8 @@ const NewDevicesTable = (props) => {
                     <StyledNewDevicesTableCell col={1}>
                         <input
                             newdevicesrowid={newDeviceRow.rowId}
-                            // value={props.getDeviceById(newDeviceRow.deviceId)}
-                            value={newDeviceRow.deviceName}
+                            // value={props.getDeviceNameById(newDeviceRow.deviceId)}
+                            value={(props.mainStateDevices[newDeviceRow.deviceId] === undefined) ? newDeviceRow.deviceName : props.getDeviceNameById(newDeviceRow.deviceId)}
                             onChange={handleInputChange}
                             type="text"
                             name="deviceId"
