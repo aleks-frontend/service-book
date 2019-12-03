@@ -5,6 +5,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 
 import CreateEntity from './CreateEntity';
 import ActionsTable from './ActionsTable';
+import NewDevicesTable from './NewDevicesTable';
 import Button from './UI/Button';
 import PdfDispatchNote from './PDF/PdfDispatchNote';
 import { breakpoints } from '../helpers';
@@ -107,6 +108,11 @@ const ServiceForm = (props) => {
                 required: false,
                 show: props.isUpdate
             },
+            newDevices: {
+                value: props.isUpdate ? (props.service.newDevices ? props.service.newDevices : "") : "",
+                required: false,
+                show: props.isUpdate
+            }
 
         },
         selectedDropdownItems: {
@@ -186,6 +192,13 @@ const ServiceForm = (props) => {
             value: actionRows
         });
     }
+
+    const updateNewDevicesState = (newDevicesRows) => {
+        updateState('inputs', 'newDevices', {
+            ...state.inputs.newDevices,
+            value: newDevicesRows
+        });
+    }    
 
     /** Helper method for hiding the Create Entity Form **/
     const hideCreateEntityForm = (entityType, stateCopy) => updateState('showCreateEntity', entityType, { show: false }, stateCopy);
@@ -402,6 +415,18 @@ const ServiceForm = (props) => {
                             actions={state.inputs.actions}
                             addEntity={props.addEntity}
                             updateServiceFormActionsState={updateActionsState}
+                        />
+                    </div>
+                    <div className="group">
+                        <label>New Devices:</label>
+                        <NewDevicesTable
+                            fields={props.fields.devices}
+                            mainStateDevices={props.devices}
+                            newDevices={state.inputs.newDevices}
+                            addEntity={props.addEntity}
+                            updateServiceFormNewDevicesState={updateNewDevicesState}
+                            showSnackbar={props.showSnackbar}
+                            getDeviceById={props.getDeviceById}
                         />
                     </div>
                     <div className="group">

@@ -148,6 +148,14 @@ const CreateEntity = (props) => {
             return;
         }
 
+        // Case when we are adding the new device from the update form
+        // adding devices that were added during the active service (not the received ones)
+        if (props.isNewDevice) {
+            props.addEntity(state.entityState, props.stateName);
+            props.showSnackbar(props.stateName, 'created');
+            return;
+        }
+
         // Used only in NewService component
         props.addEntity(state.entityState, props.stateName, props.isMulti);
         props.showSnackbar(props.stateName, 'created');
