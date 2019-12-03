@@ -180,7 +180,7 @@ const ActionsTable = (props) => {
 
     /** Render Methods **/
     const renderTableHeder = () => {
-        if (state.actionRows) {
+        if (state.actionRows.length) {
             return (
                 <React.Fragment>
                     <div className="headerBg"></div>
@@ -198,7 +198,7 @@ const ActionsTable = (props) => {
     }
 
     const renderRows = () => {
-        if ( !state.actionRows ) return null;
+        if ( state.actionRows.length === 0 ) return null;
 
         return state.actionRows.map((actionRow, index) => {
             return (
