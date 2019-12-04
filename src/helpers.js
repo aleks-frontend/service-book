@@ -87,8 +87,8 @@ export const colors = {
     purple: '#8A2BE2',
     rdgray: '#4e5a6d',
     rdgray2: '#6d7e96',
-    rdlightgray: '#d1d3d9',
-    rddarkgray: '#4e5a6d',
+    rdlightgray: '#D1D3D9',
+    rddarkgray: '#4E5A6D',
     rdblue: '#5C8ACE',
 };
 
