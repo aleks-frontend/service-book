@@ -198,7 +198,7 @@ const ServiceForm = (props) => {
             ...state.inputs.newDevices,
             value: newDevicesRows
         });
-    }    
+    }
 
     /** Helper method for hiding the Create Entity Form **/
     const hideCreateEntityForm = (entityType, stateCopy) => updateState('showCreateEntity', entityType, { show: false }, stateCopy);
@@ -373,6 +373,18 @@ const ServiceForm = (props) => {
         }
     }
 
+    const downloadPDF = () => {
+        if (state.pdfGenerated) {
+            const data = window.URL.createObjectURL(state.pdfBlob);
+            const link = document.createElement('a');
+            link.href = data;
+            link.download = `dispatch-note-${state.inputs.title.value}.pdf`;
+            link.click();
+
+            formReset();
+        }
+    }
+
     /** Render Methods **/
     const renderCreateCustomer = () => {
         const fields = props.fields.customers;
@@ -478,16 +490,20 @@ const ServiceForm = (props) => {
                 >Reset</Button>
             );
         }
-    }
+    }    
 
     const renderGeneratePdfButton = () => {
         if (state.showGeneratedPdfButton) {
             return (
-                <Button
-                    type="button"
-                    margin="0 0 0 0.5rem"
-                    onClick={formReset}
-                >
+                <React.Fragment>
+                    <Button
+                        type="button"
+                        margin="0 0 0 0.5rem"
+                        onClick={downloadPDF}
+                        disabled={!state.pdfGenerated}
+                    >
+                        {state.pdfGenerated ? 'Download PDF' : 'Generating PDF...'}
+                    </Button>
                     <PDFDownloadLink
                         document={<PdfDispatchNote
                             inputs={state.tempInputs}
@@ -496,9 +512,17 @@ const ServiceForm = (props) => {
                         />}
                         fileName={`dispatch-note-${state.inputs.title.value}.pdf`}
                     >
-                        {({ loading }) => (loading ? 'Generating PDF...' : 'Generate PDF')}
+                        {({ loading, blob }) => {
+                            if (!loading && !state.pdfGenerated) {
+                                setState({
+                                    ...state,
+                                    pdfBlob: blob,
+                                    pdfGenerated: true
+                                });
+                            }
+                        }}
                     </PDFDownloadLink>
-                </Button>
+                </React.Fragment>
             )
         }
     }
