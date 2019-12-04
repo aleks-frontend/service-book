@@ -83,14 +83,15 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     signature: {
-        paddingTop: 20,
-        width: '20%',
+        paddingTop: 10,
+        width: '40%',
         borderTop: 1,
         borderBottomColor: colors.rddarkgray
     },
     signatureName: {
-        fontSize: 10,
-        textAlign: 'center',
+        fontSize: 12,
+        fontFamily: 'Roboto-Bold',
+        textAlign: 'left',
         color: colors.rdgray
     }
 });
