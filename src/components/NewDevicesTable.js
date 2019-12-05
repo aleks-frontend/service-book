@@ -149,9 +149,9 @@ const NewDevicesTable = (props) => {
 
     /** Helper method for adding the new entity to the local state **/
     const addEntityToLocalState = (entity, stateKey) => {
-        const id = new Date().getTime();
+        const id = String(new Date().getTime());
         
-        props.addEntity(entity, id, stateKey);
+        props.addEntity(entity, id, stateKey, true); // final parameter is true for 'isNewDevice'
         addNewDeviceRow(id, entity);
     }
 
@@ -166,11 +166,6 @@ const NewDevicesTable = (props) => {
     }
 
     const handleInputFocus = (event) => event.target.select();
-
-    const handleCreateNewDevice = (deviceId) => {
-        const rowId = state.newDeviceRows[state.newDeviceRows.length - 1].rowId;
-        updateNewDeviceRowsState(rowId, deviceId, 'deviceId');
-    }
 
     const handleXClick = (rowId) => {
         const newDeviceRowsStateCopy = [...state.newDeviceRows].filter(row => row.rowId !== rowId);
