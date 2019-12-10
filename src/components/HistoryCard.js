@@ -48,19 +48,19 @@ const StyledHistoryCard = styled.div`
 
             svg { 
                 fill: ${props => {
-                    switch (props.status) {
-                        case statusEnum.RECEIVED:
-                            return colors.yellow;
-                        case statusEnum.INPROGRESS:
-                            return colors.orange;
-                        case statusEnum.COMPLETED:
-                            return colors.green;
-                        case statusEnum.SHIPPED:
-                            return colors.blue;
-                        default:
-                            return colors.yellow;
-                    }                    
-                }};
+        switch (props.status) {
+            case statusEnum.RECEIVED:
+                return colors.yellow;
+            case statusEnum.INPROGRESS:
+                return colors.orange;
+            case statusEnum.COMPLETED:
+                return colors.green;
+            case statusEnum.SHIPPED:
+                return colors.blue;
+            default:
+                return colors.yellow;
+        }
+    }};
                 width: 100%; }
         }
 
@@ -148,13 +148,17 @@ const HistoryCard = (props) => {
     const { getCustomerNameById, getDeviceNameById, getActionNameById, service, id } = props;
 
     /** Setting up the state **/
-    const [extended, updateExtended] = React.useState(false);
+    const [ state, setState ] = React.useState({
+        extended: false,
+        pdfGenerated: false
+    });
 
     /** Expand and collapse the HistoryCard **/
-    const extendHistoryItem = () => updateExtended(!extended);
+    const extendHistoryItem = () => setState({...state, extended: !state.extended});
 
     /** Render Methods **/
     const renderDevices = () => {
+        if (service.devices === undefined) return null;
         return (
             service.devices.map((id, index) => {
                 const coma = (index < service.devices.length - 1) ? ', ' : '';
@@ -198,7 +202,6 @@ const HistoryCard = (props) => {
                             <div className="quantity">quantity: {action.quantity}</div>
                         </div>
                         <div className="price">$ {action.price * action.quantity}</div>
-                        {/* {index !== service.actions.length - 1 && <div className="divider"></div> } */}
                         <div className="divider"></div>
                     </React.Fragment>
                 )
@@ -207,8 +210,8 @@ const HistoryCard = (props) => {
     }
 
     const renderNewDevicesRows = () => {
-        const { newDevices} = service;
-        if ( newDevices === undefined || newDevices === "" ) return null;
+        const { newDevices } = service;
+        if (newDevices === undefined || newDevices === "") return null;
         return (
             newDevices.map((newDevice, index) => {
                 return (
@@ -216,6 +219,7 @@ const HistoryCard = (props) => {
                         <div className="text">
                             <div className="name">{getDeviceNameById(newDevice.deviceId)}</div>
                             <div className="quantity">quantity: {newDevice.quantity}</div>
+                            <div className="quantity">serial: {newDevice.serial}</div>
                         </div>
                         <div className="price">$ {newDevice.price * newDevice.quantity}</div>
                         {/* {index !== service.newDevices.length - 1 && <div className="divider"></div> } */}
@@ -232,7 +236,7 @@ const HistoryCard = (props) => {
             return total + action.quantity * action.price;
         }, 0);
 
-        if ( service.newDevices !== undefined && service.newDevices !== "" ) {
+        if (service.newDevices !== undefined && service.newDevices !== "") {
             newDevicesTotal = service.newDevices.reduce((total, newDevice) => {
                 return total + newDevice.quantity * newDevice.price;
             }, 0);
@@ -247,7 +251,7 @@ const HistoryCard = (props) => {
     }
 
     return (
-        <StyledHistoryCard status={service.status} extended={extended}>
+        <StyledHistoryCard status={service.status} extended={state.extended}>
             <div className="header">
                 <div
                     className="statusIcon"
@@ -257,7 +261,7 @@ const HistoryCard = (props) => {
                 <div className="text">
                     <div className="heading">{service.title}</div>
                     <div className="subheading">
-                        {getCustomerNameById(service.customers.length ? service.customers[0] : '')}
+                        {service.customers && getCustomerNameById(service.customers.length ? service.customers[0] : '')}
                     </div>
                 </div>
             </div>
@@ -278,11 +282,11 @@ const HistoryCard = (props) => {
                         {new Date(service.date).toLocaleDateString()}
                     </div>
                 </div>
-                {extended && (
+                {state.extended && (
                     <React.Fragment>
                         <div className="block">
                             <div className="heading">Remarks</div>
-                            <div className="content">{service.remark ? service.remark : 'No Remarks added yet.' }</div>
+                            <div className="content">{service.remark ? service.remark : 'No Remarks added yet.'}</div>
                         </div>
                         <div className="block">
                             <div className="heading heading--colored">Actions and new devices</div>
