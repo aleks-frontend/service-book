@@ -71,7 +71,7 @@ const ServiceForm = (props) => {
     const defaultStates = {
         inputs: {
             title: {
-                value: props.isUpdate ? props.service.title : `Service-${new Date().getTime()}`,
+                value: props.isUpdate ? props.service.title : `Service Title`,
                 required: true,
             },
             description: {
@@ -152,7 +152,8 @@ const ServiceForm = (props) => {
             actions: defaultStates.actionOptionsArr
         },
         showGeneratedPdfButton: false,
-        tempInputs: {}
+        tempInputs: {},
+        serviceId: new Date().getTime()
     });
 
     /** Helpper method for updating the state **/
@@ -210,6 +211,7 @@ const ServiceForm = (props) => {
         updateState('inputs', null, defaultStates.inputs, stateCopy);
         updateState('selectedDropdownItems', null, defaultStates.selectedDropdownItems, stateCopy);
         updateState('showGeneratedPdfButton', null, false, stateCopy);
+        updateState('pdfGenerated', null, false, stateCopy);
 
         setState(stateCopy);
     }
@@ -356,7 +358,7 @@ const ServiceForm = (props) => {
             props.showSnackbar('Required field(s) ', 'missing');
         } else {
             if (!props.isUpdate) {
-                props.addService(inputValues);
+                props.addService(inputValues, state.serviceId);
                 // Showing the 'Generate PDF' button
                 updateState('showGeneratedPdfButton', null, true, stateCopy);
                 // Saving current inputs from the stateCopy to 'tempInputs' state
@@ -378,7 +380,7 @@ const ServiceForm = (props) => {
             const data = window.URL.createObjectURL(state.pdfBlob);
             const link = document.createElement('a');
             link.href = data;
-            link.download = `dispatch-note-${state.inputs.title.value}.pdf`;
+            link.download = `dispatch-note-${state.serviceId}.pdf`;
             link.click();
 
             formReset();
@@ -492,7 +494,7 @@ const ServiceForm = (props) => {
         }
     }    
 
-    const renderGeneratePdfButton = () => {
+    const renderDownloadPdfButton = () => {
         if (state.showGeneratedPdfButton) {
             return (
                 <React.Fragment>
@@ -506,11 +508,15 @@ const ServiceForm = (props) => {
                     </Button>
                     <PDFDownloadLink
                         document={<PdfDispatchNote
-                            inputs={state.tempInputs}
-                            customers={props.customers}
-                            devices={props.devices}
+                            customerId={state.tempInputs.customers.value}
+                            deviceIds={state.tempInputs.devices.value}
+                            title={state.tempInputs.title.value}
+                            description={state.tempInputs.description.value}
+                            serviceId={state.serviceId}
+                            getDeviceNameById={props.getDeviceNameById}
+                            getCustomerObjById={props.getCustomerObjById}
                         />}
-                        fileName={`dispatch-note-${state.inputs.title.value}.pdf`}
+                        fileName={`dispatch-note-${state.serviceId}.pdf`}
                     >
                         {({ loading, blob }) => {
                             if (!loading && !state.pdfGenerated) {
@@ -598,7 +604,7 @@ const ServiceForm = (props) => {
                     {props.isUpdate ? 'Update' : 'Create'}
                 </Button>
                 {renderCancelButton()}
-                {renderGeneratePdfButton()}
+                {renderDownloadPdfButton()}
                 {renderResetButton()}
             </StyledForm>
         </React.Fragment>

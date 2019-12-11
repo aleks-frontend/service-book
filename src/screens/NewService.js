@@ -18,6 +18,8 @@ const ScreensNewService = (props) => {
                     addEntity={props.addEntity}
                     showSnackbar={props.showSnackbar}
                     fields={props.fields}
+                    getCustomerObjById={props.getCustomerObjById}
+                    getDeviceNameById={props.getDeviceNameById}
                 />
             </Body>
         </React.Fragment>

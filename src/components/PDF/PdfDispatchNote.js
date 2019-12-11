@@ -1,6 +1,5 @@
 import React from 'react';
 import { Document, Page, View, Image, Text, StyleSheet, Font } from '@react-pdf/renderer';
-import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
 
 import { colors } from '../../helpers';
 
@@ -108,13 +107,13 @@ const modifiers = StyleSheet.create({
 });
 
 const PdfDispatchNote = (props) => {
-    const customer = props.customers[props.inputs.customers.value[0]];
-    const deviceKeys = props.inputs.devices.value;
+    const customer = props.getCustomerObjById(props.customerId);
+    const deviceKeys = props.deviceIds;
 
     const renderDevices = () => (
         deviceKeys.map(key => {
-            const device = props.devices[key];
-            return <Text key={key} style={styles.devicesText}>- {device.name}</Text>
+            const deviceName = props.getDeviceNameById(key);
+            return <Text key={key} style={styles.devicesText}>- {deviceName}</Text>
         })
     )
 
@@ -151,7 +150,7 @@ const PdfDispatchNote = (props) => {
                     </View>
                     <View style={styles.serviceGroup}>
                         <Text style={styles.serviceLabel}>Service Title:</Text>
-                        <Text style={styles.serviceText}>{props.inputs.title.value}</Text>
+                        <Text style={styles.serviceText}>{props.title}</Text>
                     </View>
                     <View style={styles.serviceGroup}>
                         <Text style={styles.serviceLabel}>Service Devices:</Text>
@@ -161,7 +160,7 @@ const PdfDispatchNote = (props) => {
                     </View>
                     <View style={styles.serviceGroup}>
                         <Text style={styles.serviceLabel}>Service Description:</Text>
-                        <Text style={modifiers.serviceTextDescription}>{props.inputs.description.value}</Text>
+                        <Text style={modifiers.serviceTextDescription}>{props.description}</Text>
                     </View>
                 </View>
                 <View style={styles.footer}>

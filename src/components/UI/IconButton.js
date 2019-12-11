@@ -37,6 +37,8 @@ const IconButton = (props) => {
                 return svgIcons.update;
             case 'expand':
                 return svgIcons.expand;
+            case 'print':
+                return svgIcons.print;
             default:
                 return svgIcons.delete;
         }

@@ -150,7 +150,7 @@ const HistoryCard = (props) => {
     /** Setting up the state **/
     const [ state, setState ] = React.useState({
         extended: false,
-        pdfGenerated: false
+        showPrintPopup: false
     });
 
     /** Expand and collapse the HistoryCard **/
@@ -307,6 +307,19 @@ const HistoryCard = (props) => {
                 <IconButton
                     icon="expand"
                     onClick={extendHistoryItem} />
+                <IconButton
+                    icon="print"
+                    onClick={() => {
+                        return props.showPrintPopup({
+                            serviceId: props.id,
+                            customerId: props.service.customers[0],
+                            deviceIds: props.service.devices,
+                            title: props.service.title, 
+                            description: props.service.description,
+                            actions: props.service.actions,
+                            newDevices: props.service.newDevices
+                        });
+                    }}/>
             </div>
         </StyledHistoryCard>
     );

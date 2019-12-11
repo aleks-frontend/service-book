@@ -32,8 +32,8 @@ class App extends React.Component {
     }
   }
 
-  addService = (service) => {
-    const services = { ...this.state.ssot.services, [new Date().getTime()]: service };
+  addService = (service, serviceId) => {
+    const services = { ...this.state.ssot.services, [serviceId]: service };
     this.setState({ ssot: { ...this.state.ssot, services: services } });
   }
 
@@ -195,6 +195,7 @@ class App extends React.Component {
   }
 
   getCustomerNameById = id => this.state.ssot.customers[id].name;
+  getCustomerObjById = id => this.state.ssot.customers[id];
 
   getDeviceNameById = id => `${this.state.ssot.devices[id].manufacturer} ${this.state.ssot.devices[id].model}`;
 
@@ -227,6 +228,7 @@ class App extends React.Component {
           actions={this.state.ssot.actions}
           devices={this.state.ssot.devices}
           getCustomerNameById={this.getCustomerNameById}
+          getCustomerObjById={this.getCustomerObjById}
           getDeviceNameById={this.getDeviceNameById}
           getActionNameById={this.getActionNameById}
           filterServices={this.filterServices}

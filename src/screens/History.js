@@ -8,6 +8,7 @@ import ServiceForm from '../components/ServiceForm';
 import Controls from '../components/UI/Controls';
 import DeletePrompt from '../components/UI/DeletePrompt';
 import Popup from '../components/UI/Popup';
+import PrintPopup from '../components/UI/PrintPopup';
 import Legend from '../components/UI/Legend';
 import GridBasic from '../components/UI/GridBasic';
 import TopBar from '../components/UI/TopBar';
@@ -35,7 +36,14 @@ const History = (props) => {
 		sortDirectionAsc: true,
 		promptedId: null,
 		statusFilters: props.filteredServicesArray,
-		showNoServiceMessage: false
+		showNoServiceMessage: false,
+		showPrintPopup: false,
+		printInputs: {
+			customerId: [],
+			deviceIds: [],
+			title: '',
+			description: ''
+		}
 	});
 	
 	React.useEffect(() => {
@@ -76,6 +84,24 @@ const History = (props) => {
 			...state,
 			showPopup: true,
 			popupServiceId: id
+		});
+	}
+
+	/** Helper methods for hiding the showing the print popup **/
+	const hidePrintPopup = () => setState({ ...state, showPrintPopup: false });
+	const showPrintPopup = ({ serviceId, customerId, deviceIds, title, actions, newDevices, description }) => {
+		setState({
+			...state,
+			showPrintPopup: true,
+			printInputs: {
+				serviceId,
+				customerId,
+				deviceIds,
+				title,
+				actions,
+				newDevices,
+				description
+			}
 		});
 	}
 
@@ -164,6 +190,7 @@ const History = (props) => {
 				updatePromptedId={updatePromptedId}
 				renderUpdateServicePopup={renderUpdateServicePopup}
 				showPopup={showPopup}
+				showPrintPopup={showPrintPopup}
 			/>
 		</CSSTransition>
 	);
@@ -202,6 +229,27 @@ const History = (props) => {
 		}
 	}
 
+	const renderPrintPopup = () => {
+		if ( state.showPrintPopup ) {
+			return (
+				<Popup hidePopup={hidePrintPopup}>
+					<PrintPopup
+						serviceId={state.printInputs.serviceId}
+						customerId={state.printInputs.customerId}
+						deviceIds={state.printInputs.deviceIds}
+						title={state.printInputs.title}
+						actions={state.printInputs.actions}
+						newDevices={state.printInputs.newDevices}
+						description={state.printInputs.description}
+						getDeviceNameById={props.getDeviceNameById}
+						getCustomerObjById={props.getCustomerObjById}
+						getActionNameById={props.getActionNameById}
+					/>
+				</Popup>
+			)
+		}
+	}
+
 	return (
 		<React.Fragment>
 			{renderDeletePrompt()}
@@ -225,6 +273,7 @@ const History = (props) => {
 					{renderServices()}
 				</GridBasic>
 				{renderUpdateServicePopup()}
+				{renderPrintPopup()}
 			</Body>
 		</React.Fragment>
 	);

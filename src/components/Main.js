@@ -102,6 +102,7 @@ const Main = (props) => {
                     services={props.services}
                     deleteService={props.deleteService}
                     getCustomerNameById={props.getCustomerNameById}
+                    getCustomerObjById={props.getCustomerObjById}
                     getDeviceNameById={props.getDeviceNameById}
                     getActionNameById={props.getActionNameById}
                     filterServices={props.filterServices}
@@ -120,6 +121,8 @@ const Main = (props) => {
                     showSnackbar={showSnackbar}
                     fields={fields}
                     isUpdate={true}
+                    getDeviceNameById={props.getDeviceNameById}
+                    getCustomerObjById={props.getCustomerObjById}
                 />;
             case 'customers':
                 return <ScreensCustomers
