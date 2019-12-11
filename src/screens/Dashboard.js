@@ -122,6 +122,7 @@ const ScreensDashboard = (props) => {
         // Additional check becuase empty arrays can not be stored in Firebase
         if (service.actions === '') continue;
 
+        if ( service.actions === undefined ) return;
         const totalServicePrice = service.actions.reduce((total, action) => {
           return total + parseInt(action.price);
         }, 0);
