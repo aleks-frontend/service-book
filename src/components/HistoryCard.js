@@ -115,7 +115,7 @@ const StyledActions = styled.div`
     
     .name { margin-bottom: 0.5rem; }
     
-    .quantity { color: ${colors.rdgray}; }
+    .info { color: ${colors.rdgray}; }
 
     .price { 
         text-align: right; 
@@ -199,7 +199,7 @@ const HistoryCard = (props) => {
                     <React.Fragment key={action.rowId}>
                         <div className="text">
                             <div className="name">{getActionNameById(action.actionId)}</div>
-                            <div className="quantity">quantity: {action.quantity}</div>
+                            <div className="info">quantity: {action.quantity}</div>
                         </div>
                         <div className="price">$ {action.price * action.quantity}</div>
                         <div className="divider"></div>
@@ -218,8 +218,8 @@ const HistoryCard = (props) => {
                     <React.Fragment key={newDevice.rowId}>
                         <div className="text">
                             <div className="name">{getDeviceNameById(newDevice.deviceId)}</div>
-                            <div className="quantity">serial number: {props.getDeviceSerialById(newDevice.deviceId)}</div>
-                            <div className="quantity">quantity: {newDevice.quantity}</div>
+                            {props.getDeviceSerialById(newDevice.deviceId) !== '' && <div className="info">serial number: <strong>{props.getDeviceSerialById(newDevice.deviceId)}</strong></div>}
+                            <div className="info">quantity: <strong>{newDevice.quantity}</strong></div>
                         </div>
                         <div className="price">$ {newDevice.price * newDevice.quantity}</div>
                         <div className="divider"></div>
