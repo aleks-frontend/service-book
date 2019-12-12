@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     serviceText: {
         padding: '10px 5px',
         border: 1,
+        borderTop: 0,
         fontSize: 10,
         color: colors.rddarkgray,
         borderColor: colors.rdlightgray
