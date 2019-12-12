@@ -105,6 +105,7 @@ const PrintPopup = (props) => {
                         newDevices={props.newDevices}
                         getCustomerObjById={props.getCustomerObjById}
                         getActionNameById={props.getActionNameById}
+                        getDeviceNameById={props.getDeviceNameById}
                     />}
                     fileName={`dispatch-note-${props.serviceId}.pdf`}
                 >

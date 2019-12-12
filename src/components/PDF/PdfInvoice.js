@@ -213,6 +213,7 @@ const modifiers = StyleSheet.create({
 });
 
 const PdfInvoice = (props) => {
+    
     const customer = props.getCustomerObjById(props.customerId);
 
     const entityTotalCalculation = (entityName) => {
@@ -226,9 +227,16 @@ const PdfInvoice = (props) => {
 
     const renderEntities = (entityName) => {
         if (props[entityName] !== '' && props[entityName] !== []) {
+            const getLabel = (entity) => {
+                if ( entityName === 'actions' ) {
+                    return props.getActionNameById(entity.actionId);
+                } else {
+                    return props.getDeviceNameById(entity.deviceId);
+                }
+            }
             return props[entityName].map((entity, index) => (
                 <View style={styles.tableRow} key={index}>
-                    <Text style={modifiers.tableCellLABEL}>{props.getActionNameById(entity.actionId)}</Text>
+                    <Text style={modifiers.tableCellLABEL}>{getLabel(entity)}</Text>
                     <Text style={modifiers.tableCellQUANTITY}>{entity.quantity}</Text>
                     <Text style={modifiers.tableCellPRICE}>${entity.price}</Text>
                     <Text style={modifiers.tableCellPRICE}>${entity.quantity * entity.price}</Text>
