@@ -71,7 +71,7 @@ const StyledNewDevicesTableCell = styled.div`
     font-weight: ${props => props.header ? '700' : '400'};
     color: ${props => props.header ? '#fff' : '#000'};
     background: ${props => props.header ? 'transparent' : '#fff'};
-    border: ${props => props.header ? 'none' : `1px solid ${colors.lightgray}`};
+    border: ${props => props.header ? 'none' : props.alerted ?  '2px solid red' : `1px solid ${colors.lightgray}`};
     border-radius: 0.3rem;
     text-align: ${props => (props.col === 1) ? 'left' : 'center'};
 
@@ -206,7 +206,6 @@ const NewDevicesTable = (props) => {
                     <StyledNewDevicesTableCell col={1}>
                         <input
                             newdevicesrowid={newDeviceRow.rowId}
-                            // value={props.getDeviceNameById(newDeviceRow.deviceId)}
                             value={(props.mainStateDevices[newDeviceRow.deviceId] === undefined) ? newDeviceRow.deviceName : props.getDeviceNameById(newDeviceRow.deviceId)}
                             onChange={handleInputChange}
                             type="text"
@@ -214,7 +213,10 @@ const NewDevicesTable = (props) => {
                             readOnly={true}
                         />
                     </StyledNewDevicesTableCell>
-                    <StyledNewDevicesTableCell col={2}>
+                    <StyledNewDevicesTableCell 
+                        col={2} 
+                        alerted={newDeviceRow.quantity === '0' || newDeviceRow.quantity === ''}
+                    >
                         <input
                             newdevicesrowid={newDeviceRow.rowId}
                             value={newDeviceRow.quantity}
@@ -224,7 +226,10 @@ const NewDevicesTable = (props) => {
                             name="quantity"
                         />
                     </StyledNewDevicesTableCell>
-                    <StyledNewDevicesTableCell col={3}>
+                    <StyledNewDevicesTableCell 
+                        col={3} 
+                        alerted={newDeviceRow.price === '0' || newDeviceRow.price === 0 || newDeviceRow.price === ''}
+                    >
                         $<input
                             newdevicesrowid={newDeviceRow.rowId}
                             value={newDeviceRow.price}
