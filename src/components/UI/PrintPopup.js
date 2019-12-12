@@ -43,6 +43,7 @@ const PrintPopup = (props) => {
             link.href = data;
             link.download = `dispatch-note-${props.serviceId}.pdf`;
             link.click();
+            props.hidePopup();
         }
     }
 
@@ -53,6 +54,7 @@ const PrintPopup = (props) => {
             link.href = data;
             link.download = `invoice-${props.serviceId}.pdf`;
             link.click();
+            props.hidePopup();
         }
     }    
 
@@ -102,6 +104,7 @@ const PrintPopup = (props) => {
                         customerId={props.customerId}
                         title={props.title}
                         actions={props.actions}
+                        remark={props.remark}
                         newDevices={props.newDevices}
                         getCustomerObjById={props.getCustomerObjById}
                         getActionNameById={props.getActionNameById}

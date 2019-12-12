@@ -314,7 +314,7 @@ const HistoryCard = (props) => {
                             customerId: props.service.customers[0],
                             deviceIds: props.service.devices,
                             title: props.service.title, 
-                            description: props.service.description,
+                            remark: props.service.remark,
                             actions: props.service.actions,
                             newDevices: props.service.newDevices
                         });

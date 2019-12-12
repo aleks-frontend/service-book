@@ -42,7 +42,7 @@ const History = (props) => {
 			customerId: [],
 			deviceIds: [],
 			title: '',
-			description: ''
+			remark: ''
 		}
 	});
 	
@@ -89,7 +89,7 @@ const History = (props) => {
 
 	/** Helper methods for hiding the showing the print popup **/
 	const hidePrintPopup = () => setState({ ...state, showPrintPopup: false });
-	const showPrintPopup = ({ serviceId, customerId, deviceIds, title, actions, newDevices, description }) => {
+	const showPrintPopup = ({ serviceId, customerId, deviceIds, title, actions, newDevices, remark }) => {
 		setState({
 			...state,
 			showPrintPopup: true,
@@ -100,7 +100,7 @@ const History = (props) => {
 				title,
 				actions,
 				newDevices,
-				description
+				remark
 			}
 		});
 	}
@@ -241,10 +241,11 @@ const History = (props) => {
 						title={state.printInputs.title}
 						actions={state.printInputs.actions}
 						newDevices={state.printInputs.newDevices}
-						description={state.printInputs.description}
+						remark={state.printInputs.remark}
 						getDeviceNameById={props.getDeviceNameById}
 						getCustomerObjById={props.getCustomerObjById}
 						getActionNameById={props.getActionNameById}
+						hidePopup={hidePrintPopup}
 					/>
 				</Popup>
 			)

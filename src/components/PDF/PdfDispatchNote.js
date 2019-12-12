@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         fontSize: 12
     },
     customerInfoHeader: {
+        fontFamily: 'Roboto-Bold',
         padding: 5,
         backgroundColor: colors.rdlightgray,
         color: '#000'
@@ -62,7 +63,8 @@ const styles = StyleSheet.create({
     },
     serviceLabel: {
         padding: 5,
-        fontSize: 13,
+        fontFamily: 'Roboto-Bold',
+        fontSize: 10,
         color: '#000',
         backgroundColor: colors.rdlightgray,
     },

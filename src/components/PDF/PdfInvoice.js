@@ -106,8 +106,9 @@ const styles = StyleSheet.create({
     },
     tableRow: {
         flexDirection: 'row',
-        height: 30,
         alignItems: "center",
+        paddingBottom: 6,
+        paddingTop: 6,
         paddingLeft: 5,
         borderBottom: 1,
         borderBottomColor: colors.rdlightgray
@@ -182,6 +183,11 @@ const modifiers = StyleSheet.create({
         ...styles.tableCell,
         width: '70%'
     },
+    tableCellFULL: {
+        ...styles.tableCell,
+        width: '100%',
+        lineHeight: 1.2
+    },
     tableCellQUANTITY: {
         ...styles.tableCell,
         width: '10%'
@@ -213,7 +219,6 @@ const modifiers = StyleSheet.create({
 });
 
 const PdfInvoice = (props) => {
-    
     const customer = props.getCustomerObjById(props.customerId);
 
     const entityTotalCalculation = (entityName) => {
@@ -222,13 +227,13 @@ const PdfInvoice = (props) => {
             return total + (entity.quantity * entity.price);
         }, 0);
     }
-    
+
     const invoiceTotalCalculation = () => entityTotalCalculation('actions') + entityTotalCalculation('newDevices');
 
     const renderEntities = (entityName) => {
         if (props[entityName] !== '' && props[entityName] !== []) {
             const getLabel = (entity) => {
-                if ( entityName === 'actions' ) {
+                if (entityName === 'actions') {
                     return props.getActionNameById(entity.actionId);
                 } else {
                     return props.getDeviceNameById(entity.deviceId);
@@ -294,6 +299,14 @@ const PdfInvoice = (props) => {
                     </View>
                 </View>
                 <View style={styles.body}>
+                    <View style={styles.table}>
+                        <View style={styles.tableHeader}>
+                            <Text style={modifiers.tableHeaderCellLABEL}>Remarks</Text>
+                        </View>
+                        <View style={styles.tableRow}>
+                            <Text style={modifiers.tableCellFULL}>{props.remark}</Text>
+                        </View>
+                    </View>
                     <View style={styles.table}>
                         <View style={styles.tableHeader}>
                             <Text style={modifiers.tableHeaderCellLABEL}>Actions taken</Text>
