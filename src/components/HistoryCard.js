@@ -218,11 +218,10 @@ const HistoryCard = (props) => {
                     <React.Fragment key={newDevice.rowId}>
                         <div className="text">
                             <div className="name">{getDeviceNameById(newDevice.deviceId)}</div>
+                            <div className="quantity">serial number: {props.getDeviceSerialById(newDevice.deviceId)}</div>
                             <div className="quantity">quantity: {newDevice.quantity}</div>
-                            <div className="quantity">serial: {newDevice.serial}</div>
                         </div>
                         <div className="price">$ {newDevice.price * newDevice.quantity}</div>
-                        {/* {index !== service.newDevices.length - 1 && <div className="divider"></div> } */}
                         <div className="divider"></div>
                     </React.Fragment>
                 )

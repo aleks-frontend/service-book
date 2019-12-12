@@ -104,6 +104,7 @@ const Main = (props) => {
                     getCustomerNameById={props.getCustomerNameById}
                     getCustomerObjById={props.getCustomerObjById}
                     getDeviceNameById={props.getDeviceNameById}
+                    getDeviceSerialById={props.getDeviceSerialById}
                     getActionNameById={props.getActionNameById}
                     filterServices={props.filterServices}
                     sortServices={props.sortServices}

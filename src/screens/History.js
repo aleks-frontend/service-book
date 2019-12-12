@@ -185,6 +185,7 @@ const History = (props) => {
 				service={service}
 				getCustomerNameById={getCustomerNameById}
 				getDeviceNameById={getDeviceNameById}
+				getDeviceSerialById={props.getDeviceSerialById}
 				getActionNameById={getActionNameById}
 				deleteService={deleteService}
 				updatePromptedId={updatePromptedId}
