@@ -98,11 +98,20 @@ const CreateEntity = (props) => {
 
     /** Event Handler Methods **/
     const handleInputChange = (event) => {
+        console.log(event);
         const entityStateCopy = { ...state.entityState };
         for (const field of props.fields) {
             if (field.calculated && field.calculated.indexOf(event.target.name) > -1) {
-                const str = field.calculated.map(item => {
-                    return item === event.target.name ? event.target.value : entityStateCopy[item];
+                const str = field.calculated.map(item => {                
+                    if ( item === 'serial' ) {
+                        if ( item === event.target.name ) {
+                            return event.target.value !== '' ? `(sn: ${event.target.value})` : '';
+                        } else {
+                            return entityStateCopy[item] !== '' ? `(sn: ${entityStateCopy[item]})` : '';
+                        }
+                    } else {
+                        return item === event.target.name ? event.target.value : entityStateCopy[item];
+                    }
                 }).join(' ');
 
                 entityStateCopy[field.name] = str;

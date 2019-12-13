@@ -32,7 +32,7 @@ export const fields = {
             name: 'name',
             label: 'Name',
             defaultVal: '',
-            calculated: ['manufacturer', 'model'],
+            calculated: ['manufacturer', 'model', 'serial'],
         },
         {
             name: 'manufacturer',
