@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
 
 import Button from './UI/Button.js'
+import { AppContext } from '../AppContext';
 import { colors } from '../helpers';
 
 const StyledActionsTable = styled.div`
@@ -96,9 +97,12 @@ const StyledActionsTableCell = styled.div`
 `;
 
 const ActionsTable = (props) => {
+    const context = React.useContext(AppContext);
+    const { actions: appActions } = context.state.ssot;
+    
     const [state, setState] = React.useState({
         actionRows: (props.actions.value === "") ? [] : props.actions.value,
-    });
+    });    
 
     /** State control methods **/
     const addActionRow = () => {
@@ -124,7 +128,7 @@ const ActionsTable = (props) => {
                 // Checking if we selected the exisitng action
                 // Preseting the price in this case
                 if ( isPriceUpdated ) {
-                    actionRowsStateCopyItem.price = props.mainStateActions[value].price;
+                    actionRowsStateCopyItem.price = appActions[value].price;
                 }
                 break;
             }
@@ -166,7 +170,7 @@ const ActionsTable = (props) => {
         const actionId = String(new Date().getTime());
         const rowId = state.actionRows[state.actionRows.length - 1].rowId;
 
-        props.addEntity({name: event, price: 0}, actionId, 'actions');
+        context.addEntity({name: event, price: 0}, actionId, 'actions');
         updateActionRowState(rowId, actionId, 'actionId');
     }
 
@@ -204,15 +208,15 @@ const ActionsTable = (props) => {
             return (
                 <React.Fragment key={actionRow.rowId}>
                     <CreatableSelect
-                        options={Object.keys(props.mainStateActions).map(key => ({
+                        options={Object.keys(appActions).map(key => ({
                             value: key,
-                            label: props.mainStateActions[key].name
+                            label: appActions[key].name
                         }))}
                         className="select"
                         name={actionRow.rowId}
                         value={actionRow.actionId !== '' ? {
                             value: actionRow.actionId,
-                            label: props.mainStateActions[actionRow.actionId].name
+                            label: appActions[actionRow.actionId].name
                         } : ''}
                         onChange={handleDropdownChange}
                         onCreateOption={handleCreateAction}                        

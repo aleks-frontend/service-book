@@ -5,6 +5,7 @@ import CreateEntity from './CreateEntity';
 import Popup from './UI/Popup';
 import Button from './UI/Button.js'
 import { colors } from '../helpers';
+import { AppContext } from '../AppContext';
 
 const StyledNewDevicesTable = styled.div`
     display: grid;
@@ -97,6 +98,9 @@ const StyledNewDevicesTableCell = styled.div`
 `;
 
 const NewDevicesTable = (props) => {
+    const context = React.useContext(AppContext);
+    const { devices: appDevices } = context.state.ssot;
+
     const [state, setState] = React.useState({
         newDeviceRows: (props.newDevices.value === "") ? [] : props.newDevices.value,
         showPopup: false
@@ -151,7 +155,7 @@ const NewDevicesTable = (props) => {
     const addEntityToLocalState = (entity, stateKey) => {
         const id = String(new Date().getTime());
         
-        props.addEntity(entity, id, stateKey, true); // final parameter is true for 'isNewDevice'
+        context.addEntity(entity, id, stateKey, true); // final parameter is true for 'isNewDevice'
         addNewDeviceRow(id, entity);
     }
 
@@ -206,7 +210,7 @@ const NewDevicesTable = (props) => {
                     <StyledNewDevicesTableCell col={1}>
                         <input
                             newdevicesrowid={newDeviceRow.rowId}
-                            value={(props.mainStateDevices[newDeviceRow.deviceId] === undefined) ? newDeviceRow.deviceName : props.getDeviceNameById(newDeviceRow.deviceId)}
+                            value={(appDevices[newDeviceRow.deviceId] === undefined) ? newDeviceRow.deviceName : context.getDeviceNameById(newDeviceRow.deviceId)}
                             onChange={handleInputChange}
                             type="text"
                             name="deviceId"

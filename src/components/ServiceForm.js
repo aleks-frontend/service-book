@@ -8,8 +8,8 @@ import ActionsTable from './ActionsTable';
 import NewDevicesTable from './NewDevicesTable';
 import Button from './UI/Button';
 import PdfDispatchNote from './PDF/PdfDispatchNote';
-import { breakpoints } from '../helpers';
-import { statusEnum, colors } from '../helpers';
+import { AppContext } from '../AppContext';
+import { breakpoints, statusEnum, colors } from '../helpers';
 
 const StyledForm = styled.form`
     position: relative;
@@ -68,6 +68,8 @@ const StyledForm = styled.form`
 `;
 
 const ServiceForm = (props) => {
+    const context = React.useContext(AppContext);
+    const { customers: appCustomers, devices: appDevices, actions: appActions } = context.state.ssot;
     const defaultStates = {
         inputs: {
             title: {
@@ -117,23 +119,23 @@ const ServiceForm = (props) => {
         },
         selectedDropdownItems: {
             customers: props.isUpdate ? props.service.customers.map(customerKey => {
-                return { label: props.customers[customerKey].name, value: customerKey }
+                return { label: appCustomers[customerKey].name, value: customerKey }
             }) : '',
             devices: props.isUpdate ? props.service.devices.map(deviceKey => {
-                return { label: props.devices[deviceKey].name, value: deviceKey }
+                return { label: appDevices[deviceKey].name, value: deviceKey }
             }) : '',
         },
-        customerOptionsArr: Object.keys(props.customers).map(key => ({
+        customerOptionsArr: Object.keys(appCustomers).map(key => ({
             value: key,
-            label: props.customers[key].name
+            label: appCustomers[key].name
         })),
-        deviceOptionsArr: Object.keys(props.devices).map(key => ({
+        deviceOptionsArr: Object.keys(appDevices).map(key => ({
             value: key,
-            label: props.devices[key].name
+            label: appDevices[key].name
         })),
-        actionOptionsArr: Object.keys(props.actions).map(key => ({
+        actionOptionsArr: Object.keys(appActions).map(key => ({
             value: key,
-            label: props.actions[key].name
+            label: appActions[key].name
         }))
     }
 
@@ -243,7 +245,7 @@ const ServiceForm = (props) => {
             ], stateCopy);
         }
 
-        props.addEntity(entity, id, stateKey);
+        context.addEntity(entity, id, stateKey);
         updateState('inputs', stateKey, {
             ...stateCopy.inputs[stateKey],
             value: [...stateCopy.inputs[stateKey].value, id]
@@ -358,7 +360,7 @@ const ServiceForm = (props) => {
             props.showSnackbar('Required field(s) ', 'missing');
         } else {
             if (!props.isUpdate) {
-                props.addService(inputValues, state.serviceId);
+                context.addService(inputValues, state.serviceId);
                 // Showing the 'Generate PDF' button
                 updateState('showGeneratedPdfButton', null, true, stateCopy);
                 // Saving current inputs from the stateCopy to 'tempInputs' state
@@ -367,7 +369,7 @@ const ServiceForm = (props) => {
                 updateState('tempInputs', null, stateCopy['inputs'], stateCopy);
                 props.showSnackbar('New service ', 'created');
             } else {
-                props.updateService(inputValues, props.serviceId);
+                context.updateService(inputValues, props.serviceId);
                 props.showSnackbar('Service ', 'updated');
             }
 
@@ -427,7 +429,6 @@ const ServiceForm = (props) => {
                         <ActionsTable
                             mainStateActions={props.actions}
                             actions={state.inputs.actions}
-                            addEntity={props.addEntity}
                             updateServiceFormActionsState={updateActionsState}
                         />
                     </div>
@@ -435,12 +436,9 @@ const ServiceForm = (props) => {
                         <label>New Devices:</label>
                         <NewDevicesTable
                             fields={props.fields.devices}
-                            mainStateDevices={props.devices}
                             newDevices={state.inputs.newDevices}
-                            addEntity={props.addEntity}
                             updateServiceFormNewDevicesState={updateNewDevicesState}
                             showSnackbar={props.showSnackbar}
-                            getDeviceNameById={props.getDeviceNameById}
                         />
                     </div>
                     <div className="group">
@@ -513,8 +511,10 @@ const ServiceForm = (props) => {
                             title={state.tempInputs.title.value}
                             description={state.tempInputs.description.value}
                             serviceId={state.serviceId}
-                            getDeviceNameById={props.getDeviceNameById}
-                            getCustomerObjById={props.getCustomerObjById}
+                            // For some reason 'useContext()' is not working in PDFDispatchNote
+                            // So, we are passing these two methods as props
+                            getCustomerObjById={context.getCustomerObjById}
+                            getDeviceNameById={context.getDeviceNameById}
                         />}
                         fileName={`dispatch-note-${state.serviceId}.pdf`}
                     >

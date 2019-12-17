@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { AppContext } from '../../AppContext';
 import { colors } from '../../helpers';
 import { svgIcons } from '../../helpers';
 
@@ -94,21 +95,25 @@ const navItems = {
 class Nav extends React.Component {
     render(props) {
         return (
-            <React.Fragment>
-                <StyledNav>
-                    {Object.keys(navItems).map((key) => (
-                        <div
-                            className={(this.props.activeNavItemKey === key) ? 'nav__item nav__item--active' : 'nav__item'}
-                            key={key}
-                            onClick={(e) => this.props.setNavActive(key)}
-                        >
-                            <div className="nav__icon" dangerouslySetInnerHTML={{ __html: navItems[key].icon }}></div>
-                            <div className="nav__text">{navItems[key].text}</div>
-                        </div>
-                    )
-                    )}
-                </StyledNav>
-            </React.Fragment>
+            <AppContext.Consumer>
+                {(context) => (
+                    <React.Fragment>
+                        <StyledNav>
+                            {Object.keys(navItems).map((key) => (
+                                <div
+                                    className={(context.state.activeNavItemKey === key) ? 'nav__item nav__item--active' : 'nav__item'}
+                                    key={key}
+                                    onClick={(e) => context.setNavActive(key)}
+                                >
+                                    <div className="nav__icon" dangerouslySetInnerHTML={{ __html: navItems[key].icon }}></div>
+                                    <div className="nav__text">{navItems[key].text}</div>
+                                </div>
+                            )
+                            )}
+                        </StyledNav>
+                    </React.Fragment>
+                )}
+            </AppContext.Consumer>
         );
     }
 }

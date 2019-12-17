@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import MaterialTable from 'material-table';
 import tableIcons from '../tableIcons';
+import { AppContext } from '../AppContext';
 
 const StyledTableWrapper = styled.div`
   width: 100%;
@@ -11,6 +12,8 @@ const StyledTableWrapper = styled.div`
 `;
 
 const DisplayEntity = (props) => {
+  const context = React.useContext(AppContext);
+  
   /** Populating columns variable with fields received from props **/
   const columns = props.fields.map(field => {
     return {
@@ -52,7 +55,7 @@ const DisplayEntity = (props) => {
           {
             onRowDelete: oldData =>
               new Promise(resolve => {
-                if (props.findServiceByEntityId(oldData.id, props.name)) {
+                if (context.findServiceByEntityId(oldData.id, props.name)) {
                   resolve();
                   alert(`${formatedLabel} in use`);
                   return;
@@ -65,7 +68,7 @@ const DisplayEntity = (props) => {
                     return element.id === oldData.id;
                   }), 1);
                   setState({ ...state, data });
-                  props.deleteEntity(oldData.id, props.name);
+                  context.deleteEntity(oldData.id, props.name);
                   props.showSnackbar(props.name, 'deleted');
                 }, 300);
               }),
@@ -87,7 +90,7 @@ const DisplayEntity = (props) => {
                   const data = [...state.data];
                   data[data.indexOf(oldData)] = newData;
                   setState({ ...state, data });
-                  props.updateEntity(newData, newData.id, props.name);
+                  context.updateEntity(newData, newData.id, props.name);
                   props.showSnackbar(props.name, 'updated');
                 }, 300);
               }),

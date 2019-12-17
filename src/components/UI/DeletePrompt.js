@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 import { colors } from '../../helpers';
+import { AppContext } from '../../AppContext';
 
 const StyledDeletePrompt = styled.div`
     position: fixed;
@@ -34,26 +35,28 @@ const StyledDeletePrompt = styled.div`
 `;
 
 const DeletePrompt = (props) => {
+    const context = React.useContext(AppContext);
+
     return (
         <StyledDeletePrompt onClick={() => props.updatePromptedId(null)}>
             <div className="box" onClick={(e) => e.stopPropagation()}>
                 <div className="text">Are you sure you want to delete this service?</div>
                 <div className="buttons">
-                    <Button 
+                    <Button
                         onClick={() => {
-                            props.deleteService(props.id);
+                            context.deleteService(props.id);
                             props.updatePromptedId(null);
                         }}
                         type="button"
                         margin="0 0.5rem"
-                        >Yes
+                    >Yes
                     </Button>
-                    <Button 
+                    <Button
                         onClick={() => props.updatePromptedId(null)}
                         isText={true}
                         type="button"
                         margin="0 0.5rem"
-                        >No
+                    >No
                     </Button>
                 </div>
             </div>

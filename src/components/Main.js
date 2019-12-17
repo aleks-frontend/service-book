@@ -5,6 +5,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+import { AppContext } from '../AppContext';
 import ScreensDashboard from '../screens/Dashboard';
 import { fields } from '../helpers';
 import ScreensHistory from '../screens/History';
@@ -27,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = (props) => {
+    const context = React.useContext(AppContext);
     const classes = useStyles();
     /** Setting up the state **/
     const [state, setState] = React.useState({
@@ -82,56 +84,20 @@ const Main = (props) => {
         );
     }
 
-    const renderComponent = (props) => {
-        switch (props.activeNavItemKey) {
+    const renderComponent = () => {
+        switch (context.state.activeNavItemKey) {
             case 'home':
-                return <ScreensDashboard
-                    services={props.services}
-                    mainStateIsLoaded={props.mainStateIsLoaded}
-                    setNavActive={props.setNavActive}
-                    setFilteredServicesArray={props.setFilteredServicesArray}
-                />;
+                return <ScreensDashboard />;
             case 'history':
-                return <ScreensHistory
-                    customers={props.customers}
-                    devices={props.devices}
-                    actions={props.actions}
-                    updateService={props.updateService}
-                    addEntity={props.addEntity}
-                    showSnackbar={showSnackbar}
-                    services={props.services}
-                    deleteService={props.deleteService}
-                    getCustomerNameById={props.getCustomerNameById}
-                    getCustomerObjById={props.getCustomerObjById}
-                    getDeviceNameById={props.getDeviceNameById}
-                    getDeviceSerialById={props.getDeviceSerialById}
-                    getActionNameById={props.getActionNameById}
-                    filterServices={props.filterServices}
-                    sortServices={props.sortServices}
-                    mainStateIsLoaded={props.mainStateIsLoaded}
-                    filteredServicesArray={props.filteredServicesArray}
-                    setFilteredServicesArray={props.setFilteredServicesArray}
-                />;
+                return <ScreensHistory showSnackbar={showSnackbar} />;
             case 'newService':
                 return <ScreensNewService
-                    customers={props.customers}
-                    devices={props.devices}
-                    actions={props.actions}
-                    addService={props.addService}
-                    addEntity={props.addEntity}
                     showSnackbar={showSnackbar}
                     fields={fields}
                     isUpdate={true}
-                    getDeviceNameById={props.getDeviceNameById}
-                    getCustomerObjById={props.getCustomerObjById}
                 />;
             case 'customers':
                 return <ScreensCustomers
-                    customers={props.customers}
-                    addEntity={props.addEntity}
-                    deleteEntity={props.deleteEntity}
-                    updateEntity={props.updateEntity}
-                    findServiceByEntityId={props.findServiceByEntityId}
                     showSnackbar={showSnackbar}
                     fields={fields}
                 />;
@@ -156,19 +122,15 @@ const Main = (props) => {
                     fields={fields}
                 />;
             default:
-                return <ScreensDashboard
-                    services={props.services}
-                    mainStateIsLoaded={props.mainStateIsLoaded}
-                    setNavActive={props.setNavActive}
-                />;
+                return <ScreensDashboard />;
         }
     }
 
     return (
         <StyledMain>
-            {renderComponent(props)}
+            {renderComponent()}
             {renderSnackbar()}
-            {props.renderLoadingSpinner()}
+            {context.renderLoadingSpinner()}
         </StyledMain>
     );
 };

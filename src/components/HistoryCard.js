@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import IconButton from './UI/IconButton.js'
 import { statusEnum, colors, svgIcons } from '../helpers';
+import { AppContext } from '../AppContext';
 
 const StyledHistoryCard = styled.div`
     display: flex;
@@ -145,16 +146,17 @@ const StyledActions = styled.div`
 `;
 
 const HistoryCard = (props) => {
-    const { getCustomerNameById, getDeviceNameById, getActionNameById, service, id } = props;
+    const { service, id } = props;
+    const context = React.useContext(AppContext);
 
     /** Setting up the state **/
-    const [ state, setState ] = React.useState({
+    const [state, setState] = React.useState({
         extended: false,
         showPrintPopup: false
     });
 
     /** Expand and collapse the HistoryCard **/
-    const extendHistoryItem = () => setState({...state, extended: !state.extended});
+    const extendHistoryItem = () => setState({ ...state, extended: !state.extended });
 
     /** Render Methods **/
     const renderDevices = () => {
@@ -162,7 +164,7 @@ const HistoryCard = (props) => {
         return (
             service.devices.map((id, index) => {
                 const coma = (index < service.devices.length - 1) ? ', ' : '';
-                return `${getDeviceNameById(id)}${coma}`;
+                return `${context.getDeviceNameById(id)}${coma}`;
             })
         );
     }
@@ -198,7 +200,7 @@ const HistoryCard = (props) => {
                 return (
                     <React.Fragment key={action.rowId}>
                         <div className="text">
-                            <div className="name">{getActionNameById(action.actionId)}</div>
+                            <div className="name">{context.getActionNameById(action.actionId)}</div>
                             <div className="info">quantity: {action.quantity}</div>
                         </div>
                         <div className="price">$ {action.price * action.quantity}</div>
@@ -217,8 +219,8 @@ const HistoryCard = (props) => {
                 return (
                     <React.Fragment key={newDevice.rowId}>
                         <div className="text">
-                            <div className="name">{getDeviceNameById(newDevice.deviceId)}</div>
-                            {props.getDeviceSerialById(newDevice.deviceId) !== '' && <div className="info">serial number: <strong>{props.getDeviceSerialById(newDevice.deviceId)}</strong></div>}
+                            <div className="name">{context.getDeviceNameById(newDevice.deviceId)}</div>
+                            {context.getDeviceSerialById(newDevice.deviceId) !== '' && <div className="info">serial number: <strong>{context.getDeviceSerialById(newDevice.deviceId)}</strong></div>}
                             <div className="info">quantity: <strong>{newDevice.quantity}</strong></div>
                         </div>
                         <div className="price">$ {newDevice.price * newDevice.quantity}</div>
@@ -260,7 +262,7 @@ const HistoryCard = (props) => {
                 <div className="text">
                     <div className="heading">{service.title}</div>
                     <div className="subheading">
-                        {service.customers && getCustomerNameById(service.customers.length ? service.customers[0] : '')}
+                        {service.customers && context.getCustomerNameById(service.customers.length ? service.customers[0] : '')}
                     </div>
                 </div>
             </div>
@@ -313,13 +315,13 @@ const HistoryCard = (props) => {
                             serviceId: props.id,
                             customerId: props.service.customers[0],
                             deviceIds: props.service.devices,
-                            title: props.service.title, 
+                            title: props.service.title,
                             remark: props.service.remark,
                             description: props.service.description,
                             actions: props.service.actions,
                             newDevices: props.service.newDevices
                         });
-                    }}/>
+                    }} />
             </div>
         </StyledHistoryCard>
     );

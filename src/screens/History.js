@@ -13,19 +13,11 @@ import Legend from '../components/UI/Legend';
 import GridBasic from '../components/UI/GridBasic';
 import TopBar from '../components/UI/TopBar';
 import FilterCriteriaEmpty from '../components/UI/FilterCriteriaEmpty';
+import { AppContext } from '../AppContext';
 import { fields } from '../helpers';
 
 const History = (props) => {
-	/** Destructuring the props **/
-	const {
-		services,
-		getCustomerNameById,
-		getDeviceNameById,
-		getActionNameById,
-		filterServices,
-		sortServices,
-		deleteService
-	} = props;
+	const context = React.useContext(AppContext);
 
 	/** Setting up the state **/
 	const [state, setState] = React.useState({
@@ -35,7 +27,7 @@ const History = (props) => {
 		sortCriteria: '',
 		sortDirectionAsc: true,
 		promptedId: null,
-		statusFilters: props.filteredServicesArray,
+		statusFilters: context.state.filteredServicesArray,
 		showNoServiceMessage: false,
 		showPrintPopup: false,
 		printInputs: {
@@ -45,17 +37,19 @@ const History = (props) => {
 			remark: ''
 		}
 	});
-	
+
 	React.useEffect(() => {
-		props.setFilteredServicesArray([]);
+		context.setFilteredServicesArray([]);
 	}, []);
+
+	// const 
 
 	/** Custom methods for updating the statusFilters state **/
 	const updateStatusFilters = (value) => {
 		let statusFiltersStateCopy = [...state.statusFilters];
 
-		if ( statusFiltersStateCopy.includes(value) ) {
-			statusFiltersStateCopy = statusFiltersStateCopy.filter( status => ( status !== value ) );
+		if (statusFiltersStateCopy.includes(value)) {
+			statusFiltersStateCopy = statusFiltersStateCopy.filter(status => (status !== value));
 		} else {
 			statusFiltersStateCopy.push(value);
 		}
@@ -138,27 +132,27 @@ const History = (props) => {
 	}
 
 	/** Render Methods **/
-	const renderServices = () => {
+	const renderServices = (context) => {
 		if (state.sortCriteria === '') return;
 		const filteredArr = [];
 
 		// First we filter services and populate filteredArr with keys
-		for (const serviceKey of Object.keys(services)) {
-			if (filterServices(services[serviceKey], state.searchText, state.statusFilters)) {
+		for (const serviceKey of Object.keys(context.state.ssot.services)) {
+			if (context.filterServices(context.state.ssot.services[serviceKey], state.searchText, state.statusFilters)) {
 				filteredArr.push(serviceKey);
 			}
 		}
 
 		// Checking if no service matches the searched text
 		if (filteredArr.length === 0 && props.mainStateIsLoaded) {
-			if ( state.showNoServiceMessage === false ) {
+			if (state.showNoServiceMessage === false) {
 				setState({
 					...state,
 					showNoServiceMessage: true
 				});
 			}
 		} else {
-			if ( state.showNoServiceMessage === true ) {
+			if (state.showNoServiceMessage === true) {
 				setState({
 					...state,
 					showNoServiceMessage: false
@@ -167,8 +161,8 @@ const History = (props) => {
 		}
 
 		// After filtering, we are sorting the array
-		sortedArr = sortServices(filteredArr, state.sortCriteria, state.sortDirectionAsc);
-		return sortedArr.map(key => renderHistoryCard(services[key], key));
+		sortedArr = context.sortServices(filteredArr, state.sortCriteria, state.sortDirectionAsc);
+		return sortedArr.map(key => renderHistoryCard(context.state.ssot.services[key], key));
 	}
 
 	const renderHistoryCard = (service, key) => (
@@ -184,11 +178,6 @@ const History = (props) => {
 				key={key}
 				id={key}
 				service={service}
-				getCustomerNameById={getCustomerNameById}
-				getDeviceNameById={getDeviceNameById}
-				getDeviceSerialById={props.getDeviceSerialById}
-				getActionNameById={getActionNameById}
-				deleteService={deleteService}
 				updatePromptedId={updatePromptedId}
 				renderUpdateServicePopup={renderUpdateServicePopup}
 				showPopup={showPopup}
@@ -202,7 +191,6 @@ const History = (props) => {
 			return (
 				<DeletePrompt
 					id={state.promptedId}
-					deleteService={deleteService}
 					updatePromptedId={updatePromptedId}
 				/>);
 		}
@@ -214,17 +202,11 @@ const History = (props) => {
 				<Popup hidePopup={hidePopup}>
 					<ServiceForm
 						isUpdate={true}
-						customers={props.customers}
-						devices={props.devices}
-						actions={props.actions}
-						updateService={props.updateService}
-						addEntity={props.addEntity}
 						showSnackbar={props.showSnackbar}
 						fields={fields}
-						service={props.services[state.popupServiceId]}
+						service={context.state.ssot.services[state.popupServiceId]}
 						serviceId={state.popupServiceId}
 						hidePopup={hidePopup}
-						getDeviceNameById={props.getDeviceNameById}
 					/>
 				</Popup>
 			)
@@ -232,7 +214,7 @@ const History = (props) => {
 	}
 
 	const renderPrintPopup = () => {
-		if ( state.showPrintPopup ) {
+		if (state.showPrintPopup) {
 			return (
 				<Popup hidePopup={hidePrintPopup}>
 					<PrintPopup
@@ -260,10 +242,10 @@ const History = (props) => {
 			<Header title="Services History" />
 			<Body>
 				<TopBar>
-					<Legend 
-						updateStatusFilters={updateStatusFilters} 
+					<Legend
+						updateStatusFilters={updateStatusFilters}
 						statusFilters={state.statusFilters}
-						/>
+					/>
 					<Controls
 						handleSearchInputChange={handleSearchInputChange}
 						handleSortCriteriaChange={handleSortCriteriaChange}
@@ -274,7 +256,7 @@ const History = (props) => {
 				</TopBar>
 				{state.showNoServiceMessage && <FilterCriteriaEmpty>No service meets the filtered criteria!</FilterCriteriaEmpty>}
 				<GridBasic>
-					{renderServices()}
+					{renderServices(context)}
 				</GridBasic>
 				{renderUpdateServicePopup()}
 				{renderPrintPopup()}

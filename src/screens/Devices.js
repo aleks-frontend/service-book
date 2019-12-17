@@ -5,8 +5,11 @@ import DisplayEntity from '../components/DisplayEntity';
 import CreateEntity from '../components/CreateEntity';
 import CreateEntityButton from '../components/UI/CreateEntityButton';
 import Popup from '../components/UI/Popup';
+import { AppContext } from '../AppContext';
 
 const ScreensDevices = (props) => {
+    const context = React.useContext(AppContext);
+
     /** Setting up the state **/
     const [state, setState] = React.useState({
         showPopup: false
@@ -25,7 +28,6 @@ const ScreensDevices = (props) => {
                 <Popup hidePopup={hidePopup}>
                     <CreateEntity
                         name=""
-                        addEntity={props.addEntity}
                         stateName="devices"
                         fields={fields}
                         isMulti={false}
@@ -51,10 +53,7 @@ const ScreensDevices = (props) => {
                 <DisplayEntity
                     name="devices"
                     fields={fields}
-                    entities={props.devices}
-                    findServiceByEntityId={props.findServiceByEntityId}
-                    deleteEntity={props.deleteEntity}
-                    updateEntity={props.updateEntity}
+                    entities={context.state.ssot.devices}
                     showSnackbar={props.showSnackbar}
                 />
             </Body>

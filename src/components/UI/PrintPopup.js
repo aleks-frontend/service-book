@@ -5,6 +5,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import Button from './Button';
 import PdfDispatchNote from '../PDF/PdfDispatchNote';
 import PdfInvoice from '../PDF/PdfInvoice';
+import { AppContext } from '../../AppContext';
 import { colors } from '../../helpers';
 
 const StyledPrintPopup = styled.div`
@@ -31,6 +32,7 @@ const StyledPrintPopup = styled.div`
 `;
 
 const PrintPopup = (props) => {
+    const context = React.useContext(AppContext);
     const [state, setState] = React.useState({
         dispatchNotePdfGenerated: false,
         invoicePdfGenerated: false
@@ -83,8 +85,8 @@ const PrintPopup = (props) => {
                         deviceIds={props.deviceIds}
                         title={props.title}
                         description={props.description}
-                        getDeviceNameById={props.getDeviceNameById}
-                        getCustomerObjById={props.getCustomerObjById}
+                        getDeviceNameById={context.getDeviceNameById}
+                        getCustomerObjById={context.getCustomerObjById}
                     />}
                     fileName={`dispatch-note-${props.serviceId}.pdf`}
                 >
@@ -106,9 +108,9 @@ const PrintPopup = (props) => {
                         actions={props.actions}
                         remark={props.remark}
                         newDevices={props.newDevices}
-                        getCustomerObjById={props.getCustomerObjById}
-                        getActionNameById={props.getActionNameById}
-                        getDeviceNameById={props.getDeviceNameById}
+                        getCustomerObjById={context.getCustomerObjById}
+                        getActionNameById={context.getActionNameById}
+                        getDeviceNameById={context.getDeviceNameById}
                     />}
                     fileName={`dispatch-note-${props.serviceId}.pdf`}
                 >

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { colors, statusEnum, svgIcons } from '../helpers';
 import Header from '../components/UI/Header';
 import Body from '../components/UI/Body';
+import { AppContext } from '../AppContext';
 
 const StyledGrid = styled.div`
   display: grid;
@@ -81,7 +82,7 @@ const StyledFrame = styled.div`
           width: 25%;
           margin: 0 0.5rem; 
 
-          svg path { fill: ${props => props.status === statusEnum.COMPLETED ? colors.green : colors.orange }; }
+          svg path { fill: ${props => props.status === statusEnum.COMPLETED ? colors.green : colors.orange}; }
         }
 
         .label {
@@ -92,7 +93,9 @@ const StyledFrame = styled.div`
     }
 `;
 
-const ScreensDashboard = (props) => {
+const ScreensDashboard = () => {
+  const context = React.useContext(AppContext);
+
   const generateLastSixMonths = () => {
     let currentMonth = new Date().getMonth();
     const lastSixMonths = [];
@@ -109,12 +112,12 @@ const ScreensDashboard = (props) => {
     return { names: lastSixMonthsNames.reverse(), indexes: lastSixMonths.reverse() };
   }
 
-  const calculateTotalMonthEarnings = () => {
+  const calculateTotalMonthEarnings = (mainStateServices) => {
     const lastSixMonthsTotals = Array.from({ length: 6 }, () => 0);
     const indexes = generateLastSixMonths().indexes;
 
-    for (const serviceKey of Object.keys(props.services)) {
-      const service = props.services[serviceKey];
+    for (const serviceKey of Object.keys(mainStateServices)) {
+      const service = mainStateServices[serviceKey];
       const serviceMonth = new Date(service.date).getMonth();
 
       if (indexes.includes(serviceMonth)) {
@@ -122,7 +125,7 @@ const ScreensDashboard = (props) => {
         // Additional check becuase empty arrays can not be stored in Firebase
         if (service.actions === '') continue;
 
-        if ( service.actions === undefined ) return;
+        if (service.actions === undefined) return;
         const totalServicePrice = service.actions.reduce((total, action) => {
           return total + parseInt(action.price);
         }, 0);
@@ -146,10 +149,10 @@ const ScreensDashboard = (props) => {
         borderWidth: 1,
         hoverBackgroundColor: colors.rdgray2,
         hoverBorderColor: colors.rddarkgray,
-        data: calculateTotalMonthEarnings()
+        data: calculateTotalMonthEarnings(context.state.ssot.services)
       }
     ]
-  };
+  }
 
   const renderGrid = () => {
     return (
@@ -162,7 +165,7 @@ const ScreensDashboard = (props) => {
           <div className="body">
             <StyledThumbnail>
               <div className="digit">
-                {renderFilteredServicesCount(statusEnum.INPROGRESS)}
+                {renderFilteredServicesCount(statusEnum.INPROGRESS, context.state.ssot.services)}
               </div>
               <StyledFrame status={statusEnum.INPROGRESS}>
                 <div className="frame">
@@ -184,7 +187,7 @@ const ScreensDashboard = (props) => {
           <div className="body">
             <StyledThumbnail>
               <div className="digit">
-              {renderFilteredServicesCount(statusEnum.COMPLETED)}
+                {renderFilteredServicesCount(statusEnum.COMPLETED, context.state.ssot.services)}
               </div>
               <StyledFrame status={statusEnum.COMPLETED}>
                 <div className="frame">
@@ -197,7 +200,7 @@ const ScreensDashboard = (props) => {
               </StyledFrame>
             </StyledThumbnail>
           </div>
-        </div>        
+        </div>
         <div className="cell cell--grid">
           <div className="header">Earnings (Last 6 months)</div>
           <div className="body body--padding">
@@ -214,9 +217,9 @@ const ScreensDashboard = (props) => {
     );
   }
 
-  const renderFilteredServicesCount = (status) => {
-    const servicesCount = Object.keys(props.services).reduce((total, key) => {
-      const service = props.services[key];
+  const renderFilteredServicesCount = (status, services) => {
+    const servicesCount = Object.keys(services).reduce((total, key) => {
+      const service = services[key];
 
       if (service.status === status) {
         return total + 1;
@@ -229,15 +232,15 @@ const ScreensDashboard = (props) => {
   }
 
   const goToFilteredServices = (navItem, status) => {
-    props.setNavActive(navItem);
-    props.setFilteredServicesArray([status]);
+    context.setNavActive(navItem);
+    context.setFilteredServicesArray([status]);
   }
 
   return (
     <React.Fragment>
       <Header title="Dashboard" />
       <Body>
-        {props.mainStateIsLoaded && renderGrid()}
+          {context.state.loaded && renderGrid()}
       </Body>
     </React.Fragment>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Button from './UI/Button';
+import { AppContext } from '../AppContext';
 import { colors, breakpoints } from '../helpers';
 
 const StyledCreateEntity = styled.div`
@@ -71,6 +72,8 @@ const StyledCreateEntity = styled.div`
 `;
 
 const CreateEntity = (props) => {
+    const context = React.useContext(AppContext);
+
     /** Preseting defaultState Object **/
     const defaultState = {};
     for (const field of props.fields) {
@@ -98,7 +101,6 @@ const CreateEntity = (props) => {
 
     /** Event Handler Methods **/
     const handleInputChange = (event) => {
-        console.log(event);
         const entityStateCopy = { ...state.entityState };
         for (const field of props.fields) {
             if (field.calculated && field.calculated.indexOf(event.target.name) > -1) {
@@ -151,7 +153,7 @@ const CreateEntity = (props) => {
         // (not the case when we are calling it from NewService)
         if (props.isDirect) {
             const id = new Date().getTime();
-            props.addEntity(state.entityState, id, props.stateName);
+            context.addEntity(state.entityState, id, props.stateName);
             props.hidePopup();
             props.showSnackbar(props.stateName, 'created');
             return;
@@ -160,13 +162,13 @@ const CreateEntity = (props) => {
         // Case when we are adding the new device from the update form
         // adding devices that were added during the active service (not the received ones)
         if (props.isNewDevice) {
-            props.addEntity(state.entityState, props.stateName);
+            context.addEntity(state.entityState, props.stateName);
             props.showSnackbar(props.stateName, 'created');
             return;
         }
 
         // Used only in NewService component
-        props.addEntity(state.entityState, props.stateName, props.isMulti);
+        context.addEntity(state.entityState, props.stateName, props.isMulti);
         props.showSnackbar(props.stateName, 'created');
     }
 
