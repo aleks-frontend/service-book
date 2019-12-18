@@ -3,10 +3,10 @@ import LoadingSpinner from './components/UI/LoadingSpinner';
 import base from './base';
 
 // make a context
-export const AppContext = React.createContext();
+const AppContext = React.createContext();
 
 // make context provider component
-export class AppProvider extends React.Component {
+class AppProvider extends React.Component {
     state = {
         activeNavItemKey: "home",
         loaded: false,
@@ -236,3 +236,5 @@ export class AppProvider extends React.Component {
         );
     }
 }
+
+export { AppContext, AppProvider };
