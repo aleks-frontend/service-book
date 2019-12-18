@@ -226,6 +226,7 @@ export class AppProvider extends React.Component {
                 deleteService: this.deleteService,
                 addService: this.addService,
                 updateService: this.updateService,
+                findServiceByEntityId: this.findServiceByEntityId,
                 addEntity: this.addEntity,
                 deleteEntity: this.deleteEntity,
                 updateEntity: this.updateEntity
