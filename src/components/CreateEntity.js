@@ -153,7 +153,7 @@ const CreateEntity = (props) => {
         // (not the case when we are calling it from NewService)
         if (props.isDirect) {
             const id = new Date().getTime();
-            context.addEntity(state.entityState, id, props.stateName);
+            props.addEntity(state.entityState, id, props.stateName);
             props.hidePopup();
             props.showSnackbar(props.stateName, 'created');
             return;
@@ -162,13 +162,13 @@ const CreateEntity = (props) => {
         // Case when we are adding the new device from the update form
         // adding devices that were added during the active service (not the received ones)
         if (props.isNewDevice) {
-            context.addEntity(state.entityState, props.stateName);
+            props.addEntity(state.entityState, props.stateName);
             props.showSnackbar(props.stateName, 'created');
             return;
         }
 
         // Used only in NewService component
-        context.addEntity(state.entityState, props.stateName, props.isMulti);
+        props.addEntity(state.entityState, props.stateName, props.isMulti);
         props.showSnackbar(props.stateName, 'created');
     }
 
