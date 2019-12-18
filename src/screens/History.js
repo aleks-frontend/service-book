@@ -144,7 +144,7 @@ const History = (props) => {
 		}
 
 		// Checking if no service matches the searched text
-		if (filteredArr.length === 0 && props.mainStateIsLoaded) {
+		if (filteredArr.length === 0 && context.state.loaded) {
 			if (state.showNoServiceMessage === false) {
 				setState({
 					...state,
