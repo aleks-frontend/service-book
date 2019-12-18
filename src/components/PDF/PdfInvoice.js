@@ -304,7 +304,9 @@ const PdfInvoice = (props) => {
                             <Text style={modifiers.tableHeaderCellLABEL}>Remarks</Text>
                         </View>
                         <View style={styles.tableRow}>
-                            <Text style={modifiers.tableCellFULL}>{props.remark}</Text>
+                            <Text style={modifiers.tableCellFULL}>
+                                {props.remark === '' ? 'No remarks added yet.' : props.remark}
+                            </Text>
                         </View>
                     </View>
                     <View style={styles.table}>
