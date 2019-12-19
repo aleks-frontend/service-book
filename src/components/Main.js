@@ -98,25 +98,9 @@ const Main = (props) => {
             case 'customers':
                 return <ScreensCustomers showSnackbar={showSnackbar} />;
             case 'actions':
-                return <ScreensActions
-                    actions={props.actions}
-                    addEntity={props.addEntity}
-                    deleteEntity={props.deleteEntity}
-                    updateEntity={props.updateEntity}
-                    findServiceByEntityId={props.findServiceByEntityId}
-                    showSnackbar={showSnackbar}
-                    fields={fields}
-                />;
+                return <ScreensActions showSnackbar={showSnackbar} />;
             case 'devices':
-                return <ScreensDevices
-                    devices={props.devices}
-                    addEntity={props.addEntity}
-                    deleteEntity={props.deleteEntity}
-                    updateEntity={props.updateEntity}
-                    findServiceByEntityId={props.findServiceByEntityId}
-                    showSnackbar={showSnackbar}
-                    fields={fields}
-                />;
+                return <ScreensDevices showSnackbar={showSnackbar} />;
             default:
                 return <ScreensDashboard />;
         }

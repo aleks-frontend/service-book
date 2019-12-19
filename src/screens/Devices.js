@@ -6,6 +6,7 @@ import CreateEntity from '../components/CreateEntity';
 import CreateEntityButton from '../components/UI/CreateEntityButton';
 import Popup from '../components/UI/Popup';
 import { AppContext } from '../AppContext';
+import { fields } from '../helpers';
 
 const ScreensDevices = (props) => {
     const context = React.useContext(AppContext);
@@ -19,7 +20,7 @@ const ScreensDevices = (props) => {
     const hidePopup = () => setState({ ...state, showPopup: false });
     const showPopup = () => setState({ ...state, showPopup: true });
 
-    const fields = props.fields.devices;
+    const deviceFields = fields.devices;
 
     /** Render Methods **/
     const renderPopup = () => {
@@ -29,7 +30,7 @@ const ScreensDevices = (props) => {
                     <CreateEntity
                         name=""
                         stateName="devices"
-                        fields={fields}
+                        fields={deviceFields}
                         isMulti={false}
                         isDirect={true}
                         hidePopup={hidePopup}
@@ -52,7 +53,7 @@ const ScreensDevices = (props) => {
                     injectIntoTable={true} />
                 <DisplayEntity
                     name="devices"
-                    fields={fields}
+                    fields={deviceFields}
                     entities={context.state.ssot.devices}
                     showSnackbar={props.showSnackbar}
                 />
