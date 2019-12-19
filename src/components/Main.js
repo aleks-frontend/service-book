@@ -93,7 +93,6 @@ const Main = (props) => {
             case 'newService':
                 return <ScreensNewService
                     showSnackbar={showSnackbar}
-                    fields={fields}
                     isUpdate={true}
                 />;
             case 'customers':

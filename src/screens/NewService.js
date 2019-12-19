@@ -11,15 +11,7 @@ const ScreensNewService = (props) => {
             <Body>
                 <ServiceForm 
                     isUpdate={false} 
-                    customers={props.customers}
-                    devices={props.devices}
-                    actions={props.actions}
-                    addService={props.addService}
-                    addEntity={props.addEntity}
                     showSnackbar={props.showSnackbar}
-                    fields={props.fields}
-                    getCustomerObjById={props.getCustomerObjById}
-                    getDeviceNameById={props.getDeviceNameById}
                 />
             </Body>
         </React.Fragment>

@@ -9,7 +9,7 @@ import NewDevicesTable from './NewDevicesTable';
 import Button from './UI/Button';
 import PdfDispatchNote from './PDF/PdfDispatchNote';
 import { AppContext } from '../AppContext';
-import { breakpoints, statusEnum, colors } from '../helpers';
+import { breakpoints, statusEnum, colors, fields } from '../helpers';
 
 const StyledForm = styled.form`
     position: relative;
@@ -391,14 +391,14 @@ const ServiceForm = (props) => {
 
     /** Render Methods **/
     const renderCreateCustomer = () => {
-        const fields = props.fields.customers;
+        const customerFields = fields.customers;
 
         if (state.showCreateEntity['customers'].show) {
             return <CreateEntity
                 name={state.showCreateEntity['customers'].name}
                 addEntity={addEntity}
                 stateName="customers"
-                fields={fields}
+                fields={customerFields}
                 isMulti={false}
                 showSnackbar={props.showSnackbar}
             />;
@@ -406,14 +406,14 @@ const ServiceForm = (props) => {
     }
 
     const renderCreateDevice = () => {
-        const fields = props.fields.devices;
+        const deviceFields = fields.devices;
 
         if (state.showCreateEntity['devices'].show) {
             return <CreateEntity
                 name={state.showCreateEntity['devices'].name}
                 addEntity={addEntity}
                 stateName="devices"
-                fields={fields}
+                fields={deviceFields}
                 isMulti={true}
                 showSnackbar={props.showSnackbar}
             />;
@@ -435,7 +435,7 @@ const ServiceForm = (props) => {
                     <div className="group">
                         <label>New Devices:</label>
                         <NewDevicesTable
-                            fields={props.fields.devices}
+                            fields={fields.devices}
                             newDevices={state.inputs.newDevices}
                             updateServiceFormNewDevicesState={updateNewDevicesState}
                             showSnackbar={props.showSnackbar}
