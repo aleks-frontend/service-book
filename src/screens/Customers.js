@@ -6,6 +6,7 @@ import CreateEntity from '../components/CreateEntity';
 import CreateEntityButton from '../components/UI/CreateEntityButton';
 import Popup from '../components/UI/Popup';
 import { AppContext } from '../AppContext';
+import { fields } from '../helpers';
 
 const ScreensCustomers = (props) => {
 	const context = React.useContext(AppContext);
@@ -19,7 +20,7 @@ const ScreensCustomers = (props) => {
 	const hidePopup = () => setState({ ...state, showPopup: false });
 	const showPopup = () => setState({ ...state, showPopup: true });
 
-	const fields = props.fields.customers;
+	const customersFields = fields.customers;
 
 	/** Render Methods **/
 	const renderPopup = () => {
@@ -29,7 +30,7 @@ const ScreensCustomers = (props) => {
 					<CreateEntity
 						name=""
 						stateName="customers"
-						fields={fields}
+						fields={customersFields}
 						isMulti={false}
 						isDirect={true}
 						hidePopup={hidePopup}
@@ -56,7 +57,7 @@ const ScreensCustomers = (props) => {
 					injectIntoTable={true} />
 				<DisplayEntity
 					name="customers"
-					fields={fields}
+					fields={customersFields}
 					entities={context.state.ssot.customers}
 					showSnackbar={props.showSnackbar}
 				/>

@@ -96,10 +96,7 @@ const Main = (props) => {
                     isUpdate={true}
                 />;
             case 'customers':
-                return <ScreensCustomers
-                    showSnackbar={showSnackbar}
-                    fields={fields}
-                />;
+                return <ScreensCustomers showSnackbar={showSnackbar} />;
             case 'actions':
                 return <ScreensActions
                     actions={props.actions}
