@@ -73,7 +73,7 @@ const StyledHistoryCard = styled.div`
                 margin-bottom: 0.2rem;
                 font-size: 2.1rem; }
 
-            .subheading { font-size: 1.8rem; }
+            .subheading { font-size: 1.5rem; }
         }
     }
 
@@ -260,10 +260,10 @@ const HistoryCard = (props) => {
                     dangerouslySetInnerHTML={{ __html: renderStatusIcon(service.status) }}>
                 </div>
                 <div className="text">
-                    <div className="heading">{service.title}</div>
-                    <div className="subheading">
+                    <div className="heading">
                         {service.customers && context.getCustomerNameById(service.customers.length ? service.customers[0] : '')}
                     </div>
+                    <div className="subheading">Service ID: {props.id}</div>
                 </div>
             </div>
             <div className="body">

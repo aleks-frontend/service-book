@@ -60,6 +60,11 @@ class AppProvider extends React.Component {
                     serviceProp = service[serviceKey].map(deviceItem => deviceItem.deviceId);
                 }
                 serviceKey = 'devices';
+            } else if ( serviceKey === 'date' ){
+                // This is additional special case where we are allowing the user to 
+                // filter by serviceId - since serviceId is equal to date. But in order to
+                // allow filtering date number needs to be converted to string
+                serviceProp = String(service[serviceKey]);
             } else {
                 serviceProp = service[serviceKey];
             }

@@ -72,10 +72,6 @@ const ServiceForm = (props) => {
     const { customers: appCustomers, devices: appDevices, actions: appActions } = context.state.ssot;
     const defaultStates = {
         inputs: {
-            title: {
-                value: props.isUpdate ? props.service.title : `Service Title`,
-                required: true,
-            },
             description: {
                 value: props.isUpdate ? props.service.description : "",
                 required: true,
@@ -508,7 +504,6 @@ const ServiceForm = (props) => {
                         document={<PdfDispatchNote
                             customerId={state.tempInputs.customers.value}
                             deviceIds={state.tempInputs.devices.value}
-                            title={state.tempInputs.title.value}
                             description={state.tempInputs.description.value}
                             serviceId={state.serviceId}
                             // For some reason 'useContext()' is not working in PDFDispatchNote
@@ -540,15 +535,14 @@ const ServiceForm = (props) => {
                 onClick={e => e.stopPropagation()}
                 isUpdate={props.isUpdate}
             >
-                <div
-                    className={state.emptyRequiredInputs['title'] ? 'group empty-required' : 'group'}
-                >
-                    <label>{state.inputs.title.required && '* '}Title:</label>
+                <div className='group'>
+                    <label>Service ID:</label>
                     <input
                         type="text"
                         name="title"
-                        disabled={state.showGeneratedPdfButton}
-                        value={state.inputs.title.value}
+                        disabled={true}
+                        readOnly={true}                        
+                        value={state.serviceId}
                         onChange={handleInputChange}
                     />
                 </div>

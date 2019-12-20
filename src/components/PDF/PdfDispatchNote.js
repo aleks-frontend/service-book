@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingBottom: 20,
     },
+    headerText: {
+        flex: 1,
+        fontSize: 12,
+        fontFamily: 'Roboto-Bold'
+    },
     companyInfo: {
         flex: 1,
         borderTop: 2,
@@ -124,10 +129,13 @@ const PdfDispatchNote = (props) => {
         <Document>
             <Page style={styles.page}>
                 <View style={styles.header}>
-                    <View style={styles.companyInfo}>
-                        <Text style={modifiers.companyInfoTextMain}>Zoltan Kalmar</Text>
-                        <Text style={styles.companyInfoText}>Petra Petrovica 23,</Text>
-                        <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
+                    <View style={styles.headerText}>
+                        <Text style={styles.headerTitle}>Service ID: {props.serviceId}</Text>
+                        <View style={styles.companyInfo}>
+                            <Text style={modifiers.companyInfoTextMain}>Zoltan Kalmar</Text>
+                            <Text style={styles.companyInfoText}>Petra Petrovica 23,</Text>
+                            <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
+                        </View>
                     </View>
                     <Image src="/dp-logo.png" style={styles.logo} />
                 </View>
@@ -150,10 +158,6 @@ const PdfDispatchNote = (props) => {
                                 </View>
                             </View>
                         </View>
-                    </View>
-                    <View style={styles.serviceGroup}>
-                        <Text style={styles.serviceLabel}>Service Title:</Text>
-                        <Text style={styles.serviceText}>{props.title}</Text>
                     </View>
                     <View style={styles.serviceGroup}>
                         <Text style={styles.serviceLabel}>Service Devices:</Text>

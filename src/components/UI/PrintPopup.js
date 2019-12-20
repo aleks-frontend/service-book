@@ -83,7 +83,7 @@ const PrintPopup = (props) => {
                     document={<PdfDispatchNote
                         customerId={props.customerId}
                         deviceIds={props.deviceIds}
-                        title={props.title}
+                        serviceId={props.serviceId}
                         description={props.description}
                         getDeviceNameById={context.getDeviceNameById}
                         getCustomerObjById={context.getCustomerObjById}

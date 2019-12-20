@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 5,
         border: 1,
-        borderRight: 0,
         borderColor: colors.rddarkgray
     },
     boxText: {
@@ -170,15 +169,6 @@ const modifiers = StyleSheet.create({
         ...styles.companyInfoText,
         fontFamily: 'Roboto-Bold'
     },
-    boxHeaderSecondary: {
-        ...styles.boxHeader,
-        borderLeft: 1,
-        borderLeftColor: "#fff",
-    },
-    boxBodySecondary: {
-        ...styles.boxBody,
-        borderRight: 1
-    },
     tableCellLABEL: {
         ...styles.tableCell,
         width: '70%'
@@ -264,7 +254,7 @@ const PdfInvoice = (props) => {
             <Page style={styles.page}>
                 <View style={styles.header}>
                     <View style={styles.headerText}>
-                        <Text style={styles.headerTitle}>Invoice No {props.serviceId}</Text>
+                        <Text style={styles.headerTitle}>Invoice No: {props.serviceId}</Text>
                         <View style={styles.companyInfo}>
                             <Text style={modifiers.companyInfoTextMain}>Zoltan Kalmar</Text>
                             <Text style={styles.companyInfoText}>Petra Petrovica 23,</Text>
@@ -289,12 +279,6 @@ const PdfInvoice = (props) => {
                                 <Text style={styles.customerInfoLabel}>Phone: </Text>
                                 <Text style={styles.customerInfoText}>{customer.phone}</Text>
                             </View>
-                        </View>
-                    </View>
-                    <View style={styles.box}>
-                        <Text style={modifiers.boxHeaderSecondary}>Service Title</Text>
-                        <View style={modifiers.boxBodySecondary}>
-                            <Text style={styles.boxText}>{props.title}</Text>
                         </View>
                     </View>
                 </View>
