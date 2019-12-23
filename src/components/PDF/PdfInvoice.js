@@ -261,7 +261,7 @@ const PdfInvoice = (props) => {
                             <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
                         </View>
                     </View>
-                    <Image src="/dp-logo.png" style={styles.logo} />
+                    <Image src="/sb-logo-bookmark.png" style={styles.logo} />
                 </View>
                 <View style={styles.boxContainer}>
                     <View style={styles.box}>
