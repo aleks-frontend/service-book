@@ -103,8 +103,13 @@ const StyledHistoryCard = styled.div`
 
     .footer {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+        align-items: flex-end;
         padding: 1.5rem; }
+
+    .serviceId { 
+        font-size: 1.2rem;
+        color: ${colors.rddarkgray}; }
 `;
 
 const StyledActions = styled.div`
@@ -263,7 +268,7 @@ const HistoryCard = (props) => {
                     <div className="heading">
                         {service.customers && context.getCustomerNameById(service.customers.length ? service.customers[0] : '')}
                     </div>
-                    <div className="subheading">Service ID: {props.id}</div>
+                    <div className="subheading">{service.customers && context.getCustomerObjById(service.customers.length ? service.customers[0] : '')['phone']}</div>
                 </div>
             </div>
             <div className="body">
@@ -299,29 +304,32 @@ const HistoryCard = (props) => {
                 )}
             </div>
             <div className="footer">
-                <IconButton
-                    icon="update"
-                    onClick={() => props.showPopup(id)} />
-                <IconButton
-                    icon="delete"
-                    onClick={() => props.updatePromptedId(id)} />
-                <IconButton
-                    icon="expand"
-                    onClick={extendHistoryItem} />
-                <IconButton
-                    icon="print"
-                    onClick={() => {
-                        return props.showPrintPopup({
-                            serviceId: props.id,
-                            customerId: props.service.customers[0],
-                            deviceIds: props.service.devices,
-                            title: props.service.title,
-                            remark: props.service.remark,
-                            description: props.service.description,
-                            actions: props.service.actions,
-                            newDevices: props.service.newDevices
-                        });
-                    }} />
+                <div className="serviceId">ID: {props.id}</div>
+                <div className="buttons">
+                    <IconButton
+                        icon="update"
+                        onClick={() => props.showPopup(id)} />
+                    <IconButton
+                        icon="delete"
+                        onClick={() => props.updatePromptedId(id)} />
+                    <IconButton
+                        icon="expand"
+                        onClick={extendHistoryItem} />
+                    <IconButton
+                        icon="print"
+                        onClick={() => {
+                            return props.showPrintPopup({
+                                serviceId: props.id,
+                                customerId: props.service.customers[0],
+                                deviceIds: props.service.devices,
+                                title: props.service.title,
+                                remark: props.service.remark,
+                                description: props.service.description,
+                                actions: props.service.actions,
+                                newDevices: props.service.newDevices
+                            });
+                        }} />
+                </div>
             </div>
         </StyledHistoryCard>
     );
