@@ -13,8 +13,13 @@ const StyledHeader = styled.div`
     font-size: 2.5rem;
     background-color: ${colors.rdgray};
 
-    .logo { width: 11rem;
-        svg { width: 100%; }
+    .logo { 
+        height: 5rem;
+        
+        img { 
+            height: 100%; 
+            width: auto;
+        }
     }
 `;
 
@@ -22,7 +27,9 @@ const Header = (props) => {
     return (
         <StyledHeader>
             {props.title}
-            <div className="logo" dangerouslySetInnerHTML={{ __html: dpLogo }}></div>
+            <div className="logo">
+                <img src="/sb-logo-bookmark.png" />
+            </div>
         </StyledHeader>
     );
 }
