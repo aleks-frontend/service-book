@@ -125,8 +125,8 @@ const PdfDispatchNote = (props) => {
         })
     )
 
-    const renderCustomerInfoItem = ({label, value}) => {
-        if ( !customer[value] ) return;
+    const renderCustomerInfoItem = ({ label, value }) => {
+        if (!customer[value]) return;
         return (
             <View style={styles.customerInfoGroup}>
                 <Text style={styles.customerInfoLabel}>{label}: </Text>
@@ -154,16 +154,10 @@ const PdfDispatchNote = (props) => {
                         <View style={styles.customerInfo}>
                             <Text style={styles.customerInfoHeader}>Customer Info</Text>
                             <View style={styles.serviceText}>
-                                <View style={styles.customerInfoGroup}>
-                                    <Text style={styles.customerInfoLabel}>Name: </Text>
-                                    <Text style={styles.customerInfoText}>{customer.name}</Text>
-                                </View>
-                                {renderCustomerInfoItem({label: 'Email', value: 'email'})}
-                                <View style={styles.customerInfoGroup}>
-                                    <Text style={styles.customerInfoLabel}>Phone: </Text>
-                                    <Text style={styles.customerInfoText}>{customer.phone}</Text>
-                                </View>
-                                {renderCustomerInfoItem({label: 'Address', value: 'address'})}
+                                {renderCustomerInfoItem({ label: 'Name', value: 'name' })}
+                                {renderCustomerInfoItem({ label: 'Email', value: 'email' })}
+                                {renderCustomerInfoItem({ label: 'Phone', value: 'phone' })}
+                                {renderCustomerInfoItem({ label: 'Address', value: 'address' })}
                             </View>
                         </View>
                     </View>

@@ -277,15 +277,9 @@ const PdfInvoice = (props) => {
                     <View style={styles.box}>
                         <Text style={styles.boxHeader}>Customer Info</Text>
                         <View style={styles.boxBody}>
-                            <View style={styles.customerInfoGroup}>
-                                <Text style={styles.customerInfoLabel}>Name: </Text>
-                                <Text style={styles.customerInfoText}>{customer.name}</Text>
-                            </View>
+                            {renderCustomerInfoItem({label: 'Name', value: 'name'})}
                             {renderCustomerInfoItem({label: 'Email', value: 'email'})}
-                            <View style={styles.customerInfoGroup}>
-                                <Text style={styles.customerInfoLabel}>Phone: </Text>
-                                <Text style={styles.customerInfoText}>{customer.phone}</Text>
-                            </View>
+                            {renderCustomerInfoItem({label: 'Phone', value: 'phone'})}
                             {renderCustomerInfoItem({label: 'Address', value: 'address'})}
                         </View>
                     </View>
