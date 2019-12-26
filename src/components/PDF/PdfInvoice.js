@@ -249,6 +249,16 @@ const PdfInvoice = (props) => {
         }
     }
 
+    const renderCustomerInfoItem = ({label, value}) => {
+        if ( !customer[value] ) return;
+        return (
+            <View style={styles.customerInfoGroup}>
+                <Text style={styles.customerInfoLabel}>{label}: </Text>
+                <Text style={styles.customerInfoText}>{customer[value]}</Text>
+            </View>
+        )
+    }
+
     return (
         <Document>
             <Page style={styles.page}>
@@ -271,18 +281,12 @@ const PdfInvoice = (props) => {
                                 <Text style={styles.customerInfoLabel}>Name: </Text>
                                 <Text style={styles.customerInfoText}>{customer.name}</Text>
                             </View>
-                            <View style={styles.customerInfoGroup}>
-                                <Text style={styles.customerInfoLabel}>Email: </Text>
-                                <Text style={styles.customerInfoText}>{customer.email}</Text>
-                            </View>
+                            {renderCustomerInfoItem({label: 'Email', value: 'email'})}
                             <View style={styles.customerInfoGroup}>
                                 <Text style={styles.customerInfoLabel}>Phone: </Text>
                                 <Text style={styles.customerInfoText}>{customer.phone}</Text>
                             </View>
-                            <View style={styles.customerInfoGroup}>
-                                <Text style={styles.customerInfoLabel}>Address: </Text>
-                                <Text style={styles.customerInfoText}>{customer.address}</Text>
-                            </View>
+                            {renderCustomerInfoItem({label: 'Address', value: 'address'})}
                         </View>
                     </View>
                 </View>
