@@ -31,6 +31,7 @@ const ScreensDevices = (props) => {
                         name=""
                         stateName="devices"
                         fields={deviceFields}
+                        addEntity={context.addEntity}
                         isMulti={false}
                         isDirect={true}
                         hidePopup={hidePopup}

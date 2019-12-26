@@ -31,6 +31,7 @@ const ScreensCustomers = (props) => {
 						name=""
 						stateName="customers"
 						fields={customersFields}
+						addEntity={context.addEntity}
 						isMulti={false}
 						isDirect={true}
 						hidePopup={hidePopup}
@@ -52,7 +53,7 @@ const ScreensCustomers = (props) => {
 			</Header>
 			<Body>
 				<CreateEntityButton 
-					entity="Customer"
+					entity="Customer"					
 					showPopup={showPopup}
 					injectIntoTable={true} />
 				<DisplayEntity

@@ -31,6 +31,7 @@ const ScreensActions = (props) => {
 						name=""
 						stateName="actions"
 						fields={actionsFields}
+						addEntity={context.addEntity}
 						isMulti={false}
 						isDirect={true}
 						hidePopup={hidePopup}
