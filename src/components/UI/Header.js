@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { colors, dpLogo } from '../../helpers'
+import { colors } from '../../helpers'
 
 const StyledHeader = styled.div`
     display: flex;
