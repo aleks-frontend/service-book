@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     logo: {
         display: 'block',
         marginLeft: 5,
-        width: 160
+        width: 100
     },
     boxContainer: {
         flexDirection: 'row',
@@ -261,7 +261,7 @@ const PdfInvoice = (props) => {
                             <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
                         </View>
                     </View>
-                    <Image src="/sb-logo-bookmark.png" style={styles.logo} />
+                    <Image src="/img/sb-logo.png" style={styles.logo} />
                 </View>
                 <View style={styles.boxContainer}>
                     <View style={styles.box}>

@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     logo: {
         display: 'block',
         marginLeft: 5,
-        width: 160
+        width: 100
     },
     customerInfo: {
         fontSize: 12
@@ -137,7 +137,7 @@ const PdfDispatchNote = (props) => {
                             <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
                         </View>
                     </View>
-                    <Image src="/sb-logo-bookmark.png" style={styles.logo} />
+                    <Image src="/img/sb-logo.png" style={styles.logo} />
                 </View>
                 <View style={styles.body}>
                     <View style={styles.serviceGroup}>
