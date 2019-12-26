@@ -279,6 +279,10 @@ const PdfInvoice = (props) => {
                                 <Text style={styles.customerInfoLabel}>Phone: </Text>
                                 <Text style={styles.customerInfoText}>{customer.phone}</Text>
                             </View>
+                            <View style={styles.customerInfoGroup}>
+                                <Text style={styles.customerInfoLabel}>Address: </Text>
+                                <Text style={styles.customerInfoText}>{customer.address}</Text>
+                            </View>
                         </View>
                     </View>
                 </View>

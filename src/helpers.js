@@ -25,6 +25,12 @@ export const fields = {
             label: 'Email',
             defaultVal: '',
             required: false
+        },
+        {
+            name: 'address',
+            label: 'Address',
+            defaultVal: '',
+            required: false
         }
     ],
     devices: [
