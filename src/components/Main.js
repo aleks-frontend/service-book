@@ -7,7 +7,6 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { AppContext } from '../AppContext';
 import ScreensDashboard from '../screens/Dashboard';
-import { fields } from '../helpers';
 import ScreensHistory from '../screens/History';
 import ScreensNewService from '../screens/NewService';
 import ScreensCustomers from '../screens/Customers';
@@ -19,15 +18,18 @@ const StyledMain = styled.div`
     overflow: auto;
     display: flex;
     flex-direction: column;
+
+    /* Changing the font size of the snackbar */
+    .MuiSnackbarContent-root { font-size: 1.2rem; }
 `;
 
 const useStyles = makeStyles(theme => ({
     close: {
         padding: theme.spacing(0.5),
-    },
+    }
 }));
 
-const Main = (props) => {
+const Main = () => {
     const context = React.useContext(AppContext);
     const classes = useStyles();
     /** Setting up the state **/
