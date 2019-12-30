@@ -226,9 +226,6 @@ const History = (props) => {
 						newDevices={state.printInputs.newDevices}
 						remark={state.printInputs.remark}
 						description={state.printInputs.description}
-						getDeviceNameById={props.getDeviceNameById}
-						getCustomerObjById={props.getCustomerObjById}
-						getActionNameById={props.getActionNameById}
 						hidePopup={hidePrintPopup}
 					/>
 				</Popup>
