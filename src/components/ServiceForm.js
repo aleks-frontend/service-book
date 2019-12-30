@@ -512,6 +512,7 @@ const ServiceForm = (props) => {
                             // So, we are passing these two methods as props
                             getCustomerObjById={context.getCustomerObjById}
                             getDeviceNameById={context.getDeviceNameById}
+                            getDeviceSerialById={context.getDeviceSerialById}
                         />}
                         fileName={`dispatch-note-${state.serviceId}.pdf`}
                     >
