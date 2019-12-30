@@ -215,7 +215,7 @@ const ServiceForm = (props) => {
     }
 
     /** Helper method for adding the new entity to the local state **/
-    const addEntity = (entity, stateKey, isMulti) => {
+    const addEntityToLocalState = (entity, stateKey, isMulti) => {
         const id = (new Date().getTime()).toString();
         const stateCopy = { ...state };
         const activeDropdownState = state.dropdownOptions[stateKey];
@@ -392,7 +392,7 @@ const ServiceForm = (props) => {
         if (state.showCreateEntity['customers'].show) {
             return <CreateEntity
                 name={state.showCreateEntity['customers'].name}
-                addEntity={addEntity}
+                addEntity={addEntityToLocalState}
                 stateName="customers"
                 fields={customerFields}
                 isMulti={false}
@@ -408,7 +408,7 @@ const ServiceForm = (props) => {
         if (state.showCreateEntity['devices'].show) {
             return <CreateEntity
                 name={state.showCreateEntity['devices'].name}
-                addEntity={addEntity}
+                addEntity={addEntityToLocalState}
                 stateName="devices"
                 fields={deviceFields}
                 isMulti={true}
