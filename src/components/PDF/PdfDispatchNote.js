@@ -81,8 +81,12 @@ const styles = StyleSheet.create({
         color: colors.rddarkgray,
         borderColor: colors.rdlightgray
     },
-    devicesText: {
-        marginBottom: 5
+    devicesItem: {
+        marginBottom: 5,
+    },
+    devicesSerial: {
+        marginLeft: 5,
+        fontSize: 9
     },
     footer: {
         flexDirection: 'row',
@@ -121,7 +125,14 @@ const PdfDispatchNote = (props) => {
     const renderDevices = () => (
         deviceKeys.map(key => {
             const deviceName = props.getDeviceNameById(key);
-            return <Text key={key} style={styles.devicesText}>- {deviceName}</Text>
+            const deviceSerial = props.getDeviceSerialById(key);
+
+            return (
+                <View style={styles.devicesItem}>
+                    <Text key={key} style={styles.devicesText}>- {deviceName}</Text>
+                    <Text key={key} style={styles.devicesSerial}>{deviceSerial && `(sn: ${deviceSerial})`}</Text>
+                </View>
+            )
         })
     )
 

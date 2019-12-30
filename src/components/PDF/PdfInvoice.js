@@ -94,7 +94,15 @@ const styles = StyleSheet.create({
         borderColor: colors.rdlightgray
     },
     devicesText: {
+        flexDirection: 'row',
         marginBottom: 5
+    },
+    devicesName: {
+        fontSize: 10,
+        letterSpacing: 1
+    },
+    devicesSerial: {
+        fontSize: 8
     },
     table: {
         marginTop: 10,
@@ -226,7 +234,19 @@ const PdfInvoice = (props) => {
                 if (entityName === 'actions') {
                     return props.getActionNameById(entity.actionId);
                 } else {
-                    return props.getDeviceNameById(entity.deviceId);
+                    const deviceName = props.getDeviceNameById(entity.deviceId);
+                    const deviceSerial = props.getDeviceSerialById(entity.deviceId);
+
+                    if ( deviceSerial !== '' ) {
+                        return (
+                            <Text style={styles.devicesText}>
+                                <Text style={styles.devicesName}>{deviceName}</Text>
+                                <Text style={styles.devicesSerial}> (sn: {deviceSerial})</Text>
+                            </Text>
+                        );
+                    } else {
+                        return deviceName;
+                    }
                 }
             }
             return props[entityName].map((entity, index) => (

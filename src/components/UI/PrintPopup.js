@@ -86,6 +86,7 @@ const PrintPopup = (props) => {
                         serviceId={props.serviceId}
                         description={props.description}
                         getDeviceNameById={context.getDeviceNameById}
+                        getDeviceSerialById={context.getDeviceSerialById}
                         getCustomerObjById={context.getCustomerObjById}
                     />}
                     fileName={`dispatch-note-${props.serviceId}.pdf`}
@@ -111,6 +112,7 @@ const PrintPopup = (props) => {
                         getCustomerObjById={context.getCustomerObjById}
                         getActionNameById={context.getActionNameById}
                         getDeviceNameById={context.getDeviceNameById}
+                        getDeviceSerialById={context.getDeviceSerialById}
                     />}
                     fileName={`dispatch-note-${props.serviceId}.pdf`}
                 >
