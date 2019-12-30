@@ -397,6 +397,7 @@ const ServiceForm = (props) => {
                 fields={customerFields}
                 isMulti={false}
                 showSnackbar={props.showSnackbar}
+                hidePopup={() => hideCreateEntityForm('customers')}
             />;
         }
     }
@@ -412,6 +413,7 @@ const ServiceForm = (props) => {
                 fields={deviceFields}
                 isMulti={true}
                 showSnackbar={props.showSnackbar}
+                hidePopup={() => hideCreateEntityForm('devices')}
             />;
         }
     }
