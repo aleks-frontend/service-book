@@ -187,6 +187,7 @@ const CreateEntity = (props) => {
                         name={field.name}
                         readOnly={field.calculated ? true : false}
                         required={field.required}
+                        autoFocus={field.autoFocus}
                         value={state.entityState[field.name]}
                         onChange={handleInputChange}
                         className={state.emptyRequiredInputs[field.name] ? state.emptyRequiredInputs[field.name] : ''}

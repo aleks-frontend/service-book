@@ -213,6 +213,7 @@ const ActionsTable = (props) => {
                             label: appActions[key].name
                         }))}
                         className="select"
+                        autoFocus={true}
                         name={actionRow.rowId}
                         value={actionRow.actionId !== '' ? {
                             value: actionRow.actionId,

@@ -558,6 +558,7 @@ const ServiceForm = (props) => {
                         disabled={state.showGeneratedPdfButton}
                         value={state.inputs.description.value}
                         onChange={handleInputChange}
+                        autoFocus={true}
                     />
                 </div>
                 <div

@@ -12,7 +12,8 @@ export const fields = {
             name: 'name',
             label: 'Name',
             defaultVal: '',
-            required: true
+            required: true,
+            autoFocus: true
         },
         {
             name: 'phone',
@@ -45,6 +46,7 @@ export const fields = {
             label: 'Manufacturer',
             defaultVal: '',
             required: true,
+            autoFocus: true
         },
         {
             name: 'model',
@@ -68,7 +70,8 @@ export const fields = {
             name: 'name',
             label: 'Name',
             defaultVal: '',
-            required: true
+            required: true,
+            autoFocus: true
         },
         {
             name: 'price',
