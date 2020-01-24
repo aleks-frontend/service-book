@@ -71,7 +71,7 @@ const StyledActionsTableCell = styled.div`
     font-weight: ${props => props.header ? '700' : '400'};
     color: ${props => props.header ? '#fff' : '#000'};
     background: ${props => props.header ? 'transparent' : '#fff'};
-    border: ${props => props.header ? 'none' : `1px solid ${colors.lightgray}`};
+    border: ${props => props.header ? 'none' : props.alerted ? '1px solid red' : `1px solid ${colors.lightgray}`};
     border-radius: 0.3rem;
     text-align: ${props => (props.col === 1) ? 'left' : 'center'};
 
@@ -103,6 +103,8 @@ const ActionsTable = (props) => {
     const [state, setState] = React.useState({
         actionRows: (props.actions.value === "") ? [] : props.actions.value,
     });    
+
+    const priceInput = React.useRef();
 
     /** State control methods **/
     const addActionRow = () => {
@@ -148,12 +150,17 @@ const ActionsTable = (props) => {
         props.updateServiceFormActionsState(validatedActionRows);        
     }
 
+    const focusPriceInput = () => {
+        priceInput.current.focus();
+    }
+
     /** Event Handler Methods **/
     const handleDropdownChange = (event, actionMeta) => {
         const rowId = actionMeta.name;
         const value = event.value;
         
         updateActionRowState(rowId, value, 'actionId', true);
+        focusPriceInput();
     }
 
     const handleInputChange = (event) => {
@@ -172,6 +179,7 @@ const ActionsTable = (props) => {
 
         context.addEntity({name: event, price: 0}, actionId, 'actions');
         updateActionRowState(rowId, actionId, 'actionId');
+        focusPriceInput();
     }
 
     const handleXClick = (rowId) => {
@@ -238,7 +246,7 @@ const ActionsTable = (props) => {
                             name="quantity"
                         />
                     </StyledActionsTableCell>
-                    <StyledActionsTableCell col={3}>
+                    <StyledActionsTableCell col={3} alerted={actionRow.price === 0}>
                         $<input                          
                             actionrowid={actionRow.rowId}
                             value={actionRow.price} 
@@ -246,6 +254,7 @@ const ActionsTable = (props) => {
                             onFocus={handleInputFocus}
                             type="number"
                             name="price"
+                            ref={priceInput}
                         />
                         <div 
                             className="closex"

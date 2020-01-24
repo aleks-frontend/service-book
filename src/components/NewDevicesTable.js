@@ -239,6 +239,7 @@ const NewDevicesTable = (props) => {
                             value={newDeviceRow.price}
                             onChange={handleInputChange}
                             onFocus={handleInputFocus}
+                            autoFocus={true}
                             type="number"
                             name="price"
                         />
