@@ -80,7 +80,13 @@ const DisplayEntity = (props) => {
                   for (const field of props.fields) {
                     if (field.calculated) {
                       const str = field.calculated.map(item => {
-                        return newData[item];
+                        // Specific case when we want to wrap the serial number in 'sn:()'
+                        // Used only for devices
+                        if ( item === 'serial' && newData[item] !== '' ) {
+                          return `sn:(${newData[item]})`;
+                        } else {
+                          return newData[item];
+                        }
                       }).join(' ');
 
                       newData[field.name] = str;
