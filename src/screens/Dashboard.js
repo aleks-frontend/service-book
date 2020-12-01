@@ -115,13 +115,16 @@ const ScreensDashboard = () => {
   const calculateTotalMonthEarnings = (mainStateServices) => {
     const lastSixMonthsTotals = Array.from({ length: 6 }, () => 0);
     const indexes = generateLastSixMonths().indexes;
+    const currentYear = new Date().getFullYear();
 
     for (const serviceKey of Object.keys(mainStateServices)) {
       const service = mainStateServices[serviceKey];
       const serviceMonth = new Date(service.date).getMonth();
+      const serviceYear = new Date(service.date).getFullYear();    
 
-      if (indexes.includes(serviceMonth)) {
+      if (indexes.includes(serviceMonth) && serviceYear === currentYear) {
         const index = indexes.indexOf(serviceMonth);
+        
         // Additional check becuase empty arrays can not be stored in Firebase
         if (service.actions === '') continue;
 
