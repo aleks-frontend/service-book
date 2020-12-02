@@ -3,9 +3,10 @@ import { Document, Page, View, Image, Text, StyleSheet, Font } from '@react-pdf/
 
 import { colors } from '../../helpers';
 
-Font.register(`/fonts/Roboto-Bold.ttf`, {
+Font.register({
     family: 'Roboto-Bold',
     weight: '700',
+    src: '/fonts/Roboto-Bold.ttf'
 });
 
 const styles = StyleSheet.create({
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     },
     companyInfoText: {
         display: 'block',
-        marginTop: 1,
+        marginBottom: 1,
         fontSize: 10,
         lineHeight: '1em'
     },
@@ -175,7 +176,10 @@ const modifiers = StyleSheet.create({
     },
     companyInfoTextMain: {
         ...styles.companyInfoText,
-        fontFamily: 'Roboto-Bold'
+        fontFamily: 'Roboto-Bold',
+        fontSize: 12,
+        marginBottom: 2,
+        marginTop: 2
     },
     tableCellLABEL: {
         ...styles.tableCell,
@@ -208,11 +212,13 @@ const modifiers = StyleSheet.create({
     },
     totalCellLABEL: {
         ...styles.totalCell,
-        width: '90%'
+        width: '80%'
     },
     totalCellVALUE: {
         ...styles.totalCell,
-        width: '10%'
+        width: '20%',
+        paddingRight: 10,
+        textAlign: 'right'
     }
 });
 
@@ -253,8 +259,8 @@ const PdfInvoice = (props) => {
                 <View style={styles.tableRow} key={index}>
                     <Text style={modifiers.tableCellLABEL}>{getLabel(entity)}</Text>
                     <Text style={modifiers.tableCellQUANTITY}>{entity.quantity}</Text>
-                    <Text style={modifiers.tableCellPRICE}>${entity.price}</Text>
-                    <Text style={modifiers.tableCellPRICE}>${entity.quantity * entity.price}</Text>
+                    <Text style={modifiers.tableCellPRICE}>{entity.price} rsd</Text>
+                    <Text style={modifiers.tableCellPRICE}>{entity.quantity * entity.price} rsd</Text>
                 </View>
             ))
         } else {
@@ -262,8 +268,8 @@ const PdfInvoice = (props) => {
                 <View style={styles.tableRow}>
                     <Text style={modifiers.tableCellLABEL}>N/A</Text>
                     <Text style={modifiers.tableCellQUANTITY}>0</Text>
-                    <Text style={modifiers.tableCellPRICE}>$0</Text>
-                    <Text style={modifiers.tableCellPRICE}>$0</Text>
+                    <Text style={modifiers.tableCellPRICE}>0 rsd</Text>
+                    <Text style={modifiers.tableCellPRICE}>0 rsd</Text>
                 </View>
             );
         }
@@ -284,58 +290,58 @@ const PdfInvoice = (props) => {
             <Page style={styles.page}>
                 <View style={styles.header}>
                     <View style={styles.headerText}>
-                        <Text style={styles.headerTitle}>Invoice No: {props.serviceId}</Text>
+                        <Text style={styles.headerTitle}>Predračun broj: {props.serviceId}</Text>
                         <View style={styles.companyInfo}>
-                            <Text style={modifiers.companyInfoTextMain}>Zoltan Kalmar</Text>
-                            <Text style={styles.companyInfoText}>Petra Petrovica 23,</Text>
-                            <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
+                            <Text style={modifiers.companyInfoTextMain}>GamesGuru</Text>
+                            <Text style={styles.companyInfoText}>063/754-64-18,</Text>
+                            <Text style={styles.companyInfoText}>Atile Jožefa 24, 24000 Subotica</Text>
                         </View>
                     </View>
-                    <Image src="/img/sb-logo.png" style={styles.logo} />
+                    <Image src="/img/gg-logo-2.png" style={styles.logo} />
                 </View>
                 <View style={styles.boxContainer}>
                     <View style={styles.box}>
                         <Text style={styles.boxHeader}>Customer Info</Text>
                         <View style={styles.boxBody}>
-                            {renderCustomerInfoItem({label: 'Name', value: 'name'})}
+                            {renderCustomerInfoItem({label: 'Ime', value: 'name'})}
                             {renderCustomerInfoItem({label: 'Email', value: 'email'})}
-                            {renderCustomerInfoItem({label: 'Phone', value: 'phone'})}
-                            {renderCustomerInfoItem({label: 'Address', value: 'address'})}
+                            {renderCustomerInfoItem({label: 'Telefon', value: 'phone'})}
+                            {renderCustomerInfoItem({label: 'Adresa', value: 'address'})}
                         </View>
                     </View>
                 </View>
                 <View style={styles.body}>
                     <View style={styles.table}>
                         <View style={styles.tableHeader}>
-                            <Text style={modifiers.tableHeaderCellLABEL}>Remarks</Text>
+                            <Text style={modifiers.tableHeaderCellLABEL}>Napomene</Text>
                         </View>
                         <View style={styles.tableRow}>
                             <Text style={modifiers.tableCellFULL}>
-                                {props.remark === '' ? 'No remarks added yet.' : props.remark}
+                                {props.remark === '' ? 'Nijedna napomena jos nije dodata.' : props.remark}
                             </Text>
                         </View>
                     </View>
                     <View style={styles.table}>
                         <View style={styles.tableHeader}>
-                            <Text style={modifiers.tableHeaderCellLABEL}>Actions taken</Text>
-                            <Text style={modifiers.tableHeaderCellQUANTITY}>Quantity</Text>
-                            <Text style={modifiers.tableHeaderCellPRICE}>Price</Text>
-                            <Text style={modifiers.tableHeaderCellPRICE}>Total</Text>
+                            <Text style={modifiers.tableHeaderCellLABEL}>Izvršene radnje</Text>
+                            <Text style={modifiers.tableHeaderCellQUANTITY}>Količina</Text>
+                            <Text style={modifiers.tableHeaderCellPRICE}>Cena</Text>
+                            <Text style={modifiers.tableHeaderCellPRICE}>Ukupno</Text>
                         </View>
                         {renderEntities('actions')}
                     </View>
                     <View style={styles.table}>
                         <View style={styles.tableHeader}>
-                            <Text style={modifiers.tableHeaderCellLABEL}>New devices added</Text>
-                            <Text style={modifiers.tableHeaderCellQUANTITY}>Quantity</Text>
-                            <Text style={modifiers.tableHeaderCellPRICE}>Price</Text>
-                            <Text style={modifiers.tableHeaderCellPRICE}>Total</Text>
+                            <Text style={modifiers.tableHeaderCellLABEL}>Novi uređaji</Text>
+                            <Text style={modifiers.tableHeaderCellQUANTITY}>Količina</Text>
+                            <Text style={modifiers.tableHeaderCellPRICE}>Cena</Text>
+                            <Text style={modifiers.tableHeaderCellPRICE}>Ukupno</Text>
                         </View>
                         {renderEntities('newDevices')}
                     </View>
                     <View style={styles.total}>
-                        <Text style={modifiers.totalCellLABEL}>Total:</Text>
-                        <Text style={modifiers.totalCellVALUE}>${invoiceTotalCalculation()}</Text>
+                        <Text style={modifiers.totalCellLABEL}>Ukupno:</Text>
+                        <Text style={modifiers.totalCellVALUE}>{invoiceTotalCalculation()} rsd</Text>
                     </View>
                 </View>
                 <View style={styles.footer}>

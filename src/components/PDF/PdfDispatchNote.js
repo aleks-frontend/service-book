@@ -3,9 +3,10 @@ import { Document, Page, View, Image, Text, StyleSheet, Font } from '@react-pdf/
 
 import { colors } from '../../helpers';
 
-Font.register(`/fonts/Roboto-Bold.ttf`, {
+Font.register({
     family: 'Roboto-Bold',
     weight: '700',
+    src: '/fonts/Roboto-Bold.ttf'
 });
 
 const styles = StyleSheet.create({
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
+        alignItems: 'flex-start',
         marginBottom: 20,
         paddingBottom: 20,
     },
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     },
     companyInfoText: {
         display: 'block',
-        marginTop: 1,
+        marginBottom: 1,
         fontSize: 10,
         lineHeight: '1em'
     },
@@ -114,7 +115,10 @@ const modifiers = StyleSheet.create({
     },
     companyInfoTextMain: {
         ...styles.companyInfoText,
-        fontFamily: 'Roboto-Bold'
+        fontFamily: 'Roboto-Bold',
+        fontSize: 12,
+        marginBottom: 2,
+        marginTop: 2
     }
 });
 
@@ -128,9 +132,9 @@ const PdfDispatchNote = (props) => {
             const deviceSerial = props.getDeviceSerialById(key);
 
             return (
-                <View style={styles.devicesItem}>
-                    <Text key={key} style={styles.devicesText}>- {deviceName}</Text>
-                    <Text key={key} style={styles.devicesSerial}>{deviceSerial && `(sn: ${deviceSerial})`}</Text>
+                <View style={styles.devicesItem} key={key}>
+                    <Text style={styles.devicesText}>- {deviceName}</Text>
+                    <Text style={styles.devicesSerial}>{deviceSerial && `(sn: ${deviceSerial})`}</Text>
                 </View>
             )
         })
@@ -151,35 +155,35 @@ const PdfDispatchNote = (props) => {
             <Page style={styles.page}>
                 <View style={styles.header}>
                     <View style={styles.headerText}>
-                        <Text style={styles.headerTitle}>Service ID: {props.serviceId}</Text>
+                        <Text style={styles.headerTitle}>ID popravke: {props.serviceId}</Text>
                         <View style={styles.companyInfo}>
-                            <Text style={modifiers.companyInfoTextMain}>Zoltan Kalmar</Text>
-                            <Text style={styles.companyInfoText}>Petra Petrovica 23,</Text>
-                            <Text style={styles.companyInfoText}>24415 Hajdukovo</Text>
+                            <Text style={modifiers.companyInfoTextMain}>GamesGuru</Text>
+                            <Text style={styles.companyInfoText}>063/754-64-18,</Text>
+                            <Text style={styles.companyInfoText}>Atile Jožefa 24, 24000 Subotica</Text>
                         </View>
                     </View>
-                    <Image src="/img/sb-logo.png" style={styles.logo} />
+                    <Image src="/img/gg-logo-2.png" style={styles.logo} />
                 </View>
                 <View style={styles.body}>
                     <View style={styles.serviceGroup}>
                         <View style={styles.customerInfo}>
-                            <Text style={styles.customerInfoHeader}>Customer Info</Text>
+                            <Text style={styles.customerInfoHeader}>Podaci o korisniku:</Text>
                             <View style={styles.serviceText}>
-                                {renderCustomerInfoItem({ label: 'Name', value: 'name' })}
+                                {renderCustomerInfoItem({ label: 'Ime', value: 'name' })}
                                 {renderCustomerInfoItem({ label: 'Email', value: 'email' })}
-                                {renderCustomerInfoItem({ label: 'Phone', value: 'phone' })}
-                                {renderCustomerInfoItem({ label: 'Address', value: 'address' })}
+                                {renderCustomerInfoItem({ label: 'Telefon', value: 'phone' })}
+                                {renderCustomerInfoItem({ label: 'Adresa', value: 'address' })}
                             </View>
                         </View>
                     </View>
                     <View style={styles.serviceGroup}>
-                        <Text style={styles.serviceLabel}>Service Devices:</Text>
+                        <Text style={styles.serviceLabel}>Uređaji na servisu:</Text>
                         <View style={styles.serviceText}>
                             {renderDevices()}
                         </View>
                     </View>
                     <View style={styles.serviceGroup}>
-                        <Text style={styles.serviceLabel}>Service Description:</Text>
+                        <Text style={styles.serviceLabel}>Opis kvara:</Text>
                         <Text style={modifiers.serviceTextDescription}>{props.description}</Text>
                     </View>
                 </View>
