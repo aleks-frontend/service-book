@@ -120,15 +120,17 @@ const ScreensDashboard = () => {
     for (const serviceKey of Object.keys(mainStateServices)) {
       const service = mainStateServices[serviceKey];
       const serviceMonth = new Date(service.date).getMonth();
-      const serviceYear = new Date(service.date).getFullYear();    
+      const serviceYear = new Date(service.date).getFullYear();
+      const isCurrentOrLastYear = (serviceYear === currentYear) || (serviceYear === currentYear - 1);
 
-      if (indexes.includes(serviceMonth) && serviceYear === currentYear) {
+      if (indexes.includes(serviceMonth) && isCurrentOrLastYear) {
         const index = indexes.indexOf(serviceMonth);
-        
+
         // Additional check becuase empty arrays can not be stored in Firebase
         if (service.actions === '') continue;
 
         if (service.actions === undefined) return;
+
         const totalServicePrice = service.actions.reduce((total, action) => {
           return total + parseInt(action.price);
         }, 0);
@@ -243,7 +245,7 @@ const ScreensDashboard = () => {
     <React.Fragment>
       <Header title="Dashboard" />
       <Body>
-          {context.state.loaded && renderGrid()}
+        {context.state.loaded && renderGrid()}
       </Body>
     </React.Fragment>
   );
