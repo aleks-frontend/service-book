@@ -15,6 +15,7 @@ const StyledIconButton = styled.button`
     border-radius: 0.3rem;
     opacity: 0.8;
     transition: 0.3s all;
+    background: transparent;
 
     &:hover { 
         cursor: pointer;

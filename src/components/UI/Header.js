@@ -28,7 +28,7 @@ const Header = (props) => {
         <StyledHeader>
             {props.title}
             <div className="logo">
-                <img src="/img/sb-logo.svg" />
+                <img src="/img/gg-logo-cropped.png" />
             </div>
         </StyledHeader>
     );
