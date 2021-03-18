@@ -119,12 +119,18 @@ const ScreensDashboard = () => {
 
     for (const serviceKey of Object.keys(mainStateServices)) {
       const service = mainStateServices[serviceKey];
+      const currentMonth = new Date().getMonth();
       const serviceMonth = new Date(service.date).getMonth();
       const serviceYear = new Date(service.date).getFullYear();
       const isCurrentOrLastYear = (serviceYear === currentYear) || (serviceYear === currentYear - 1);
 
       if (indexes.includes(serviceMonth) && isCurrentOrLastYear) {
         const index = indexes.indexOf(serviceMonth);
+        
+        // Preventing last year's month data to be added to this year's month data
+        if ( (serviceMonth <= currentMonth) && (serviceYear < currentYear) ) {
+          continue;
+        }
 
         // Additional check becuase empty arrays can not be stored in Firebase
         if (service.actions === '') continue;
