@@ -243,7 +243,7 @@ const PdfInvoice = (props) => {
                     const deviceName = props.getDeviceNameById(entity.deviceId);
                     const deviceSerial = props.getDeviceSerialById(entity.deviceId);
 
-                    if ( deviceSerial !== '' ) {
+                    if (deviceSerial !== '') {
                         return (
                             <Text style={styles.devicesText}>
                                 <Text style={styles.devicesName}>{deviceName}</Text>
@@ -275,8 +275,8 @@ const PdfInvoice = (props) => {
         }
     }
 
-    const renderCustomerInfoItem = ({label, value}) => {
-        if ( !customer[value] ) return;
+    const renderCustomerInfoItem = ({ label, value }) => {
+        if (!customer[value]) return;
         return (
             <View style={styles.customerInfoGroup}>
                 <Text style={styles.customerInfoLabel}>{label}: </Text>
@@ -285,12 +285,20 @@ const PdfInvoice = (props) => {
         )
     }
 
+    const renderDevices = () => props.deviceIds.map(id =>
+        <Text
+            key={id}
+            style={modifiers.tableCellFULL}>
+            {props.getDeviceNameById(id)}
+        </Text>
+    );
+
     return (
         <Document>
             <Page style={styles.page}>
                 <View style={styles.header}>
                     <View style={styles.headerText}>
-                        <Text style={styles.headerTitle}>Predračun broj: {props.serviceId}</Text>
+                        <Text style={styles.headerTitle}>Servisni izveštaj broj: {props.serviceId}</Text>
                         <View style={styles.companyInfo}>
                             <Text style={modifiers.companyInfoTextMain}>GamesGuru</Text>
                             <Text style={styles.companyInfoText}>063/754-64-18,</Text>
@@ -303,22 +311,33 @@ const PdfInvoice = (props) => {
                     <View style={styles.box}>
                         <Text style={styles.boxHeader}>Podaci o korisniku:</Text>
                         <View style={styles.boxBody}>
-                            {renderCustomerInfoItem({label: 'Ime', value: 'name'})}
-                            {renderCustomerInfoItem({label: 'Email', value: 'email'})}
-                            {renderCustomerInfoItem({label: 'Telefon', value: 'phone'})}
-                            {renderCustomerInfoItem({label: 'Adresa', value: 'address'})}
+                            {renderCustomerInfoItem({ label: 'Ime', value: 'name' })}
+                            {renderCustomerInfoItem({ label: 'Email', value: 'email' })}
+                            {renderCustomerInfoItem({ label: 'Telefon', value: 'phone' })}
+                            {renderCustomerInfoItem({ label: 'Adresa', value: 'address' })}
                         </View>
                     </View>
                 </View>
                 <View style={styles.body}>
+                    {props.remark !== '' ? 
+                        <View style={styles.table}>
+                            <View style={styles.tableHeader}>
+                                <Text style={modifiers.tableHeaderCellLABEL}>Napomene</Text>
+                            </View>
+                            <View style={styles.tableRow}>
+                                <Text style={modifiers.tableCellFULL}>
+                                    {props.remark === '' ? 'Nijedna napomena jos nije dodata.' : props.remark}
+                                </Text>
+                            </View>
+                        </View>
+                        : null
+                    }
                     <View style={styles.table}>
                         <View style={styles.tableHeader}>
-                            <Text style={modifiers.tableHeaderCellLABEL}>Napomene</Text>
+                            <Text style={modifiers.tableHeaderCellLABEL}>Primljeni uredjaji</Text>
                         </View>
                         <View style={styles.tableRow}>
-                            <Text style={modifiers.tableCellFULL}>
-                                {props.remark === '' ? 'Nijedna napomena jos nije dodata.' : props.remark}
-                            </Text>
+                            {renderDevices()}
                         </View>
                     </View>
                     <View style={styles.table}>

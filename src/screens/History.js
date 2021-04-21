@@ -221,6 +221,7 @@ const History = (props) => {
 						serviceId={state.printInputs.serviceId}
 						customerId={state.printInputs.customerId}
 						deviceIds={state.printInputs.deviceIds}
+						getDeviceNameById={context.getDeviceNameById}
 						title={state.printInputs.title}
 						actions={state.printInputs.actions}
 						newDevices={state.printInputs.newDevices}

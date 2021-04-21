@@ -109,6 +109,7 @@ const PrintPopup = (props) => {
                         actions={props.actions}
                         remark={props.remark}
                         newDevices={props.newDevices}
+                        deviceIds={props.deviceIds}
                         getCustomerObjById={context.getCustomerObjById}
                         getActionNameById={context.getActionNameById}
                         getDeviceNameById={context.getDeviceNameById}
