@@ -300,9 +300,9 @@ const PdfInvoice = (props) => {
                     <View style={styles.headerText}>
                         <Text style={styles.headerTitle}>Servisni izveštaj broj: {props.serviceId}</Text>
                         <View style={styles.companyInfo}>
-                            <Text style={modifiers.companyInfoTextMain}>GamesGuru</Text>
-                            <Text style={styles.companyInfoText}>063/754-64-18,</Text>
-                            <Text style={styles.companyInfoText}>Atile Jožefa 24, 24000 Subotica</Text>
+                            <Text style={modifiers.companyInfoTextMain}>RIGHT CLICK 024</Text>
+                            <Text style={styles.companyInfoText}>065/84-04-625,</Text>
+                            <Text style={styles.companyInfoText}>Borisa Kidriča 32, 24414 Hajdukovo</Text>
                         </View>
                     </View>
                     <Image src="/img/gg-logo-2.png" style={styles.logo} />
